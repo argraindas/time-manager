@@ -1,9 +1,8 @@
 <?php
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
-//    ->middleware('verified');
 
 Auth::routes(['verify' => true]);
 
