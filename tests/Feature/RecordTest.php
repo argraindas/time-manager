@@ -32,7 +32,10 @@ class RecordTest extends TestCase
         $response->assertRedirect(route('record'));
         $this->assertDatabaseHas('records', ['description' => 'This is task description']);
 
-        $this->assertEquals(1, auth()->user()->fresh()->records->count());
+        $record = make('App\Record');
+        $this->post('/records', $record->toArray());
+
+        $this->assertEquals(2, auth()->user()->fresh()->records->count());
     }
 
 }
