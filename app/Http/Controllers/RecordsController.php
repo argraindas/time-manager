@@ -37,11 +37,11 @@ class RecordsController extends Controller
      */
     public function store()
     {
-        // Todo: better validation for date
         // Todo: better validation for category_id
+
         $validData = request()->validate([
-            'time_start' => 'required',
-            'time_end' => '',
+            'time_start' => 'required|date',
+            'time_end' => 'date',
             'description' => 'min:3|max:255',
             'category_id' => '',
         ]);
