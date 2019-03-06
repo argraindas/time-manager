@@ -1,6 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.dashboard')
 
-@section('title', 'Dashboard')
+@section('title', 'Logged times')
 
 @section('content')
 
@@ -10,13 +10,7 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-
-                    @guest
-                        Please login or register!
-                    @else
-                        Hello {{ Auth::user()->name }}!
-                    @endguest
-
+asda
                 </div>
             </div>
         </div>

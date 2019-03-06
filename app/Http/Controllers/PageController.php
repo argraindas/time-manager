@@ -13,7 +13,7 @@ class PageController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'verified']);
+        $this->middleware(['auth', 'verified'])->except('index');
     }
 
     /**
@@ -23,6 +23,16 @@ class PageController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('layouts.home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function dashboard()
+    {
+        return view('index');
     }
 }

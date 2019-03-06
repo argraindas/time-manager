@@ -35,7 +35,7 @@
             @else
 
                 <li class="nav-item text-nowrap px-3">
-                    Hello {{ Auth::user()->name }}!
+                    Hi {{ Auth::user()->name }}!
                 </li>
                 <form method="post" action="{{ route('logout') }}" id="logout-form">
                     @csrf

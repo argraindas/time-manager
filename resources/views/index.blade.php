@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Logged times')
+@section('title', 'Dashboard')
 
 @section('content')
 
@@ -11,11 +11,7 @@
 
                 <div class="card-body">
 
-                    @guest
-                        Please login or register!
-                    @else
-                        Hello {{ Auth::user()->name }}!
-                    @endguest
+                    Hello {{ Auth::user()->name }}! This is your dashboard.
 
                 </div>
             </div>
