@@ -19,7 +19,9 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        return view('record.index');
+        $records = Record::where('user_id', auth()->user()->id)->latest()->get();
+
+        return view('record.index', compact('records'));
     }
 
     /**
