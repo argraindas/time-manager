@@ -74,9 +74,15 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('record') }}">
-                                    <span data-feather="shopping-cart"></span>
-                                    Projects
+                                <a class="nav-link" href="{{ route('records') }}">
+                                    <span data-feather="clock"></span>
+                                    Records
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('categories') }}">
+                                    <span data-feather="layers"></span>
+                                    Categories
                                 </a>
                             </li>
                         </ul>

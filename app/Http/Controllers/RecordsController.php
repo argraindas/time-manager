@@ -21,7 +21,7 @@ class RecordsController extends Controller
     {
         $records = Record::where('user_id', auth()->user()->id)->latest()->get();
 
-        return view('record.index', compact('records'));
+        return view('records.index', compact('records'));
     }
 
     /**
@@ -31,7 +31,7 @@ class RecordsController extends Controller
      */
     public function create()
     {
-        return view('record.create');
+        return view('records.create');
     }
 
     /**
@@ -51,7 +51,7 @@ class RecordsController extends Controller
 
         Record::create($validData);
 
-        return redirect(route('record'));
+        return redirect(route('records'));
     }
 
     /**
