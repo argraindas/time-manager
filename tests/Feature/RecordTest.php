@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Category;
 use App\Record;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,5 +53,15 @@ class RecordTest extends TestCase
             ->assertSee($record->description)
             ->assertSee($record2->description)
             ->assertDontSee($recordNotAuthUser->description);
+    }
+
+    /** @test */
+    public function record_must_have_a_category()
+    {
+        $this->signIn();
+
+        $record = create(Record::class);
+
+        $this->assertInstanceOf(Category::class, $record->category);
     }
 }
