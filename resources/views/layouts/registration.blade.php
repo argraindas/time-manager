@@ -8,7 +8,13 @@
 
     <title>@yield('title')</title>
 
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
+
+    @env('production')
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @else
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @endenv
 </head>
 <body>
 

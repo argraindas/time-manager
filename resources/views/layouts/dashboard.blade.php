@@ -8,16 +8,18 @@
 
     <title>@yield('title')</title>
 
-    @env('local')
-        <script src="{{ mix('js/app.js') }}" defer></script>
-
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @else
+    @env('production')
         <script src="{{ mix('js/manifest.js') }}" defer></script>
         <script src="{{ mix('js/vendor.js') }}" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
 
+        <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @else
+        <script src="{{ asset('js/app.js') }}" defer></script>
+
+        <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @endenv
 
     @yield('head')

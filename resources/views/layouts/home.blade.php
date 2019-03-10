@@ -8,7 +8,14 @@
 
     <title>@yield('title')</title>
 
-    <link href="{{ mix('css/home.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
+
+    @env('production')
+        <link href="{{ mix('css/home.css') }}" rel="stylesheet">
+    @else
+        <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    @endenv
+
 </head>
 <body class="text-center">
 
