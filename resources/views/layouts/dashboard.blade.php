@@ -8,6 +8,8 @@
 
     <title>@yield('title')</title>
 
+    <script src="{{ asset('js/vendor/feather.min.js') }}"></script>
+
     @env('production')
         <script src="{{ mix('js/manifest.js') }}" defer></script>
         <script src="{{ mix('js/vendor.js') }}" defer></script>
@@ -124,5 +126,9 @@
         </div>
 
     </div>
+
+    <script>
+        feather.replace();
+    </script>
 </body>
 </html>
