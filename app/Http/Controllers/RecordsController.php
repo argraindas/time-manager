@@ -46,8 +46,8 @@ class RecordsController extends Controller
 
         $validData = request()->validate([
             'time_start' => 'required|date',
-            'time_end' => 'date',
-            'description' => 'min:3|max:255',
+            'time_end' => 'nullable|date',
+            'description' => 'required|min:3|max:255',
             'category_id' => 'required',
         ]);
         $validData['user_id'] = auth()->id();
