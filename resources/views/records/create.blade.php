@@ -8,19 +8,21 @@
         <div class="col-md-6">
             <form method="post" action="{{ route('records.store') }}">
 
+                @csrf
+
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select class="form-control" name="category" id="category">
-                        <option>aa</option>
-                        <option>bb</option>
-                        <option>cc</option>
+                    <select class="form-control" name="category_id" id="category_id">
+                        <option value="">-- Please select --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" class="form-control" name="description" id="description"
-                           placeholder="Describe your activity">
+                    <input type="text" class="form-control" name="description" id="description">
                 </div>
 
                 <div class="form-group">
