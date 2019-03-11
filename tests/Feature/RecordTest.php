@@ -27,14 +27,20 @@ class RecordTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $record = make(Record::class, ['description' => 'This is task description']);
+        $record = factory(Record::class)
+            ->states('withUserAndCategory')
+            ->make(['description' => 'This is task description']);
+
         $response = $this->post('/records', $record->toArray());
         
         $response->assertStatus(302);
-        $response->assertRedirect(route('record'));
+        $response->assertRedirect(route('records'));
         $this->assertDatabaseHas('records', ['description' => 'This is task description']);
 
-        $record = make(Record::class);
+        $record = factory(Record::class)
+            ->states('withUserAndCategory')
+            ->make();
+
         $this->post('/records', $record->toArray());
 
         $this->assertEquals(2, auth()->user()->fresh()->records->count());
@@ -45,11 +51,25 @@ class RecordTest extends TestCase
     {
         $this->signIn();
 
-        $record = create(Record::class, ['user_id' => auth()->id()]);
-        $record2 = create(Record::class, ['user_id' => auth()->id()]);
-        $recordNotAuthUser = create(Record::class);
+        $category = create(Category::class, [
+            'user_id' => auth()->id(),
+        ]);
 
-        $this->get(route('record'))
+        $record = create(Record::class, [
+            'user_id' => auth()->id(),
+            'category_id' => $category->id
+        ]);
+
+        $record2 = create(Record::class, [
+            'user_id' => auth()->id(),
+            'category_id' => $category->id
+        ]);
+
+        $recordNotAuthUser = factory(Record::class)
+            ->states('withUserAndCategory')
+            ->create();
+
+        $this->get(route('records'))
             ->assertSee($record->description)
             ->assertSee($record2->description)
             ->assertDontSee($recordNotAuthUser->description);
@@ -60,7 +80,9 @@ class RecordTest extends TestCase
     {
         $this->signIn();
 
-        $record = create(Record::class);
+        $record = factory(Record::class)
+            ->states('withUserAndCategory')
+            ->create();
 
         $this->assertInstanceOf(Category::class, $record->category);
     }

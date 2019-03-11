@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Record;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,9 @@ class RecordsController extends Controller
      */
     public function create()
     {
-        return view('records.create');
+        $categories = Category::where('user_id', auth()->user()->id)->get();
+
+        return view('records.create', compact('categories'));
     }
 
     /**
@@ -39,13 +42,13 @@ class RecordsController extends Controller
      */
     public function store()
     {
-        // Todo: better validation for category_id
+        // Todo: better validation for category_id | must exists | belongs to user
 
         $validData = request()->validate([
             'time_start' => 'required|date',
             'time_end' => 'date',
             'description' => 'min:3|max:255',
-            'category_id' => '',
+            'category_id' => 'required',
         ]);
         $validData['user_id'] = auth()->id();
 

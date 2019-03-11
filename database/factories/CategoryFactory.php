@@ -4,6 +4,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Category::class, function (Faker $faker) {
     return [
-        'title' => $faker->sentence(rand(1, 2))
+        'name' => trim($faker->sentence(rand(1, 2)), '.'),
     ];
 });

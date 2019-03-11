@@ -5,15 +5,19 @@ use App\User;
 use App\Category;
 
 $factory->define(App\Record::class, function (Faker $faker) {
+    return [
+        'time_start' => now()->subMinutes(rand(10, 20)),
+        'time_end' => now()->subMinutes(rand(0, 10)),
+        'description' => $faker->sentence(rand(2, 5))
+    ];
+});
+
+$factory->state(App\Record::class, 'withUserAndCategory', function () {
     $user = factory(User::class)->create();
+    $category = factory(Category::class)->create(['user_id' => $user->id]);
 
     return [
-        'category_id' => function () use ($user) {
-            return factory(Category::class)->create(['user_id' => $user->id])->id;
-        },
         'user_id' => $user->id,
-        'time_start' => now()->subMinutes(rand(1, 15)),
-//        'time_end' => now(),
-        'description' => $faker->sentence(rand(2, 5))
+        'category_id' => $category->id,
     ];
 });

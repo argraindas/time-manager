@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Logged times')
+@section('title', 'Records')
 
 @section('content')
 
