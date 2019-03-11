@@ -10,6 +10,7 @@ import 'bootstrap';
 window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
+window.events = new Vue();
 // window.Popper = Popper;
 // window.$ = window.jQuery = $;
 // window._ = lodash;
@@ -23,3 +24,7 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+
+window.flash = function (message, level = 'success') {
+    window.events.$emit('flash', { message, level });
+};

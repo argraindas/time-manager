@@ -131,6 +131,8 @@
             </div>
         </div>
 
+        <flash message="{{ session('flash') }}"></flash>
+
     </div>
 
     <script>

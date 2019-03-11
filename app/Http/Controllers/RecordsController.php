@@ -54,7 +54,7 @@ class RecordsController extends Controller
 
         Record::create($validData);
 
-        return redirect(route('records'));
+        return redirect(route('records'))->with('flash', 'Record was successfully added!');
     }
 
     /**
