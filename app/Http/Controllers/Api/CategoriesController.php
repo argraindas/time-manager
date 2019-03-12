@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 
-class ApiCategoriesController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * CategoriesController constructor.
@@ -18,5 +18,4 @@ class ApiCategoriesController extends Controller
     {
         return auth()->user()->categories()->paginate(2);
     }
-
 }

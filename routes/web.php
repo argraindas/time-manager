@@ -13,5 +13,6 @@ Route::get('/categories', 'CategoriesController@index')->name('categories');
 Route::get('/categories/create', 'CategoriesController@create');
 Route::post('/categories', 'CategoriesController@store')->name('categories.store');
 
-// API
-Route::get('/api/categories', 'Api\ApiCategoriesController@index')->name('api.categories');
+
+// Inner API
+Route::get('/api/categories', 'Api\CategoriesController@index');

@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
 
         create(Category::class, [
             'user_id' => $user1->id
-        ], 2)->each(function ($category) use ($user1) {
+        ], 3)->each(function ($category) use ($user1) {
             create(Record::class, [
                 'user_id' => $user1->id,
                 'category_id' => $category->id,
