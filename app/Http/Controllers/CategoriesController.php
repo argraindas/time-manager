@@ -22,7 +22,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        $categories = auth()->user()->categories;
+
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -32,7 +34,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -48,7 +50,8 @@ class CategoriesController extends Controller
 
         Category::create($validData);
 
-        return redirect(route('categories'))->with('flash', 'Category successfully created!');
+        return redirect(route('categories'))
+            ->with('flash', 'Category successfully created!');
     }
 
     /**

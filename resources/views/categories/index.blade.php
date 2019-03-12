@@ -5,7 +5,11 @@
 @section('content')
 
     <div class="row">
-        Categories
+        <ul>
+            @foreach ($categories as $category)
+                <li>{{ $category->name }}</li>
+            @endforeach
+        </ul>
     </div>
 
 @endsection

@@ -21,8 +21,6 @@ class CategoryCreateTest extends TestCase
     /** @test */
     public function user_can_create_a_category()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $category = make(Category::class);

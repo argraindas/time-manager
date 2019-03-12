@@ -66,7 +66,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function records()
     {
-        return $this->hasMany(Record::class);
+        return $this->hasMany(Record::class)->latest();
     }
 
     public function categories()

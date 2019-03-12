@@ -21,7 +21,7 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records = Record::where('user_id', auth()->user()->id)->latest()->get();
+        $records = auth()->user()->records;
 
         return view('records.index', compact('records'));
     }
@@ -33,7 +33,7 @@ class RecordsController extends Controller
      */
     public function create()
     {
-        $categories = Category::where('user_id', auth()->user()->id)->get();
+        $categories = auth()->user()->categories;
 
         return view('records.create', compact('categories'));
     }
