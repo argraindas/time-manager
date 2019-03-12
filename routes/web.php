@@ -10,3 +10,4 @@ Route::get('/records/create', 'RecordsController@create');
 Route::post('/records', 'RecordsController@store')->name('records.store');
 
 Route::get('/categories', 'CategoriesController@index')->name('categories');
+Route::post('/categories', 'CategoriesController@store')->name('categories.store');

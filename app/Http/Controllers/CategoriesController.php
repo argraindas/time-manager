@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 class CategoriesController extends Controller
 {
     /**
+     * CategoriesController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -28,14 +36,19 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        $validData = request()->validate([
+            'name' => 'required|min:3|max:255'
+        ]);
+
+        $validData['user_id'] = auth()->id();
+
+        Category::create($validData);
+
+        return redirect(route('categories'))->with('flash', 'Category successfully created!');
     }
 
     /**
