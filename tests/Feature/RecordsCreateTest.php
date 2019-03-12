@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Category;
 use App\Record;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,11 +15,17 @@ class RecordsCreateTest extends TestCase
     protected function createRecord($overrides = [])
     {
         $this->withExceptionHandling();
+
         $this->signIn();
 
-        $thread = make(Record::class, $overrides);
+        $category = create(Category::class, ['user_id' => auth()->id()]);
 
-        return $this->post(route('records.store'), $thread->toArray());
+        $record = make(Record::class, [
+            'user_id' => auth()->id(),
+            'category_id' => $category->id
+        ]);
+
+        return $this->post(route('records.store'), array_merge($record->toArray(), $overrides));
     }
 
     /** @test */
@@ -32,18 +40,12 @@ class RecordsCreateTest extends TestCase
     /** @test */
     public function user_can_create_new_record()
     {
-        $this->signIn();
+        $response = $this->createRecord(['description' => 'This is task description']);
 
-        $this->withoutExceptionHandling();
-
-        $record = factory(Record::class)
-            ->states('withUserAndCategory')
-            ->make(['description' => 'This is task description']);
-
-        $response = $this->post('/records', $record->toArray());
-        
         $response->assertStatus(302);
         $response->assertRedirect(route('records'));
+        $response->assertSessionHas('flash', 'Record was successfully added!');
+
         $this->assertDatabaseHas('records', ['description' => 'This is task description']);
     }
 
@@ -60,9 +62,27 @@ class RecordsCreateTest extends TestCase
             ->assertSessionHasErrors('category_id');
     }
 
-//    /** @test */
-//    public function record_category_must_belong_to_user()
-//    {
-//
-//    }
+    /** @test */
+    public function record_category_exists_and_belongs_to_user()
+    {
+        $this->signIn();
+
+        $record = make(Record::class, [
+            'category_id' => 999,
+        ]);
+
+        $this->post(route('records.store'), $record->toArray())
+            ->assertSessionHasErrors('category_id');
+
+        $anotherUserCategory = create(Category::class, [
+            'user_id' => create(User::class)->id,
+        ]);
+
+        $record2 = make(Record::class, [
+            'category_id' => $anotherUserCategory->id,
+        ]);
+
+        $this->post(route('records.store'), $record2->toArray())
+            ->assertSessionHasErrors('category_id');
+    }
 }

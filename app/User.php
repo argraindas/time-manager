@@ -31,6 +31,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Record[] $records
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
  */
 class User extends Authenticatable implements MustVerifyEmail
 {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Record;
+use App\Rules\ValidCategory;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller
@@ -42,13 +43,11 @@ class RecordsController extends Controller
      */
     public function store()
     {
-        // Todo: better validation for category_id | must exists | belongs to user
-
         $validData = request()->validate([
             'time_start' => 'required|date',
             'time_end' => 'nullable|date',
             'description' => 'required|min:3|max:255',
-            'category_id' => 'required',
+            'category_id' => ['required', new ValidCategory],
         ]);
         $validData['user_id'] = auth()->id();
 

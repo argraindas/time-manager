@@ -2,20 +2,11 @@
 
 namespace App\Rules;
 
+use App\Category;
 use Illuminate\Contracts\Validation\Rule;
 
-class CategoryBelongsToUser implements Rule
+class ValidCategory implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Determine if the validation rule passes.
      *
@@ -25,7 +16,10 @@ class CategoryBelongsToUser implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        return Category::where([
+            'id' => $value,
+            'user_id' => auth()->user()->id,
+        ])->exists();
     }
 
     /**
@@ -35,6 +29,6 @@ class CategoryBelongsToUser implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Category is not valid!';
     }
 }

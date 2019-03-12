@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Record whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Record whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Category $category
  */
 class Record extends Model
 {
