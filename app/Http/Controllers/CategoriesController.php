@@ -22,9 +22,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = auth()->user()->categories;
-
-        return view('categories.index', compact('categories'));
+        return view('categories.index');
     }
 
     /**
