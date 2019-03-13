@@ -1,8 +1,11 @@
 <template>
     <div>
-        <ul v-for="category in items">
-            <li v-text="category.name"></li>
-        </ul>
+        <a href=""  v-text="route().current()"></a>
+        <new-category @created="add"></new-category>
+
+        <div v-for="(category, index) in items" :key="category.id">
+            <category :category="category" @deleted="remove(index)" v-text="category.name"></category>
+        </div>
 
         <paginator :dataSet="dataSet" @changed="fetch"></paginator>
 
@@ -10,8 +13,14 @@
 </template>
 
 <script>
+    import Category from './Category.vue';
+    import NewCategory from './NewCategory.vue';
+    import route from '../mixins/route';
+
     export default {
-        props: [],
+        components: {Category, NewCategory},
+
+        mixins: [route],
 
         data() {
             return {
@@ -39,6 +48,18 @@
                 }
 
                 return this.route('api.categories', {page: page});
+            },
+
+            add(item) {
+                this.items.push(item);
+
+                this.$emit('added');
+            },
+
+            remove(index) {
+                this.items.splice(index, 1);
+
+                this.$emit('removed');
             }
         }
     };
