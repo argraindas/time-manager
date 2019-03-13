@@ -1,6 +1,7 @@
 <?php
-
-Auth::routes(['verify' => true]);
+Route::blacklist(function () {
+    Auth::routes(['verify' => true]);
+});
 
 Route::get('/', 'PagesController@index')->name('home');
 Route::get('/dashboard', 'PagesController@dashboard')->name('dashboard');
@@ -15,4 +16,4 @@ Route::post('/categories', 'CategoriesController@store')->name('categories.store
 
 
 // Inner API
-Route::get('/api/categories', 'Api\CategoriesController@index');
+Route::get('/api/categories', 'Api\CategoriesController@index')->name('api.categories');

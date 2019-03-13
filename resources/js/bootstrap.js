@@ -28,3 +28,15 @@ if (token) {
 window.flash = function (message, level = 'success') {
     window.events.$emit('flash', { message, level });
 };
+
+// importing routes from backend
+import {Ziggy} from './ziggy';
+import route from '../../vendor/tightenco/ziggy/src/js/route';
+
+window.Vue.mixin({
+    methods: {
+        route: function(name, params, absolute){
+            return route(name, params, absolute, Ziggy);
+        }
+    }
+});

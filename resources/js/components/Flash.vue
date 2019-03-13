@@ -21,9 +21,7 @@
 
         created() {
 
-            console.log('aaa');
             if (this.message) {
-                console.log('bbbb');
                 this.flash();
             }
 

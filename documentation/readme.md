@@ -21,6 +21,10 @@
     composer update
     npm update
 
+## Import Ziggy routes from backend
+
+    php artisan ziggy:generate "resources/js/ziggy.js"
+
 ### Laravel 5 IDE Helper Generator for laravel autocompletion
 
     php artisan ide-helper:generate - phpDoc generation for Laravel Facades

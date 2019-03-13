@@ -32,6 +32,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Record[] $records
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
+ * @property string|null $api_token
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereApiToken($value)
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
