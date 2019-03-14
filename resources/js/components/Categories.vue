@@ -1,7 +1,11 @@
 <template>
     <div>
-        <a href=""  v-text="route().current()"></a>
+
         <new-category @created="add"></new-category>
+
+        <div class="spinner-border text-primary" role="status" v-if="loading">
+            <span class="sr-only">Loading...</span>
+        </div>
 
         <div v-for="(category, index) in items" :key="category.id">
             <category :category="category" @deleted="remove(index)" v-text="category.name"></category>
@@ -25,7 +29,8 @@
         data() {
             return {
                 dataSet: [],
-                items: []
+                items: [],
+                loading: true
             }
         },
 
@@ -35,9 +40,11 @@
 
         methods: {
             fetch(page) {
+                this.loading = true;
                 axios.get(this.url(page)).then(({data}) => {
                     this.dataSet = data;
                     this.items = data.data;
+                    this.loading = false;
                 });
             },
 
@@ -64,3 +71,5 @@
         }
     };
 </script>
+
+
