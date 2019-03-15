@@ -11,13 +11,8 @@
 
 <script>
 
-    import Form from '../core/Form';
-    import route from '../mixins/route';
-
     export default {
         props: ['category'],
-
-        mixins: [route],
 
         data() {
             return {

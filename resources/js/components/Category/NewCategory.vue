@@ -20,12 +20,7 @@
 
 <script>
 
-    import Form from '../core/Form';
-    import route from '../mixins/route';
-
     export default {
-
-        mixins: [route],
 
         data() {
             return {

@@ -21,12 +21,9 @@
 <script>
     import Category from './Category.vue';
     import NewCategory from './NewCategory.vue';
-    import route from '../mixins/route';
 
     export default {
         components: {Category, NewCategory},
-
-        mixins: [route],
 
         data() {
             return {

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import Form from './core/Form';
+import Route from './mixins/route';
 // import Popper from 'popper.js';
 // import $ from 'jquery';
 // import lodash from 'lodash';
@@ -10,6 +11,7 @@ import 'bootstrap';
 window.Vue = Vue;
 window.axios = axios;
 window.Form = Form;
+window.Route = Route;
 window.events = new Vue();
 // window.Popper = Popper;
 // window.$ = window.jQuery = $;
