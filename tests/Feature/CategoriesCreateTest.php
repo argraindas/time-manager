@@ -14,24 +14,29 @@ class CategoriesCreateTest extends TestCase
     public function guest_can_not_create_a_category()
     {
         $category = make(Category::class);
-        $this->post(route('categories.store'), $category->toArray())
+        $this->post(route('api.categories.store'), $category->toArray())
             ->assertRedirect(route('login'));
     }
 
     /** @test */
     public function user_can_create_a_category()
     {
+        $this->withoutExceptionHandling();
+
         $this->signIn();
 
         $category = make(Category::class);
 
-        $response = $this->post(route('categories.store'), $category->toArray());
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('categories'));
-        $response->assertSessionHas('flash', 'Category successfully created!');
+        $response = $this->post(route('api.categories.store'), $category->toArray())
+            ->assertStatus(201)
+            ->assertJsonFragment([
+                'user_id' => auth()->id(),
+                'name' => $category->name,
+            ]);
 
         $this->assertDatabaseHas('categories',  ['name' => $category->name]);
+
+        $this->assertEquals(1, auth()->user()->categories()->count());
     }
 
     /** @test */
@@ -41,7 +46,7 @@ class CategoriesCreateTest extends TestCase
 
         $category = make(Category::class, ['name' => null]);
 
-        $this->post(route('categories.store'), $category->toArray())
+        $this->post(route('api.categories.store'), $category->toArray())
             ->assertSessionHasErrors('name');
     }
 }

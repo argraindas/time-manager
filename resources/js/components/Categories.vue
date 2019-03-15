@@ -1,17 +1,19 @@
 <template>
     <div>
 
-        <new-category @created="add"></new-category>
+        <new-category @added="add"></new-category>
 
         <div class="spinner-border text-primary" role="status" v-if="loading">
             <span class="sr-only">Loading...</span>
         </div>
 
-        <div v-for="(category, index) in items" :key="category.id">
-            <category :category="category" @deleted="remove(index)" v-text="category.name"></category>
-        </div>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="(category, index) in items" :key="category.id" v-if="! loading">
+                <category :category="category" @deleted="remove(index)"></category>
+            </li>
+        </ul>
 
-        <paginator :dataSet="dataSet" @changed="fetch"></paginator>
+        <paginator class="mt-3" :dataSet="dataSet" @changed="fetch"></paginator>
 
     </div>
 </template>
@@ -58,15 +60,11 @@
             },
 
             add(item) {
-                this.items.push(item);
-
-                this.$emit('added');
+                this.items.unshift(item);
             },
 
             remove(index) {
                 this.items.splice(index, 1);
-
-                this.$emit('removed');
             }
         }
     };
