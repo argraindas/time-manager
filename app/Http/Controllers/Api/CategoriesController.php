@@ -57,14 +57,25 @@ class CategoriesController extends Controller
 //        //
 //    }
 //
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  \App\Category  $category
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy(Category $category)
-//    {
-//        //
-//    }
+    /**
+     * @param Category $category
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Category $category)
+    {
+        $this->authorize('update', $category);
+
+        $success = (false !== $category->delete());
+
+        if (request()->expectsJson()) {
+            return response([
+                'status' => ($success ? 'success' : 'error'),
+                'message' => ($success ? 'Category deleted!' : 'Error occurred!'),
+            ]);
+        }
+
+        return back();
+    }
 }

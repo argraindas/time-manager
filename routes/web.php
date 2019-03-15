@@ -17,3 +17,4 @@ Route::get('/categories/create', 'CategoriesController@create');
 // Inner API
 Route::get('/api/categories', 'Api\CategoriesController@index')->name('api.categories');
 Route::post('/api/categories', 'Api\CategoriesController@store')->name('api.categories.store');
+Route::delete('/api/categories/{category}', 'Api\CategoriesController@destroy')->name('api.categories.destroy');

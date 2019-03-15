@@ -6,7 +6,7 @@ class Form {
      *
      * @param {object} data
      */
-    constructor(data) {
+    constructor(data = null) {
         this.originalData = data;
 
         for (let field in data) {
