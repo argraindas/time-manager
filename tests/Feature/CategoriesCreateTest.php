@@ -54,8 +54,6 @@ class CategoriesCreateTest extends TestCase
     /** @test */
     public function category_must_be_unique_for_user()
     {
-        $this->withExceptionHandling();
-
         $this->signIn();
 
         $category = make(Category::class, ['name' => 'My category']);
@@ -64,7 +62,7 @@ class CategoriesCreateTest extends TestCase
             ->assertStatus(Response::HTTP_CREATED);
 
         $this->post(route('api.categories.store'), $category->toArray())
-            ->assertStatus(Response::HTTP_CREATED);
+            ->assertSessionHasErrors('name');
     }
 
     /** @test */

@@ -29,7 +29,7 @@ class CategoriesController extends Controller
     public function store()
     {
         $validData = request()->validate([
-            'name' => 'required|min:3|max:255'
+            'name' => 'required|unique:categories|min:3|max:255'
         ]);
 
         $validData['user_id'] = auth()->id();
