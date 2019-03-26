@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Category;
 use App\User;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
 
 class CategoriesCreateTest extends TestCase
 {
@@ -26,8 +28,8 @@ class CategoriesCreateTest extends TestCase
 
         $category = make(Category::class);
 
-        $response = $this->post(route('api.categories.store'), $category->toArray())
-            ->assertStatus(201)
+        $this->post(route('api.categories.store'), $category->toArray())
+            ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonFragment([
                 'user_id' => auth()->id(),
                 'name' => $category->name,
@@ -50,6 +52,22 @@ class CategoriesCreateTest extends TestCase
     }
 
     /** @test */
+    public function category_must_be_unique_for_user()
+    {
+        $this->withExceptionHandling();
+
+        $this->signIn();
+
+        $category = make(Category::class, ['name' => 'My category']);
+
+        $this->post(route('api.categories.store'), $category->toArray())
+            ->assertStatus(Response::HTTP_CREATED);
+
+        $this->post(route('api.categories.store'), $category->toArray())
+            ->assertStatus(Response::HTTP_CREATED);
+    }
+
+    /** @test */
     public function guest_and_unauthorized_user_can_not_delete_category()
     {
         $user = create(User::class);
@@ -61,10 +79,10 @@ class CategoriesCreateTest extends TestCase
         $this->signIn();
 
         $this->delete(route('api.categories.destroy', $category->id))
-            ->assertStatus(403);
+            ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->json('delete', route('api.categories.destroy', $category->id))
-            ->assertStatus(403);
+            ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('categories', ['id' => $category->id]);
     }
@@ -74,13 +92,13 @@ class CategoriesCreateTest extends TestCase
     {
         $this->signIn();
 
-        $category = create(Category::class, ['user_id' => auth()->id()]);
+        $category = create(Category::class);
 
         $this->assertEquals(1, auth()->user()->categories()->count());
         
         $request = $this->json('delete', route('api.categories.destroy', $category->id));
         
-        $request->assertStatus(200);
+        $request->assertStatus(Response::HTTP_OK);
         $request->assertJsonFragment([  
             'status' => 'success',
             'message' => 'Category deleted!',
@@ -88,5 +106,38 @@ class CategoriesCreateTest extends TestCase
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
         $this->assertEquals(0, auth()->user()->categories()->count());
+    }
+
+    /** @test */
+    public function guest_and_unauthorized_user_can_not_edit_category()
+    {
+        $user = create(User::class);
+        $category = create(Category::class, ['user_id' => $user->id]);
+
+        $updatedName = 'New category name';
+
+        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $updatedName])
+            ->assertRedirect(route('login'));
+
+        $this->signIn();
+
+        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $updatedName])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertDatabaseHas('categories', ['name' => $category->name]);
+    }
+
+    /** @test */
+    public function authorized_user_can_edit_category()
+    {
+        $this->signIn();
+
+        $category = create(Category::class);
+
+        $updatedName = 'New category name';
+
+        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $updatedName]);
+
+        $this->assertDatabaseHas('categories', ['name' => $updatedName]);
     }
 }

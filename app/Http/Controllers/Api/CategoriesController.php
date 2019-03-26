@@ -15,13 +15,16 @@ class CategoriesController extends Controller
         $this->middleware(['auth', 'verified']);
     }
 
+    /**
+     * @return Category[]
+     */
     public function index()
     {
         return auth()->user()->categories()->paginate(2);
     }
 
     /**
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Category|\Illuminate\Database\Eloquent\Model
      */
     public function store()
     {
@@ -34,29 +37,22 @@ class CategoriesController extends Controller
         return Category::create($validData);
     }
 
-//    /**
-//     * Show the form for editing the specified resource.
-//     *
-//     * @param  \App\Category  $category
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit(Category $category)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  \App\Category  $category
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, Category $category)
-//    {
-//        //
-//    }
-//
+    /**
+     * @param Category $category
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(Category $category)
+    {
+        $this->authorize('update', $category);
+
+        $validData = request()->validate([
+            'name' => 'required|min:3|max:255'
+        ]);
+
+        $category->update($validData);
+    }
+
     /**
      * @param Category $category
      *

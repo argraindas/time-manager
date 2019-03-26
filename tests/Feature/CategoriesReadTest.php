@@ -15,7 +15,7 @@ class CategoryReadTest extends TestCase
     {
         $this->signIn();
 
-        create(Category::class, ['user_id' => auth()->id()], 2);
+        create(Category::class, [], 2);
 
         $response = $this->getJson(route('api.categories'))->json();
 
