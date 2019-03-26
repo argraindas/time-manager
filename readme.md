@@ -1,4 +1,8 @@
-# INSTALLATION
+# Time manager
+
+[![Build Status](https://travis-ci.com/argraindas/time-manager.svg?token=1S5s1HzBzsDBDM8zZfNs&branch=master)](https://travis-ci.com/argraindas/time-manager)
+
+## INSTALLATION
 
 ### 1. Installing core
 
@@ -13,7 +17,7 @@
     php artisan migrate
 
 
-# DEVELOPMENT
+## DEVELOPMENT
 
 ### UPDATE
 
@@ -31,7 +35,7 @@
     php artisan ide-helper:models - phpDocs for models
     php artisan ide-helper:meta - PhpStorm Meta file
 
-# PRODUCTION
+## PRODUCTION
 
 ### Optimize
 
