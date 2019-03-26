@@ -54,15 +54,39 @@ class CategoriesCreateTest extends TestCase
     /** @test */
     public function category_must_be_unique_for_user()
     {
+        $testName = 'My category';
+
+        $otherUser = create(User::class);
+        create(Category::class, ['name' => $testName, 'user_id' => $otherUser->id]);
+
         $this->signIn();
 
-        $category = make(Category::class, ['name' => 'My category']);
+        $category = make(Category::class, ['name' => $testName]);
 
+        // after create
         $this->post(route('api.categories.store'), $category->toArray())
             ->assertStatus(Response::HTTP_CREATED);
 
+        $this->assertDatabaseHas('categories', ['name' => $testName, 'user_id' => $otherUser->id]);
+        $this->assertDatabaseHas('categories', ['name' => $testName, 'user_id' => auth()->id()]);
+
         $this->post(route('api.categories.store'), $category->toArray())
             ->assertSessionHasErrors('name');
+
+        // after update
+        $storedCategory = auth()->user()->categories()->first();
+
+        $this->patch(route('api.categories.update', ['id' => $storedCategory->id]), ['name' => $testName])
+            ->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('categories', ['id' => $storedCategory->id, 'name' => $testName]);
+
+        $newName = 'New name';
+
+        $this->patch(route('api.categories.update', ['id' => $storedCategory->id]), ['name' => $newName])
+            ->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('categories', ['id' => $storedCategory->id, 'name' => $newName]);
     }
 
     /** @test */

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
@@ -29,7 +30,12 @@ class CategoriesController extends Controller
     public function store()
     {
         $validData = request()->validate([
-            'name' => 'required|unique:categories|min:3|max:255'
+            'name' => [
+                'required',
+                'min:3',
+                'max:255',
+                Rule::unique('categories')->where('user_id', auth()->id()),
+            ]
         ]);
 
         $validData['user_id'] = auth()->id();
@@ -47,7 +53,12 @@ class CategoriesController extends Controller
         $this->authorize('update', $category);
 
         $validData = request()->validate([
-            'name' => 'required|min:3|max:255'
+            'name' => [
+                'required',
+                'min:3',
+                'max:255',
+                Rule::unique('categories')->where('user_id', auth()->id())->ignore($category->id),
+            ]
         ]);
 
         $category->update($validData);
