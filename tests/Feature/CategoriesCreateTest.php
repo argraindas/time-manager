@@ -37,7 +37,7 @@ class CategoriesCreateTest extends TestCase
 
         $this->assertDatabaseHas('categories',  ['name' => $category->name]);
 
-        $this->assertEquals(1, auth()->user()->categories()->count());
+        $this->assertEquals(0, auth()->user()->categories()->count());
     }
 
     /** @test */
