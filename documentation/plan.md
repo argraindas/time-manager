@@ -13,6 +13,8 @@
     
 - Create your own Composer packagist library and include it  
 
+- Create Russian doll (matryoshka) caching
+
 - Make pusher broadcast notification for active user (like fb online friends right sidebar. use Participate event)
 
 - Make pusher broadcast when someone is typing (whisper) 
