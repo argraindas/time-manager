@@ -13,8 +13,8 @@ $factory->define(App\Record::class, function (Faker $faker) {
 });
 
 $factory->state(App\Record::class, 'withUserAndCategory', function () {
-    $user = factory(User::class)->create();
-    $category = factory(Category::class)->create(['user_id' => $user->id]);
+    $user = create(User::class);
+    $category = create(Category::class, ['user_id' => $user->id]);
 
     return [
         'user_id' => $user->id,
