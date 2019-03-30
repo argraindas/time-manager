@@ -1,7 +1,7 @@
 
-- Make a appropriate middleware for logged in user
-
 - Write tests to see where user can access
+
+- Remove user fillable api_token
 
 - Change web.php (make groups)
 
@@ -25,3 +25,4 @@
 
 - Make pusher broadcast when someone dynamically added something (private channel)
 
+- Registration and login should be mad with modal window

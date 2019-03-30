@@ -30,7 +30,7 @@ class Authenticate extends Middleware
             return $request->expectsJson()
                 ? abort(Response::HTTP_FORBIDDEN, 'Your email address is not verified.')
                 : Redirect::route($this->unverifiedIsRedirectTo)
-                    ->with('message', 'You must confirm your email first!');
+                    ->with('message', 'You must verify your email first!');
         }
 
         return $next($request);

@@ -4,5 +4,6 @@
     "/css/home.css": "/css/home.css",
     "/css/vendor/bootstrap.min.css": "/css/vendor/bootstrap.min.css",
     "/js/vendor/feather.min.js": "/js/vendor/feather.min.js",
+    "/js/vendor/jquery.min.js": "/js/vendor/jquery.min.js",
     "/js/vendor/bootstrap.min.js": "/js/vendor/bootstrap.min.js"
 }

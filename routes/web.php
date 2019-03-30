@@ -21,10 +21,10 @@ Route::post('/records', 'RecordsController@store')->name('records.store')->middl
 
 
 // API
-Route::get('/api/categories', 'Api\CategoriesController@index')->name('api.categories');
-Route::post('/api/categories', 'Api\CategoriesController@store')->name('api.categories.store');
-Route::delete('/api/categories/{category}', 'Api\CategoriesController@destroy')->name('api.categories.destroy');
-Route::patch('/api/categories/{category}', 'Api\CategoriesController@update')->name('api.categories.update');
+Route::get('/api/categories', 'Api\CategoriesController@index')->name('api.categories')->middleware('auth');
+Route::post('/api/categories', 'Api\CategoriesController@store')->name('api.categories.store')->middleware('auth');
+Route::delete('/api/categories/{category}', 'Api\CategoriesController@destroy')->name('api.categories.destroy')->middleware('auth');
+Route::patch('/api/categories/{category}', 'Api\CategoriesController@update')->name('api.categories.update')->middleware('auth');
 
 
 // TODO: Try this out

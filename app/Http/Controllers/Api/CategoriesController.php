@@ -9,14 +9,6 @@ use Illuminate\Validation\Rule;
 class CategoriesController extends Controller
 {
     /**
-     * CategoriesController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified']);
-    }
-
-    /**
      * @return Category[]
      */
     public function index()
