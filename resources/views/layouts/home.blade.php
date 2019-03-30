@@ -8,6 +8,8 @@
 
     <title>@yield('title')</title>
 
+    <script src="{{ asset('js/vendor/jquery.min.js') }}" rel="script"></script>
+    <script src="{{ asset('js/vendor/bootstrap.min.js') }}" rel="script"></script>
     <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
 
     @env('production')
@@ -30,6 +32,15 @@
                 </nav>
             </div>
         </header>
+
+        @if(session('message'))
+            <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                {{ session('message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
 
         <main role="main" class="inner cover">
             <h1 class="cover-heading">Hi there!</h1>

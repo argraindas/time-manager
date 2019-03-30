@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Record;
 use App\Rules\ValidCategory;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified']);
-    }
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -29,7 +23,7 @@ class RecordsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -57,13 +51,13 @@ class RecordsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the record
      *
-     * @param  \App\Record $logger
+     * @param  \App\Record $record
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Record $logger)
+    public function show(Record $record)
     {
         //
     }
@@ -71,11 +65,11 @@ class RecordsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Record $logger
+     * @param  \App\Record $record
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Record $logger)
+    public function edit(Record $record)
     {
         //
     }
@@ -84,11 +78,11 @@ class RecordsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Record              $logger
+     * @param  \App\Record              $record
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Record $logger)
+    public function update(Request $request, Record $record)
     {
         //
     }
@@ -96,11 +90,11 @@ class RecordsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Record  $logger
+     * @param  \App\Record  $record
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Record $logger)
+    public function destroy(Record $record)
     {
         //
     }

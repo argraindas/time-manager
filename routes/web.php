@@ -4,18 +4,23 @@ Route::blacklist(function () {
     Auth::routes(['verify' => true]);
 });
 
-Route::get('/', 'PagesController@index')->name('home');
-Route::get('/dashboard', 'PagesController@dashboard')->name('dashboard');
+// Home
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/records', 'RecordsController@index')->name('records');
-Route::get('/records/create', 'RecordsController@create');
-Route::post('/records', 'RecordsController@store')->name('records.store');
+// Dashboard
+Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard')->middleware('auth');
 
-Route::get('/categories', 'CategoriesController@index')->name('categories');
-Route::get('/categories/create', 'CategoriesController@create');
+// Categories
+Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('auth');
+Route::get('/categories/create', 'CategoriesController@create')->middleware('auth');
+
+// Records
+Route::get('/records', 'RecordsController@index')->name('records')->middleware('auth');
+Route::get('/records/create', 'RecordsController@create')->middleware('auth');
+Route::post('/records', 'RecordsController@store')->name('records.store')->middleware('auth');
 
 
-// Inner API
+// API
 Route::get('/api/categories', 'Api\CategoriesController@index')->name('api.categories');
 Route::post('/api/categories', 'Api\CategoriesController@store')->name('api.categories.store');
 Route::delete('/api/categories/{category}', 'Api\CategoriesController@destroy')->name('api.categories.destroy');

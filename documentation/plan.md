@@ -1,9 +1,13 @@
 
-- Change db:seed implementation
+- Make a appropriate middleware for logged in user
+
+- Write tests to see where user can access
+
+- Change web.php (make groups)
+
+- Change from feather to glychon
 
 - Make a job and workers to do a job
-
-- Make a appropriate middleware for logged in user
 
 - Make event broadcasting with pusher
 
