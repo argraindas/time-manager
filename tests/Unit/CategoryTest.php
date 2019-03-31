@@ -17,7 +17,7 @@ class CategoryTest extends TestCase
     {
         $this->signIn();
 
-        $category = create(Category::class, ['user_id' => auth()->id()]);
+        $category = create(Category::class);
 
         $this->assertInstanceOf(User::class, $category->user);
     }
@@ -27,7 +27,7 @@ class CategoryTest extends TestCase
     {
         $this->signIn();
 
-        $category = create(Category::class, ['user_id' => auth()->id()]);
+        $category = create(Category::class);
 
         create(Record::class, [
             'category_id' => $category->id,

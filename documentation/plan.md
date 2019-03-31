@@ -1,4 +1,9 @@
 
+
+- User can edit his categories
+
+
+
 - Remove user fillable api_token
 
 - Change from feather to glychon

@@ -6,6 +6,7 @@ use App\Category;
 use App\Record;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class RecordsCreateTest extends TestCase
@@ -42,7 +43,7 @@ class RecordsCreateTest extends TestCase
     {
         $response = $this->createRecord(['description' => 'This is task description']);
 
-        $response->assertStatus(302);
+        $response->assertStatus(Response::HTTP_FOUND);
         $response->assertRedirect(route('records'));
         $response->assertSessionHas('flash', 'Record was successfully added!');
 
