@@ -1,9 +1,5 @@
 
-- Write tests to see where user can access
-
 - Remove user fillable api_token
-
-- Change web.php (make groups)
 
 - Change from feather to glychon
 
