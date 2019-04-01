@@ -24,6 +24,14 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @endenv
 
+    <!-- Scripts -->
+    <script>
+        window.App = {!! json_encode([
+            'user' => Auth::user(),
+            'signedIn' => Auth::check()
+        ]) !!};
+    </script>
+
     @yield('head')
 </head>
 <body>

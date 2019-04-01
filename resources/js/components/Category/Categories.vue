@@ -13,6 +13,8 @@
             </li>
         </ul>
 
+        <div v-if="items.length === 0 && ! loading">There are no categories created. Please create one!</div>
+
         <paginator class="mt-3" :dataSet="dataSet" @changed="fetch"></paginator>
 
     </div>
