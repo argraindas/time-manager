@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <new-category @added="add"></new-category>
+        <new-category @added="fetch"></new-category>
 
         <div class="spinner-border text-primary" role="status" v-if="loading">
             <span class="sr-only">Loading...</span>
@@ -9,7 +9,7 @@
 
         <ul class="list-group">
             <li class="list-group-item" v-for="(category, index) in items" :key="category.id" v-if="! loading">
-                <category :category="category" @deleted="remove(index)"></category>
+                <category :category="category" @deleted="fetch"></category>
             </li>
         </ul>
 
@@ -56,14 +56,6 @@
                 }
 
                 return this.route('api.categories', {page: page});
-            },
-
-            add(item) {
-                this.items.unshift(item);
-            },
-
-            remove(index) {
-                this.items.splice(index, 1);
             }
         }
     };

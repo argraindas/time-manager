@@ -6,8 +6,9 @@ class Form {
      *
      * @param {object} data
      */
-    constructor(data = null) {
+    constructor(data = null, onSuccessReset = true) {
         this.originalData = data;
+        this.onSuccessReset = onSuccessReset;
 
         for (let field in data) {
             this[field] = data[field];
@@ -35,8 +36,10 @@ class Form {
      * Reset the form fields.
      */
     reset() {
-        for (let field in this.originalData) {
-            this[field] = '';
+        if (this.onSuccessReset) {
+            for (let field in this.originalData) {
+                this[field] = '';
+            }
         }
 
         this.errors.clear();

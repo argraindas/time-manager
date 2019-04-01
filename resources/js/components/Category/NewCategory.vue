@@ -36,12 +36,10 @@
             addCategory() {
                 this.form.post(this.route('api.categories.store'))
                     .then(data => {
-                        flash('Category was successfully added!');
                         this.$emit('added', data);
+                        flash(data);
                     })
-                    .catch(() => {
-                        flash('Please check your form!', 'danger')
-                    });
+                    .catch(() => flash());
             }
         }
     }

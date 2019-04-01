@@ -1,6 +1,6 @@
 <template>
     <div class="alert alert-flash"
-         :class="'alert-'+level"
+         :class="'alert-'+status"
          role="alert"
          v-show="show"
          v-text="body">
@@ -14,7 +14,7 @@
         data() {
             return {
                 body: this.message,
-                level: 'success',
+                status: 'success',
                 show: false
             }
         },
@@ -32,10 +32,8 @@
 
         methods: {
             flash(data) {
-                if (data) {
-                    this.body = data.message;
-                    this.level = data.level;
-                }
+                this.body = data.message ? data.message : 'Error occurred!';
+                this.status = data.status ? data.status : 'danger';
 
                 this.show = true;
 

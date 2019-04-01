@@ -32,7 +32,9 @@ class CategoriesController extends Controller
 
         $validData['user_id'] = auth()->id();
 
-        return Category::create($validData);
+        Category::create($validData);
+
+        return $this->response('Category created!');
     }
 
     /**
@@ -54,6 +56,8 @@ class CategoriesController extends Controller
         ]);
 
         $category->update($validData);
+
+        return $this->response('Category updated!');
     }
 
     /**
@@ -66,15 +70,8 @@ class CategoriesController extends Controller
     {
         $this->authorize('update', $category);
 
-        $success = (false !== $category->delete());
+        $category->delete();
 
-        if (request()->expectsJson()) {
-            return response([
-                'status' => ($success ? 'success' : 'error'),
-                'message' => ($success ? 'Category deleted!' : 'Error occurred!'),
-            ]);
-        }
-
-        return back();
+        return $this->response('Category deleted!');
     }
 }
