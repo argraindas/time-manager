@@ -1,7 +1,4 @@
 
-- User can edit his categories
-
-
 - Change from feather to glychon
 
 - Make a job and workers to do a job

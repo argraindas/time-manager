@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Category;
 use App\User;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
@@ -29,11 +29,7 @@ class CategoriesCreateTest extends TestCase
         $category = make(Category::class);
 
         $this->post(route('api.categories.store'), $category->toArray())
-            ->assertStatus(Response::HTTP_CREATED)
-            ->assertJsonFragment([
-                'user_id' => auth()->id(),
-                'name' => $category->name,
-            ]);
+            ->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas('categories',  ['name' => $category->name]);
 

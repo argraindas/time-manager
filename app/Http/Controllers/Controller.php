@@ -11,11 +11,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected function response($message, $status = 'success')
+    protected function response($message, $status = 'success', $statusCode = 200)
     {
         return response([
             'status' => $status,
             'message' => $message,
-        ]);
+        ], $statusCode);
     }
 }

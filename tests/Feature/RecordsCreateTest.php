@@ -6,7 +6,7 @@ use App\Category;
 use App\Record;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class RecordsCreateTest extends TestCase

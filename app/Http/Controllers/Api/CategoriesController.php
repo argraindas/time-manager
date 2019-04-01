@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
@@ -34,7 +35,7 @@ class CategoriesController extends Controller
 
         Category::create($validData);
 
-        return $this->response('Category created!');
+        return $this->response('Category created!', 'success', Response::HTTP_CREATED);
     }
 
     /**
