@@ -8,19 +8,17 @@
 
     <title>@yield('title')</title>
 
-    <script src="{{ asset('js/vendor/feather.min.js') }}"></script>
+    <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
 
     @env('production')
         <script src="{{ mix('js/manifest.js') }}" defer></script>
         <script src="{{ mix('js/vendor.js') }}" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
 
-        <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @else
         <script src="{{ asset('js/app.js') }}" defer></script>
 
-        <link href="{{ asset('css/vendor/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @endenv
 
@@ -77,19 +75,19 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link active" href="{{ route('dashboard') }}">
-                                    <span data-feather="home"></span>
+                                    <span>H</span>
                                     Dashboard <span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('categories') }}">
-                                    <span data-feather="layers"></span>
+                                    <span>L</span>
                                     Categories
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('records') }}">
-                                    <span data-feather="clock"></span>
+                                    <span>R</span>
                                     Records
                                 </a>
                             </li>
@@ -98,13 +96,13 @@
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Saved reports</span>
                             <a class="d-flex align-items-center text-muted" href="#">
-                                <span data-feather="plus-circle"></span>
+                                <span>C</span>
                             </a>
                         </h6>
                         <ul class="nav flex-column mb-2">
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
+                                    <span>T</span>
                                     Current month
                                 </a>
                             </li>
@@ -143,8 +141,5 @@
 
     </div>
 
-    <script>
-        feather.replace();
-    </script>
 </body>
 </html>
