@@ -14,7 +14,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return auth()->user()->categories()->paginate(2);
+        return auth()->user()->categories()->paginate(config('general.pagination.perPage'));
     }
 
     /**

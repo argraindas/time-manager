@@ -54,3 +54,13 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .pagination li{
+        margin-right: 15px;
+
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+</style>
