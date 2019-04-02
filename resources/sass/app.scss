@@ -1,19 +1,14 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-// Variables
-@import 'variables';
-// Bootstrap
-// @import '~bootstrap/scss/bootstrap';
+@import 'base';
 
-
+/*
+ * General
+ */
 body{
     font-size: .875rem;
 }
 
-.feather{
-    width: 16px;
-    height: 16px;
-    vertical-align: text-bottom;
+.material-icons{
+    vertical-align: bottom;
 }
 
 /*
@@ -114,6 +109,12 @@ body{
 .form-control-dark:focus{
     border-color: transparent;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.nav-item{
+    .material-icons{
+        font-size: 21px;
+    }
 }
 
 /*

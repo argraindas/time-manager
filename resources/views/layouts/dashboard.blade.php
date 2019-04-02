@@ -75,19 +75,19 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link active" href="{{ route('dashboard') }}">
-                                    <span>H</span>
+                                    <i class="material-icons">dashboard</i>
                                     Dashboard <span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('categories') }}">
-                                    <span>L</span>
+                                    <i class="material-icons">storage</i>
                                     Categories
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('records') }}">
-                                    <span>R</span>
+                                    <i class="material-icons">timer</i>
                                     Records
                                 </a>
                             </li>
@@ -96,13 +96,13 @@
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Saved reports</span>
                             <a class="d-flex align-items-center text-muted" href="#">
-                                <span>C</span>
+                                <i class="material-icons">add_circle_outline</i>
                             </a>
                         </h6>
                         <ul class="nav flex-column mb-2">
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <span>T</span>
+                                    <i class="material-icons">assignment</i>
                                     Current month
                                 </a>
                             </li>
