@@ -11,12 +11,10 @@
 
     export default {
         components: {MenuItem},
-        props: ['activeRoute'],
         methods: {
             isActive(name) {
-                return (name === this.activeRoute);
+                return (name === this.route().current());
             }
         }
-
     };
 </script>
