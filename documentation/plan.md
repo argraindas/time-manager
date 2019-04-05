@@ -1,8 +1,8 @@
 
-- Change from feather to glychon
-
 
 - Navigation should be component
+
+
 
 - Make a job and workers to do a job
 

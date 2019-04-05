@@ -7,14 +7,15 @@ Route::blacklist(function () {
 // Home
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group([
+    'middleware' => 'auth'
+], function () {
     
     // Dashboard
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     
     // Categories
     Route::get('categories', 'CategoriesController@index')->name('categories');
-    Route::get('categories/create', 'CategoriesController@create');
     
     // Records
     Route::get('records', 'RecordsController@index')->name('records');
@@ -22,12 +23,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('records', 'RecordsController@store')->name('records.store');
 });
 
+// API
 Route::group([
     'middleware' => 'auth',
     'namespace' => 'Api',
     'prefix' => 'api',
 ], function () {
-    // API
     Route::get('categories', 'CategoriesController@index')->name('api.categories');
     Route::post('categories', 'CategoriesController@store')->name('api.categories.store');
     Route::delete('categories/{category}', 'CategoriesController@destroy')->name('api.categories.destroy');
