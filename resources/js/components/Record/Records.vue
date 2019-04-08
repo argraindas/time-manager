@@ -1,19 +1,19 @@
 <template>
     <div>
 
-        <new-category @added="fetch"></new-category>
+        <new-record @added="fetch"></new-record>
 
         <div class="spinner-border text-primary" role="status" v-if="loading">
             <span class="sr-only">Loading...</span>
         </div>
 
         <ul class="list-group">
-            <li class="list-group-item" v-for="category in items" :key="category.id" v-if="! loading">
-                <category :category="category" @deleted="fetch"></category>
+            <li class="list-group-item" v-for="record in items" :key="record.id" v-if="! loading">
+                <record :record="record" @deleted="fetch"></record>
             </li>
         </ul>
 
-        <div v-if="items.length === 0 && ! loading">There are no categories created. Please create one!</div>
+        <div v-if="items.length === 0 && ! loading">No records found.</div>
 
         <paginator class="mt-3" :dataSet="dataSet" @changed="fetch"></paginator>
 
@@ -21,11 +21,11 @@
 </template>
 
 <script>
-    import Category from './Category.vue';
-    import NewCategory from './NewCategory.vue';
+    import Record from './Record.vue';
+    import NewRecord from './NewRecord.vue';
 
     export default {
-        components: {Category, NewCategory},
+        components: {Record, NewRecord},
 
         data() {
             return {
@@ -55,7 +55,7 @@
                     page = query ? query[1] : 1;
                 }
 
-                return this.route('api.categories', {page: page});
+                return this.route('api.records', {page: page});
             }
         }
     };

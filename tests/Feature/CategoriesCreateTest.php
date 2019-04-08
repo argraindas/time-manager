@@ -119,7 +119,7 @@ class CategoriesCreateTest extends TestCase
         $request->assertStatus(Response::HTTP_OK);
         $request->assertJsonFragment([  
             'status' => 'success',
-            'message' => 'Category deleted!',
+            'message' => 'Category was successfully deleted!',
         ]);
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);

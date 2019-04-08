@@ -14,29 +14,21 @@ class RecordsReadTest extends TestCase
     /** @test */
     public function user_can_see_all_his_and_only_his_records()
     {
-        $this->signIn();
-
-        $category = create(Category::class, [
-            'user_id' => auth()->id(),
-        ]);
-
-        $record = create(Record::class, [
-            'user_id' => auth()->id(),
-            'category_id' => $category->id
-        ]);
-
-        $record2 = create(Record::class, [
-            'user_id' => auth()->id(),
-            'category_id' => $category->id
-        ]);
-
-        $recordNotAuthUser = factory(Record::class)
+        factory(Record::class, 2)
             ->states('withUserAndCategory')
             ->create();
 
-        $this->get(route('records'))
-            ->assertSee($record->description)
-            ->assertSee($record2->description)
-            ->assertDontSee($recordNotAuthUser->description);
+        $this->signIn();
+
+        create(Record::class, [
+            'category_id' => create(Category::class)->id
+        ], 2);
+
+        $this->assertEquals(4, Record::all()->count());
+
+        $response = $this->getJson(route('api.records'))->json();
+
+        $this->assertCount(2, $response['data']);
+        $this->assertEquals(2, $response['total']);
     }
 }

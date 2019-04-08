@@ -13,77 +13,79 @@ class RecordsCreateTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function createRecord($overrides = [])
-    {
-        $this->withExceptionHandling();
-
-        $this->signIn();
-
-        $category = create(Category::class, ['user_id' => auth()->id()]);
-
-        $record = make(Record::class, [
-            'user_id' => auth()->id(),
-            'category_id' => $category->id
-        ]);
-
-        return $this->post(route('records.store'), array_merge($record->toArray(), $overrides));
-    }
-
     /** @test */
     public function guest_can_not_create_record()
     {
-        $record = make(Record::class);
-        $response = $this->post('/records', $record->toArray());
+        $record = factory(Record::class)->state('withUserAndCategory')->make();
 
-        $response->assertRedirect(route('login'));
+        $this->post(route('api.records.store'), $record->toArray())
+            ->assertRedirect(route('login'));
     }
 
     /** @test */
-    public function user_can_create_new_record()
+    public function user_can_create_a_new_record()
     {
-        $response = $this->createRecord(['description' => 'This is task description']);
+        $this->signIn();
 
-        $response->assertStatus(Response::HTTP_FOUND);
-        $response->assertRedirect(route('records'));
-        $response->assertSessionHas('flash', 'Record was successfully added!');
+        $record = make(Record::class);
 
-        $this->assertDatabaseHas('records', ['description' => 'This is task description']);
+        $response = $this->post(route('api.records.store'), $record->toArray());
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonFragment([
+            'status' => 'success',
+            'message' => 'Record was successfully added!'
+        ]);
+
+        $this->assertDatabaseHas('records', ['description' => $record->description]);
     }
 
     /** @test */
     function record_must_meet_requirements()
     {
-        $this->createRecord(['description' => null])
+        $this->signIn();
+
+        $recordArr = make(Record::class)->toArray();
+        $path = route('api.records.store');
+
+        $this->post($path, array_merge($recordArr, ['description' => null]))
             ->assertSessionHasErrors('description');
 
-        $this->createRecord(['time_start' => null])
+        $this->post($path, array_merge($recordArr, ['time_start' => null]))
             ->assertSessionHasErrors('time_start');
 
-        $this->createRecord(['category_id' => null])
+        $this->post($path, array_merge($recordArr, ['category_id' => null]))
             ->assertSessionHasErrors('category_id');
     }
 
     /** @test */
-    public function record_category_exists_and_belongs_to_user()
+    public function record_category_belongs_to_user()
     {
+        $randomUser = create(User::class);
+        $randomCategory = create(Category::class, ['user_id' => $randomUser->id]);
+
         $this->signIn();
 
         $record = make(Record::class, [
-            'category_id' => 999,
+            'category_id' => $randomCategory->id,
         ]);
 
-        $this->post(route('records.store'), $record->toArray())
-            ->assertSessionHasErrors('category_id');
-
-        $anotherUserCategory = create(Category::class, [
-            'user_id' => create(User::class)->id,
-        ]);
-
+        $this->post(route('api.records.store'), $record->toArray())
+            ->assertSessionHasErrors(['category_id' => 'Category is not valid!']);
+        
+        // check if record has correct category
+        $userCategory = create(Category::class);
+        
         $record2 = make(Record::class, [
-            'category_id' => $anotherUserCategory->id,
+            'category_id' => $userCategory->id,
         ]);
 
-        $this->post(route('records.store'), $record2->toArray())
-            ->assertSessionHasErrors('category_id');
+        $this->post(route('api.records.store'), $record2->toArray())
+            ->assertStatus(Response::HTTP_CREATED);
+
+        $userRecord = auth()->user()->records()->first();
+
+        $this->assertEquals($record2->description, $userRecord->description);
+        $this->assertEquals($record2->category_id, $userCategory->id);
     }
 }

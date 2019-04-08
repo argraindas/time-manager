@@ -19,8 +19,6 @@ Route::group([
     
     // Records
     Route::get('records', 'RecordsController@index')->name('records');
-    Route::get('records/create', 'RecordsController@create');
-    Route::post('records', 'RecordsController@store')->name('records.store');
 });
 
 // API
@@ -29,8 +27,16 @@ Route::group([
     'namespace' => 'Api',
     'prefix' => 'api',
 ], function () {
+
+    // Categories
     Route::get('categories', 'CategoriesController@index')->name('api.categories');
     Route::post('categories', 'CategoriesController@store')->name('api.categories.store');
     Route::delete('categories/{category}', 'CategoriesController@destroy')->name('api.categories.destroy');
     Route::patch('categories/{category}', 'CategoriesController@update')->name('api.categories.update');
+
+    // Records
+    Route::get('records', 'RecordsController@index')->name('api.records');
+    Route::post('records', 'RecordsController@store')->name('api.records.store');
+    Route::delete('records/{record}', 'RecordsController@destroy')->name('api.records.destroy');
+    Route::patch('records/{record}', 'RecordsController@update')->name('api.records.update');
 });

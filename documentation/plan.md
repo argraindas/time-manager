@@ -1,6 +1,7 @@
 
-- Make an administration area
+- Records
 
+- Make an administration area
 
 - Make a job and workers to do a job
 
@@ -18,4 +19,4 @@
 
 - Make pusher broadcast when someone dynamically added something (private channel)
 
-- Registration and login should be mad with modal window
+- Registration and login should be made with modal window

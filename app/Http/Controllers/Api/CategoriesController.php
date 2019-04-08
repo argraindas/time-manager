@@ -35,7 +35,7 @@ class CategoriesController extends Controller
 
         Category::create($validData);
 
-        return $this->response('Category created!', 'success', Response::HTTP_CREATED);
+        return $this->response('Category was successfully created!', 'success', Response::HTTP_CREATED);
     }
 
     /**
@@ -58,7 +58,7 @@ class CategoriesController extends Controller
 
         $category->update($validData);
 
-        return $this->response('Category updated!');
+        return $this->response('Category was successfully updated!');
     }
 
     /**
@@ -73,6 +73,6 @@ class CategoriesController extends Controller
 
         $category->delete();
 
-        return $this->response('Category deleted!');
+        return $this->response('Category was successfully deleted!');
     }
 }
