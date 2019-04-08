@@ -1,14 +1,10 @@
 
-
-- Navigation should be component
-
+- Make an administration area
 
 
 - Make a job and workers to do a job
 
 - Make event broadcasting with pusher
-
-- Make an administration area
 
 - Make an artisan install command to launch whole project (php artisan tm:install)
     
