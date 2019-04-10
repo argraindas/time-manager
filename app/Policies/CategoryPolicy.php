@@ -13,9 +13,10 @@ class CategoryPolicy
     /**
      * Determine whether the user can update the category.
      *
-     * @param  \App\User  $user
-     * @param  \App\Category  $category
-     * @return mixed
+     * @param  User     $user
+     * @param  Category $category
+     *
+     * @return bool
      */
     public function update(User $user, Category $category)
     {

@@ -42,6 +42,7 @@
         methods: {
             fetch(page) {
                 this.loading = true;
+
                 axios.get(this.url(page)).then(({data}) => {
                     this.dataSet = data;
                     this.items = data.data;
@@ -60,5 +61,3 @@
         }
     };
 </script>
-
-

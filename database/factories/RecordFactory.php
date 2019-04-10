@@ -3,8 +3,9 @@
 use Faker\Generator as Faker;
 use App\User;
 use App\Category;
+use App\Record;
 
-$factory->define(App\Record::class, function (Faker $faker, $params) {
+$factory->define(Record::class, function (Faker $faker) {
 
     $params = [
         'time_start' => now()->subMinutes(rand(10, 20)),
@@ -20,7 +21,7 @@ $factory->define(App\Record::class, function (Faker $faker, $params) {
     return $params;
 });
 
-$factory->state(App\Record::class, 'withUserAndCategory', function (Faker $faker) {
+$factory->state(Record::class, 'withUserAndCategory', function () {
     $user = create(User::class);
     $category = create(Category::class, ['user_id' => $user->id]);
 

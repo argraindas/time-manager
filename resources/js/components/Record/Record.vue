@@ -6,7 +6,7 @@
 
             <div class="d-flex text-green mb-2">
                 <div v-text="record.time_start" class="mr-2"></div>
-                <i class="material-icons text-red">arrow_right_alt</i>
+                <i v-if="record.time_end" class="material-icons text-red">arrow_right_alt</i>
                 <div v-text="record.time_end" class="ml-2"></div>
             </div>
 

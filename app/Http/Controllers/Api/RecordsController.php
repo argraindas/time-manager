@@ -36,4 +36,19 @@ class RecordsController extends Controller
 
         return $this->response('Record was successfully added!', 'success', Response::HTTP_CREATED);
     }
+
+    /**
+     * @param Record $record
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Record $record)
+    {
+        $this->authorize('update', $record);
+
+        $record->delete();
+
+        return $this->response('Record was successfully deleted!');
+    }
 }

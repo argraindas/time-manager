@@ -88,8 +88,7 @@ class CategoriesCreateTest extends TestCase
     /** @test */
     public function guest_and_unauthorized_user_can_not_delete_category()
     {
-        $user = create(User::class);
-        $category = create(Category::class, ['user_id' => $user->id]);
+        $category = factory(Category::class)->state('withUser')->create();
 
         $this->delete(route('api.categories.destroy', $category->id))
             ->assertRedirect(route('login'));
@@ -99,7 +98,7 @@ class CategoriesCreateTest extends TestCase
         $this->delete(route('api.categories.destroy', $category->id))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->json('delete', route('api.categories.destroy', $category->id))
+        $this->deleteJson(route('api.categories.destroy', $category->id))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertDatabaseHas('categories', ['id' => $category->id]);
@@ -113,9 +112,9 @@ class CategoriesCreateTest extends TestCase
         $category = create(Category::class);
 
         $this->assertEquals(1, auth()->user()->categories()->count());
-        
-        $request = $this->json('delete', route('api.categories.destroy', $category->id));
-        
+
+        $request = $this->delete(route('api.categories.destroy', $category->id));
+
         $request->assertStatus(Response::HTTP_OK);
         $request->assertJsonFragment([  
             'status' => 'success',

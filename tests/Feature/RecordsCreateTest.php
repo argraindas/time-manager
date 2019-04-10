@@ -88,4 +88,44 @@ class RecordsCreateTest extends TestCase
         $this->assertEquals($record2->description, $userRecord->description);
         $this->assertEquals($record2->category_id, $userCategory->id);
     }
+
+    /** @test */
+    public function guest_and_unauthorized_user_can_not_delete_record()
+    {
+        $record = factory(Record::class)->state('withUserAndCategory')->create();
+
+        $this->delete(route('api.records.destroy', $record->id))
+            ->assertRedirect(route('login'));
+
+        $this->signIn();
+
+        $this->delete(route('api.records.destroy', $record->id))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->deleteJson(route('api.records.destroy', $record->id))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertDatabaseHas('records', ['id' => $record->id]);
+    }
+
+    /** @test */
+    public function record_can_be_deleted()
+    {
+        $this->signIn();
+
+        $record = create(Record::class);
+
+        $this->assertEquals(1,  auth()->user()->records()->count());
+
+        $request = $this->delete(route('api.records.destroy',  $record->id));
+
+        $request->assertStatus(Response::HTTP_OK);
+        $request->assertJsonFragment([
+            'status' => 'success',
+            'message' => 'Record was successfully deleted!',
+        ]);
+
+        $this->assertDatabaseMissing('records', ['id' => $record->id]);
+        $this->assertEquals(0, auth()->user()->records()->count());
+    }
 }
