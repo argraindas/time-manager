@@ -4,8 +4,7 @@
 
         <div class="col-auto">
             <div class="input-group input-group-sm">
-                <input type="text" class="form-control input" placeholder="New category" name="name" v-model="form.name" @keydown="form.errors.clear($event.target.name)">
-
+                <input type="text" class="form-control" placeholder="New category" name="name" v-model="form.name" @keydown="form.errors.clear($event.target.name)">
             </div>
         </div>
         <div class="col-auto">

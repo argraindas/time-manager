@@ -36,6 +36,11 @@ class Record extends Model
      */
     protected $guarded = [];
 
+    protected $dates = [
+        'time_start',
+        'time_end',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

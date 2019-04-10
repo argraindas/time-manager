@@ -17,10 +17,11 @@ class CategoryReadTest extends TestCase
 
         create(Category::class, [], 2);
 
-        $response = $this->getJson(route('api.categories'))->json();
-
+        $response = $this->getJson(route('api.categories', 'page=1'))->json();
         $this->assertCount(2, $response['data']);
         $this->assertEquals(2, $response['total']);
-    }
 
+        $response = $this->getJson(route('api.categories'))->json();
+        $this->assertCount(2, $response);
+    }
 }
