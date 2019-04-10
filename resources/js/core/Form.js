@@ -45,6 +45,16 @@ class Form {
         this.errors.clear();
     }
 
+    /**
+     * Restore the form to initial state
+     */
+    restore() {
+        let data = this.originalData;
+
+        for (let field in data) {
+            this[field] = data[field];
+        }
+    }
 
     /**
      * Send a POST request to the given URL.

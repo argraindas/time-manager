@@ -23,7 +23,7 @@
                          value-zone="local"
                          auto
                          class="form-control time-picker"
-                         v-model="timeStart"
+                         v-model="isoTimeStart"
                          @keydown="form.errors.clear('time_start')"
                ></datetime>
             </div>
@@ -36,7 +36,7 @@
                           value-zone="local"
                           auto
                           class="form-control time-picker"
-                          v-model="timeEnd"
+                          v-model="isoTimeEnd"
                           @keydown="form.errors.clear('time_end')"
                 ></datetime>
             </div>
@@ -70,8 +70,8 @@
 
         data() {
             return {
-                timeStart: null,
-                timeEnd: null,
+                isoTimeStart: null,
+                isoTimeEnd: null,
 
                 form: new Form({
                     description: '',
@@ -84,12 +84,12 @@
         },
 
         watch: {
-            timeStart() {
-                this.form.time_start = this.timeStart ? DateTime.fromISO(this.timeStart).toFormat('yyyy-LL-dd HH:mm:ss') : null;
+            isoTimeStart() {
+                this.form.time_start = this.isoTimeStart ? this.toSQL(this.isoTimeStart) : null;
             },
 
-            timeEnd() {
-                this.form.time_end = this.timeEnd ? DateTime.fromISO(this.timeEnd).toFormat('yyyy-LL-dd HH:mm:ss') : null;
+            isoTimeEnd() {
+                this.form.time_end = this.isoTimeEnd ? this.toSQL(this.isoTimeEnd) : null;
             }
         },
 
@@ -98,11 +98,24 @@
         },
 
         methods: {
+            toISO(value) {
+                return DateTime.fromSQL(value).toISO();
+            },
+
+            toSQL(value) {
+                return DateTime.fromISO(value).toFormat('yyyy-LL-dd HH:mm:ss');
+            },
+
             addRecord() {
                 this.form.post(this.route('api.records.store'))
                     .then(data => {
                         this.$emit('added', data);
                         flash(data);
+
+                        this.form.reset();
+
+                        this.isoTimeStart = null;
+                        this.isoTimeEnd = null;
                     })
                     .catch(() => flash());
             }

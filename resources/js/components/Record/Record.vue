@@ -2,12 +2,12 @@
     <div>
 
         <div v-if="! editing">
-            <h6 v-text="form.description" class="mb-2"></h6>
+            <h6 v-text="record.description" class="mb-2"></h6>
 
             <div class="d-flex text-green mb-2">
-                <div v-text="form.time_start" class="mr-2"></div>
+                <div v-text="record.time_start" class="mr-2"></div>
                 <i class="material-icons text-red">arrow_right_alt</i>
-                <div v-text="form.time_end" class="ml-2"></div>
+                <div v-text="record.time_end" class="ml-2"></div>
             </div>
 
             <button type="submit" class="btn btn-sm btn-primary" @click="editing = true">Edit</button>
@@ -26,7 +26,7 @@
                           value-zone="local"
                           auto
                           class="form-control time-picker"
-                          v-model="timeStart"
+                          v-model="isoTimeStart"
                           @keydown="form.errors.clear('time_start')"
                 ></datetime>
                 <div class="help is-danger" v-if="form.errors.has('time_start')" v-text="form.errors.get('time_start')"></div>
@@ -39,7 +39,7 @@
                           value-zone="local"
                           auto
                           class="form-control time-picker"
-                          v-model="timeEnd"
+                          v-model="isoTimeEnd"
                           @keydown="form.errors.clear('time_end')"
                 ></datetime>
                 <div class="help is-danger" v-if="form.errors.has('time_end')" v-text="form.errors.get('time_end')"></div>
@@ -47,7 +47,7 @@
 
             <div class="input-group input-group-sm">
                 <div class="flex-fill">
-                    <button type="submit" class="btn btn-sm btn-success mr-2" @click="update">Save</button>
+                    <button type="submit" class="btn btn-sm btn-success mr-2" @click="update">Update</button>
                     <button type="submit" class="btn btn-sm btn-secondary mr-2" @click="cancel">Cancel</button>
                 </div>
 
@@ -75,8 +75,8 @@
                 id: this.record.id,
                 editing: false,
 
-                timeStart: DateTime.fromSQL(this.record.time_start),
-                timeEnd: DateTime.fromSQL(this.record.time_end),
+                isoTimeStart: this.toISO(this.record.time_start),
+                isoTimeEnd: this.toISO(this.record.time_end),
 
                 form: new Form({
                     description: this.record.description,
@@ -89,16 +89,25 @@
         },
 
         watch: {
-            timeStart() {
-                this.form.time_start = this.timeStart ? DateTime.fromISO(this.timeStart).toFormat('yyyy-LL-dd HH:mm:ss') : null;
+            isoTimeStart() {
+                this.form.time_start = this.isoTimeStart ? this.toSQL(this.isoTimeStart) : null;
             },
 
-            timeEnd() {
-                this.form.time_end = this.timeEnd ? DateTime.fromISO(this.timeEnd).toFormat('yyyy-LL-dd HH:mm:ss') : null;
+            isoTimeEnd() {
+                this.form.time_end = this.isoTimeEnd ? this.toSQL(this.isoTimeEnd) : null;
             }
         },
 
         methods: {
+
+            toISO(value) {
+                return DateTime.fromSQL(value).toISO();
+            },
+
+            toSQL(value) {
+                return DateTime.fromISO(value).toFormat('yyyy-LL-dd HH:mm:ss');
+            },
+
             update() {
                 this.form.patch(this.route('api.records.update', {id: this.id}))
                     .then(data => {
@@ -118,11 +127,12 @@
                     .catch(() => flash());
             },
 
-
-
             cancel() {
                 this.editing = false;
-                this.form.description = this.record.description;
+                this.form.restore();
+
+                this.isoTimeStart = this.toISO(this.record.time_start);
+                this.isoTimeEnd = this.toISO(this.record.time_end);
             }
         }
     }
