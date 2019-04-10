@@ -59,14 +59,10 @@
 
 <script>
 
-    import { Datetime } from 'vue-datetime';
-    import { DateTime } from 'luxon';
-    import 'vue-datetime/dist/vue-datetime.css';
+    import DateTimePicker from '../../mixins/datetime-picker';
 
     export default {
-        components: {
-            datetime: Datetime
-        },
+        mixins: [DateTimePicker],
 
         data() {
             return {
@@ -85,11 +81,11 @@
 
         watch: {
             isoTimeStart() {
-                this.form.time_start = this.isoTimeStart ? this.toSQL(this.isoTimeStart) : null;
+                this.form.time_start = this.toSQL(this.isoTimeStart);
             },
 
             isoTimeEnd() {
-                this.form.time_end = this.isoTimeEnd ? this.toSQL(this.isoTimeEnd) : null;
+                this.form.time_end = this.toSQL(this.isoTimeEnd);
             }
         },
 
@@ -98,14 +94,6 @@
         },
 
         methods: {
-            toISO(value) {
-                return DateTime.fromSQL(value).toISO();
-            },
-
-            toSQL(value) {
-                return DateTime.fromISO(value).toFormat('yyyy-LL-dd HH:mm:ss');
-            },
-
             addRecord() {
                 this.form.post(this.route('api.records.store'))
                     .then(data => {
