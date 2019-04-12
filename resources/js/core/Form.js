@@ -125,6 +125,8 @@ class Form {
      * @param {object} data
      */
     onSuccess(data) {
+        this.originalData = this.data();
+
         this.reset();
     }
 

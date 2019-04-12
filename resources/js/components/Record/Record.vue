@@ -2,12 +2,12 @@
     <div>
 
         <div v-if="! editing">
-            <h6 v-text="record.description" class="mb-2"></h6>
+            <h6 v-text="form.description" class="mb-2"></h6>
 
             <div class="d-flex text-green mb-2">
-                <div v-text="record.time_start" class="mr-2"></div>
-                <i v-if="record.time_end" class="material-icons text-red">arrow_right_alt</i>
-                <div v-text="record.time_end" class="ml-2"></div>
+                <div v-text="form.time_start" class="mr-2"></div>
+                <i v-if="form.time_end" class="material-icons text-red">arrow_right_alt</i>
+                <div v-text="form.time_end" class="ml-2"></div>
             </div>
 
             <button type="submit" class="btn btn-sm btn-primary" @click="editing = true">Edit</button>
@@ -80,7 +80,7 @@
                     category_id: this.record.category_id,
                     time_start: this.record.time_start,
                     time_end: this.record.time_end
-                }),
+                }, false),
                 categories: []
             }
         },

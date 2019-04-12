@@ -51,4 +51,26 @@ class RecordsController extends Controller
 
         return $this->response('Record was successfully deleted!');
     }
+
+    /**
+     * @param Record $record
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(Record $record)
+    {
+        $this->authorize('update', $record);
+
+        $validData = request()->validate([
+            'time_start' => 'required|date',
+            'time_end' => 'nullable|date',
+            'description' => 'required|min:3|max:255',
+            'category_id' => ['required', new ValidCategory()],
+        ]);
+
+        $record->update($validData);
+
+        return $this->response('Record was successfully updated!');
+    }
 }

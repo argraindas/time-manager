@@ -109,7 +109,7 @@ class RecordsCreateTest extends TestCase
     }
 
     /** @test */
-    public function record_can_be_deleted()
+    public function user_can_delete_record()
     {
         $this->signIn();
 
@@ -127,5 +127,71 @@ class RecordsCreateTest extends TestCase
 
         $this->assertDatabaseMissing('records', ['id' => $record->id]);
         $this->assertEquals(0, auth()->user()->records()->count());
+    }
+
+    /** @test */
+    public function user_can_update_record()
+    {
+        $this->signIn();
+
+        /** @var Record $record */
+        $record = create(Record::class);
+
+        $newData = [
+            'description' => 'New description',
+            'time_start' => now()->subMinutes(5)->toDateTimeString(),
+            'time_end' => now()->toDateTimeString(),
+            'category_id' => create(Category::class)->id,
+        ];
+
+        $this->patch(route('api.records.update', $record->id), $newData)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonFragment([
+                'status' => 'success',
+                'message' => 'Record was successfully updated!',
+            ]);
+
+        tap($record->fresh(), function ($record) use ($newData){
+            $this->assertEquals($newData['description'], $record->description);
+            $this->assertEquals($newData['time_start'], $record->time_start);
+            $this->assertEquals($newData['time_end'], $record->time_end);
+            $this->assertEquals($newData['category_id'], $record->category_id);
+        });
+    }
+
+    /** @test */
+    public function guest_and_unauthorized_user_can_not_update_record()
+    {
+        /** @var Record $record */
+        $record = factory(Record::class)->state('withUserAndCategory')->create();
+
+        $this->patch(route('api.records.update', $record->id), ['description' => 'New description'])
+            ->assertRedirect(route('login'));
+
+        $this->signIn();
+
+        $this->patch(route('api.records.update', $record->id), ['description' => 'New description'])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /** @test */
+    public function authorized_user_passes_validation_on_record_update()
+    {
+        $this->signIn();
+
+        /** @var Record $record */
+        $record = create(Record::class);
+
+        $this->patch(route('api.records.update', $record->id), [
+            'description' => null
+        ])->assertSessionHasErrors('description');
+
+        $this->patch(route('api.records.update', $record->id), [
+            'category_id' => null
+        ])->assertSessionHasErrors('category_id');
+
+        $this->patch(route('api.records.update', $record->id), [
+            'time_start' => null
+        ])->assertSessionHasErrors('time_start');
     }
 }
