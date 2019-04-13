@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <new-record @added="fetch"></new-record>
+        <new-record :categories="categories" @added="fetch"></new-record>
 
         <div class="spinner-border text-primary" role="status" v-if="loading">
             <span class="sr-only">Loading...</span>
@@ -9,7 +9,7 @@
 
         <ul class="list-group">
             <li class="list-group-item" v-for="record in items" :key="record.id" v-if="! loading">
-                <record :record="record" @deleted="fetch"></record>
+                <record :record="record" :categories="categories" @deleted="fetch"></record>
             </li>
         </ul>
 
@@ -31,12 +31,15 @@
             return {
                 dataSet: [],
                 items: [],
-                loading: true
+                loading: true,
+                categories: []
             }
         },
 
         created() {
             this.fetch();
+
+            axios.get(this.route('api.categories')).then(({data}) => this.categories = data);
         },
 
         methods: {

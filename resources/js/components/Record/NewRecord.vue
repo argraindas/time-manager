@@ -10,7 +10,7 @@
         <div class="col-auto">
             <div class="input-group input-group-sm">
                 <select name="category_id" class="form-control" v-model="form.category_id" required>
-                    <option disabled>-- Please Select --</option>
+                    <option disabled value="">-- Please Select --</option>
                     <option v-for="category in categories" v-text="category.name" :value="category.id"></option>
                 </select>
             </div>
@@ -62,6 +62,7 @@
     import DateTimePicker from '../../mixins/datetime-picker';
 
     export default {
+        props: ['categories'],
         mixins: [DateTimePicker],
 
         data() {
@@ -71,11 +72,10 @@
 
                 form: new Form({
                     description: '',
-                    category_id: null,
+                    category_id: '',
                     time_start: null,
                     time_end: null
                 }),
-                categories: []
             }
         },
 
@@ -87,10 +87,6 @@
             isoTimeEnd() {
                 this.form.time_end = this.toSQL(this.isoTimeEnd);
             }
-        },
-
-        created() {
-            axios.get(this.route('api.categories')).then(({data}) => this.categories = data);
         },
 
         methods: {

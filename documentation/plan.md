@@ -1,5 +1,5 @@
 
-- Records
+- Sensitive data revealed (ex. categories are with user_id)
 
 - Make an administration area
 
