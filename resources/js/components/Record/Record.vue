@@ -3,7 +3,7 @@
 
         <div v-if="! editing">
             <h5 v-text="form.description" class="mb-2"></h5>
-            <h6 v-text="categoryName" class="mb-2"></h6>
+            <h6 v-text="categoryName" class="text-blue mb-2"></h6>
 
             <div class="d-flex text-green mb-2">
                 <div v-text="form.time_start" class="mr-2"></div>
