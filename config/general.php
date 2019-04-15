@@ -7,7 +7,7 @@ return [
     ],
 
     'pagination' => [
-        'perPage' => 2
+        'perPage' => 5
     ]
 
 ];

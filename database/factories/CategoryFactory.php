@@ -6,7 +6,7 @@ use App\Category;
 
 $factory->define(Category::class, function (Faker $faker) {
     $params = [
-        'name' => ucfirst($faker->unique()->word),
+        'name' => rtrim($faker->unique()->sentence(rand(1, 2), false), '.'),
     ];
 
     if (auth()->check()) {

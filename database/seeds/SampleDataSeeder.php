@@ -32,7 +32,7 @@ class SampleDataSeeder extends Seeder
         User::all()->each(function ($user) {
             create(Category::class, [
                 'user_id' => $user->id,
-            ], 3);
+            ], 5);
         });
 
         return $this;
