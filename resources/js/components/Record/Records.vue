@@ -47,11 +47,7 @@
                 this.loading = true;
 
                 axios.get(this.url(page)).then(({data}) => {
-                    this.dataSet = {
-                        current_page: data.meta.current_page,
-                        prev_page_url: data.links.prev,
-                        next_page_url: data.links.next,
-                    };
+                    this.dataSet = data;
                     this.items = data.data;
                     this.loading = false;
                 });
