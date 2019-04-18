@@ -39,7 +39,7 @@
         created() {
             this.fetch();
 
-            axios.get(this.route('api.categories')).then(({data}) => this.categories = data);
+            axios.get(this.route('api.categories')).then(({data}) => this.categories = data.data);
         },
 
         methods: {
@@ -47,7 +47,11 @@
                 this.loading = true;
 
                 axios.get(this.url(page)).then(({data}) => {
-                    this.dataSet = data;
+                    this.dataSet = {
+                        current_page: data.meta.current_page,
+                        prev_page_url: data.links.prev,
+                        next_page_url: data.links.next,
+                    };
                     this.items = data.data;
                     this.loading = false;
                 });

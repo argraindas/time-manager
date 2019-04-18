@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\RecordResource;
 use App\Record;
 use App\Rules\ValidCategory;
 use App\Http\Controllers\Controller;
@@ -12,11 +13,13 @@ class RecordsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        return auth()->user()->records()->paginate(config('general.pagination.perPage'));
+        return RecordResource::collection(
+            auth()->user()->records()->paginate(config('general.pagination.perPage'))
+        );
     }
 
     /**

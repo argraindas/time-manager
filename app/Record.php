@@ -36,9 +36,8 @@ class Record extends Model
      */
     protected $guarded = [];
 
-    protected $dates = [
-        'time_start',
-        'time_end',
+    protected $casts = [
+        'category_id' => 'int'
     ];
 
     public function category()

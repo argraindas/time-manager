@@ -1,5 +1,5 @@
 
-- Sensitive data revealed (ex. categories are with user_id)
+- Category name must be included in record
 
 - Create Http/Request classes for form validation
 

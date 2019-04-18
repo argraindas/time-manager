@@ -29,6 +29,6 @@ class RecordsReadTest extends TestCase
         $response = $this->getJson(route('api.records'))->json();
 
         $this->assertCount(2, $response['data']);
-        $this->assertEquals(2, $response['total']);
+        $this->assertEquals(2, $response['meta']['total']);
     }
 }

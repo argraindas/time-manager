@@ -8,8 +8,8 @@ use App\Record;
 $factory->define(Record::class, function (Faker $faker) {
 
     $params = [
-        'time_start' => now()->subMinutes(rand(10, 20)),
-        'time_end' => now()->subMinutes(rand(0, 10)),
+        'time_start' => now()->subMinutes(rand(10, 20))->toDateTimeString(),
+        'time_end' => now()->subMinutes(rand(0, 10))->toDateTimeString(),
         'description' => $faker->sentence(rand(2, 5))
     ];
 
