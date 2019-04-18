@@ -86,7 +86,7 @@
 
                 form: new Form({
                     description: this.record.description,
-                    category_id: this.record.category_id,
+                    category_id: this.record.category.id,
                     time_start: this.record.time_start,
                     time_end: this.record.time_end
                 }, false)

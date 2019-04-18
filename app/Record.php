@@ -32,13 +32,25 @@ use Illuminate\Database\Eloquent\Model;
 class Record extends Model
 {
     /**
+     * Don't auto-apply mass assignment protection.
+     *
      * @var array
      */
     protected $guarded = [];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'category_id' => 'int'
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['category'];
 
     public function category()
     {

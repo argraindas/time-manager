@@ -30,7 +30,7 @@ class RecordTest extends TestCase
         $this->signIn();
 
         $record = create(Record::class);
-
+        
         // get paginated categories
         $this->getJson(route('api.records', ['page' => 1]))
             ->assertJsonStructure([
@@ -38,7 +38,10 @@ class RecordTest extends TestCase
                     [
                         'id',
                         'description',
-                        'category_id',
+                        'category' => [
+                            'id',
+                            'name'
+                        ],
                         'time_start',
                         'time_end',
                     ]
@@ -51,7 +54,10 @@ class RecordTest extends TestCase
                     [
                         'id' => $record->id,
                         'description' => $record->description,
-                        'category_id' => $record->category_id,
+                        'category' => [
+                            'id' => $record->category->id,
+                            'name' => $record->category->name,
+                        ],
                         'time_start' => $record->time_start,
                         'time_end' => $record->time_end,
                     ]

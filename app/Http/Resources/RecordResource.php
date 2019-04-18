@@ -18,7 +18,7 @@ class RecordResource extends JsonResource
         return [
             'id' => $this->id,
             'description' => $this->description,
-            'category_id' => $this->category_id,
+            'category' => new CategoryResource($this->category),
             'time_start' => $this->time_start,
             'time_end' => $this->time_end,
         ];
