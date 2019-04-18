@@ -4,23 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
     /**
-     * @return Category[]
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
         $user = auth()->user();
 
-        if (request()->query('page')) {
-            return $user->categories()->paginate(config('general.pagination.perPage'));
-        }
+        $categories = request()->query('page') ?
+            $user->categories()->paginate(config('general.pagination.perPage')) :
+            $user->categories;
 
-        return $user->categories;
+        return CategoryResource::collection($categories);
     }
 
     /**

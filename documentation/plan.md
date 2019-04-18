@@ -1,6 +1,8 @@
 
 - Sensitive data revealed (ex. categories are with user_id)
 
+- Create Http/Request classes for form validation
+
 - Make an administration area
 
 - Make a job and workers to do a job

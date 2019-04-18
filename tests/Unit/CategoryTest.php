@@ -36,4 +36,44 @@ class CategoryTest extends TestCase
 
         $this->assertEquals(2, $category->records->count());
     }
+
+    /** @test */
+    public function it_emits_sensitive_data()
+    {
+        $this->signIn();
+
+        $category = create(Category::class);
+
+        // get all categories
+        $this->getJson(route('api.categories'))
+            ->assertExactJson([
+                'data' => [
+                    [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                    ]
+                ]
+            ]);
+
+        // get paginated categories
+        $this->getJson(route('api.categories', ['page' => 1]))
+            ->assertJsonStructure([
+                'data' => [
+                    [
+                        'id',
+                        'name',
+                    ]
+                ],
+                'links',
+                'meta',
+            ])
+            ->assertJsonFragment([
+                'data' => [
+                    [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                    ]
+                ]
+            ]);
+    }
 }
