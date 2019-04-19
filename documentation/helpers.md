@@ -283,3 +283,62 @@
       ziggy:generate       Generate js file for including in build process
 
 
+# Laravel helpers
+
+https://laravel.com/docs/5.8/helpers
+
+Miscellaneous
+
+    abort
+    abort_if
+    abort_unless
+    app
+    auth
+    back
+    bcrypt
+    blank
+    broadcast
+    cache
+    class_uses_recursive
+    collect
+    config
+    cookie
+    csrf_field
+    csrf_token
+    dd
+    decrypt
+    dispatch
+    dispatch_now
+    dump
+    encrypt
+    env
+    event
+    factory
+    filled
+    info
+    logger
+    method_field
+    now
+    old
+    optional
+    policy
+    redirect
+    report
+    request
+    rescue
+    resolve
+    response
+    retry
+    session
+    tap
+    throw_if
+    throw_unless
+    today
+    trait_uses_recursive
+    transform
+    validator
+    value
+    view
+    with
+
+

@@ -11,8 +11,6 @@ class RecordsController extends Controller
      */
     public function index()
     {
-        $records = auth()->user()->records;
-
-        return view('records.index', compact('records'));
+        return view('records.index');
     }
 }

@@ -1,6 +1,4 @@
 
-- Category name must be included in record
-
 - Create Http/Request classes for form validation
 
 - Make an administration area

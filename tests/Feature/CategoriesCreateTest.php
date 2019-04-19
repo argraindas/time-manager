@@ -37,14 +37,27 @@ class CategoriesCreateTest extends TestCase
     }
 
     /** @test */
-    public function category_must_have_name()
+    public function category_must_have_a_valid_name()
     {
         $this->signIn();
 
         $category = make(Category::class, ['name' => null]);
 
+        $this->post(route('api.categories.store'), $category->toArray());
+
         $this->post(route('api.categories.store'), $category->toArray())
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'Category name is required!']);
+
+        // sanitizing input
+        $unsanitizedName = ' <div>my test Category</div> ';
+        $sanitizedName = 'My test category';
+
+        $category = make(Category::class, ['name' => $unsanitizedName]);
+
+        $this->post(route('api.categories.store'), $category->toArray())
+            ->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertEquals($sanitizedName, Category::first()->name);
     }
 
     /** @test */
@@ -67,7 +80,7 @@ class CategoriesCreateTest extends TestCase
         $this->assertDatabaseHas('categories', ['name' => $testName, 'user_id' => auth()->id()]);
 
         $this->post(route('api.categories.store'), $category->toArray())
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrors(['name' => 'Category already exists!']);
 
         // after update
         $storedCategory = auth()->user()->categories()->first();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
@@ -25,22 +26,13 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @return Category|\Illuminate\Database\Eloquent\Model
+     * @param CreateCategoryRequest $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function store()
+    public function store(CreateCategoryRequest $request)
     {
-        $validData = request()->validate([
-            'name' => [
-                'required',
-                'min:3',
-                'max:255',
-                Rule::unique('categories')->where('user_id', auth()->id()),
-            ]
-        ]);
-
-        $validData['user_id'] = auth()->id();
-
-        Category::create($validData);
+        Category::create($request->validated());
 
         return $this->response('Category was successfully created!', 'success', Response::HTTP_CREATED);
     }
