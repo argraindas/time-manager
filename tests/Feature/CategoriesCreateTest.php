@@ -166,8 +166,31 @@ class CategoriesCreateTest extends TestCase
 
         $updatedName = 'New category name';
 
-        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $updatedName]);
+        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $updatedName])
+            ->assertStatus(Response::HTTP_OK);
 
         $this->assertDatabaseHas('categories', ['name' => $updatedName]);
+    }
+
+    /** @test */
+    public function authorized_user_must_have_a_valid_name_on_edit()
+    {
+        $this->signIn();
+
+        $category = create(Category::class);
+
+        $updatedName = '';
+        
+        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $updatedName])
+            ->assertSessionHasErrors(['name' => 'Category name is required!']);
+
+        // sanitizing input
+        $unsanitizedName = ' <div>my test Category</div> ';
+        $sanitizedName = 'My test category';
+
+        $this->patch(route('api.categories.update', ['id' => $category->id]), ['name' => $unsanitizedName])
+            ->assertStatus(Response::HTTP_OK);
+
+        $this->assertEquals($sanitizedName, Category::first()->name);
     }
 }

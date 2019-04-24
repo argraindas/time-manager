@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Response;
-use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
@@ -38,38 +37,28 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @param Category $category
+     * @param CreateCategoryRequest $request
+     * @param Category              $category
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function update(Category $category)
+    public function update(CreateCategoryRequest $request, Category $category)
     {
-        $this->authorize('update', $category);
-
-        $validData = request()->validate([
-            'name' => [
-                'required',
-                'min:3',
-                'max:255',
-                Rule::unique('categories')->where('user_id', auth()->id())->ignore($category->id),
-            ]
-        ]);
-
-        $category->update($validData);
+        $category->update($request->validated());
 
         return $this->response('Category was successfully updated!');
     }
 
     /**
-     * @param Category $category
+     * @param CreateCategoryRequest $request
+     * @param Category              $category
      *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     * @throws \Exception
      */
-    public function destroy(Category $category)
+    public function destroy(CreateCategoryRequest $request, Category $category)
     {
-        $this->authorize('update', $category);
-
+        $request->validated();
         $category->delete();
 
         return $this->response('Category was successfully deleted!');

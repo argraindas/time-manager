@@ -4,10 +4,16 @@ namespace App\Http\Requests;
 
 use App\Filters\UppercaseFirstFilter;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
-
 use Waavi\Sanitizer\Laravel\SanitizesInput;
 
+
+/**
+ * Class CreateCategoryRequest
+ *
+ * @package App\Http\Requests
+ */
 class CreateCategoryRequest extends FormRequest
 {
     use SanitizesInput;
@@ -19,7 +25,20 @@ class CreateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        switch ($this->method()) {
+            case 'POST':
+                {
+                    return auth()->check();
+                }
+
+            case 'PATCH':
+            case 'DELETE':
+                {
+                    return Gate::allows('update', $this->category);
+                }
+
+            default: return false;
+        }
     }
 
     /**
@@ -29,19 +48,37 @@ class CreateCategoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => [
-                'required',
-                'min:3',
-                'max:255',
-                Rule::unique('categories')->where('user_id', auth()->id()),
-            ]
-        ];
+        switch ($this->method()) {
+            case 'POST':
+                {
+                    return [
+                        'name' => [
+                            'required',
+                            'min:3',
+                            'max:255',
+                            Rule::unique('categories')->where('user_id', auth()->id()),
+                        ]
+                    ];
+                }
+
+            case 'PATCH':
+                {
+                    return [
+                        'name' => [
+                            'required',
+                            'min:3',
+                            'max:255',
+                            Rule::unique('categories')->where('user_id', auth()->id())->ignore(optional($this->category)->id),
+                        ]
+                    ];
+                }
+
+            case 'DELETE':
+            default: return [];
+        }
     }
 
     /**
-     * Get validated params
-     *
      * @return array
      */
     public function validated()
