@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\RecordRequest;
 use App\Http\Resources\RecordResource;
 use App\Record;
-use App\Rules\ValidCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
@@ -23,57 +23,42 @@ class RecordsController extends Controller
     }
 
     /**
+     * @param RecordRequest $request
+     *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function store()
+    public function store(RecordRequest $request)
     {
-        $validData = request()->validate([
-            'time_start' => 'required|date',
-            'time_end' => 'nullable|date',
-            'description' => 'required|min:3|max:255',
-            'category_id' => ['required', new ValidCategory()],
-        ]);
-        $validData['user_id'] = auth()->id();
-
-        Record::create($validData);
+        Record::create($request->validated());
 
         return $this->response('Record was successfully added!', 'success', Response::HTTP_CREATED);
     }
 
     /**
-     * @param Record $record
+     * @param RecordRequest $request
+     * @param Record        $record
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Record $record)
+    public function update(RecordRequest $request, Record $record)
     {
-        $this->authorize('update', $record);
+        $record->update($request->validated());
 
-        $record->delete();
-
-        return $this->response('Record was successfully deleted!');
+        return $this->response('Record was successfully updated!');
     }
 
     /**
-     * @param Record $record
+     * @param RecordRequest $request
+     * @param Record        $record
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
-    public function update(Record $record)
+    public function destroy(RecordRequest $request, Record $record)
     {
-        $this->authorize('update', $record);
+        $request->validated();
+        $record->delete();
 
-        $validData = request()->validate([
-            'time_start' => 'required|date',
-            'time_end' => 'nullable|date',
-            'description' => 'required|min:3|max:255',
-            'category_id' => ['required', new ValidCategory()],
-        ]);
-
-        $record->update($validData);
-
-        return $this->response('Record was successfully updated!');
+        return $this->response('Record was successfully deleted!');
     }
 }
