@@ -14,7 +14,7 @@ use Waavi\Sanitizer\Laravel\SanitizesInput;
  *
  * @package App\Http\Requests
  */
-class CreateCategoryRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     use SanitizesInput;
 

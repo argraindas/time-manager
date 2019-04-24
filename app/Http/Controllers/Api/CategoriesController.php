@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Category;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Response;
 
@@ -25,11 +25,11 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @param CreateCategoryRequest $request
+     * @param CategoryRequest $request
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(CategoryRequest $request)
     {
         Category::create($request->validated());
 
@@ -37,12 +37,12 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @param CreateCategoryRequest $request
-     * @param Category              $category
+     * @param CategoryRequest $request
+     * @param Category        $category
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function update(CreateCategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
         $category->update($request->validated());
 
@@ -50,13 +50,13 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @param CreateCategoryRequest $request
-     * @param Category              $category
+     * @param CategoryRequest $request
+     * @param Category        $category
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      * @throws \Exception
      */
-    public function destroy(CreateCategoryRequest $request, Category $category)
+    public function destroy(CategoryRequest $request, Category $category)
     {
         $request->validated();
         $category->delete();
