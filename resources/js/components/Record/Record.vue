@@ -2,13 +2,16 @@
     <div>
 
         <div v-if="! editing">
-            <h5 v-text="form.description" class="mb-2"></h5>
+            <div class="d-flex">
+                <h5 v-text="form.description" class="flex-fill mb-2"></h5>
+                <small class="text-muted">{{ record.created_at | ago }}</small>
+            </div>
             <h6 v-text="categoryName" class="text-blue mb-2"></h6>
 
             <div class="d-flex text-green mb-2">
-                <div v-text="form.time_start" class="mr-2"></div>
+                <div v-text="formatDateTime(form.time_start)" class="mr-2"></div>
                 <i v-if="form.time_end" class="material-icons text-red">arrow_right_alt</i>
-                <div v-text="form.time_end" class="ml-2"></div>
+                <div v-text="formatDateTime(form.time_end)" class="ml-2"></div>
             </div>
 
             <button type="submit" class="btn btn-sm btn-primary" @click="editing = true">Edit</button>
@@ -70,6 +73,7 @@
 
 <script>
     import DateTimePicker from '../../mixins/datetime-picker';
+    import moment from 'moment';
 
     export default {
         props: ['record', 'categories'],
@@ -111,6 +115,12 @@
             }
         },
 
+        filters: {
+            ago(date) {
+                return moment(date).fromNow();
+            }
+        },
+
         methods: {
             update() {
                 this.form.patch(this.route('api.records.update', {id: this.id}))
@@ -137,6 +147,10 @@
 
                 this.isoTimeStart = this.toISO(this.record.time_start);
                 this.isoTimeEnd = this.toISO(this.record.time_end);
+            },
+
+            formatDateTime(dateTime) {
+                return moment(dateTime).format('YYYY-MM-DD HH:mm');
             }
         }
     }

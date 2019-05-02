@@ -21,6 +21,7 @@ class RecordResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'time_start' => $this->time_start,
             'time_end' => $this->time_end,
+            'created_at' => $this->created_at,
         ];
     }
 }

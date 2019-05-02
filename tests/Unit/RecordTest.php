@@ -44,6 +44,7 @@ class RecordTest extends TestCase
                         ],
                         'time_start',
                         'time_end',
+                        'created_at'
                     ]
                 ],
                 'links',
@@ -60,6 +61,7 @@ class RecordTest extends TestCase
                         ],
                         'time_start' => $record->time_start,
                         'time_end' => $record->time_end,
+                        'created_at' => $record->created_at,
                     ]
                 ]
             ]);
@@ -77,5 +79,6 @@ class RecordTest extends TestCase
 
         $this->assertTrue(Carbon::hasFormat($record['time_start'], 'Y-m-d H:i:s'));
         $this->assertTrue(Carbon::hasFormat($record['time_end'], 'Y-m-d H:i:s'));
+        $this->assertTrue(Carbon::hasFormat($record['created_at'], 'Y-m-d\TH:i:s.ue'));
     }
 }
