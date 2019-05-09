@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase
     {
         $admin = $admin ?: create(User::class);
 
-        config(['time-manager.administrators' => [$admin->email]]);
+        config(['general.administrators' => [$admin->email]]);
 
         $this->actingAs($admin);
 

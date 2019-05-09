@@ -1,5 +1,5 @@
 
-- Make an administration area
+- Go to Admin area must be stored in session and display accordingly
 
 - Make a job and workers to do a job
 

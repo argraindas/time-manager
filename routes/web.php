@@ -40,3 +40,12 @@ Route::group([
     Route::delete('records/{record}', 'RecordsController@destroy')->name('api.records.destroy');
     Route::patch('records/{record}', 'RecordsController@update')->name('api.records.update');
 });
+
+// Admin
+Route::group([
+    'middleware' => 'admin',
+    'namespace' => 'Admin',
+    'prefix' => 'admin',
+], function () {
+    Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+});
