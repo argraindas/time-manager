@@ -4,7 +4,7 @@
         @if (Auth::user()->isAdmin())
 
             @if (! Route::is('admin.dashboard'))
-                <ul class="nav flex-column">
+                <ul class="nav flex-column mt-3">
                     <li class="nav-item">
                         <a class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                             <i class="material-icons">exit_to_app</i>

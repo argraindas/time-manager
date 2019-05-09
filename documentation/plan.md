@@ -1,4 +1,23 @@
 
+- Create Card
+    statuses: open, finished, closed
+    It has tasks
+    Category can by assigned 
+
+- Create Task
+    statuses: new, in progress, done, rejected
+    Record can by assigned
+    
+- User can be assign to task
+
+- User will get notification when task is assigned
+
+- All related users will get notifications when task is completed
+
+- Admin can manage tasks
+
+- In Admin area you can manage categories and records 
+
 - Go to Admin area must be stored in session and display accordingly
 
 - Make a job and workers to do a job
