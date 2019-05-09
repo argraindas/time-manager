@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Card;
 use App\Category;
 use App\Record;
 use Tests\TestCase;
@@ -21,8 +22,16 @@ class UserTest extends TestCase
             'category_id' => create(Category::class, ['user_id' => auth()->id()])->id,
         ], 2);
 
-        $this->assertEquals(2, auth()->user()->fresh()->records->count());
+        $this->assertEquals(2, auth()->user()->records->count());
     }
 
+    /** @test */
+    public function user_has_cards()
+    {
+        $this->signIn();
 
+        create(Card::class, [], 2);
+
+        $this->assertEquals(2, auth()->user()->cards->count());
+    }
 }

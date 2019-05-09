@@ -10,7 +10,7 @@ use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 
 /**
- * Class CreateCategoryRequest
+ * Class CategoryRequest
  *
  * @package App\Http\Requests
  */
@@ -26,17 +26,13 @@ class CategoryRequest extends FormRequest
     public function authorize()
     {
         switch ($this->method()) {
-            case 'POST':
-                {
-                    return auth()->check();
-                }
-
+            case 'POST': {
+                return auth()->check();
+            }
             case 'PATCH':
-            case 'DELETE':
-                {
-                    return Gate::allows('update', $this->category);
-                }
-
+            case 'DELETE': {
+                return Gate::allows('update', $this->category);
+            }
             default: return false;
         }
     }
@@ -49,30 +45,26 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'POST':
-                {
-                    return [
-                        'name' => [
-                            'required',
-                            'min:3',
-                            'max:255',
-                            Rule::unique('categories')->where('user_id', auth()->id()),
-                        ]
-                    ];
-                }
-
-            case 'PATCH':
-                {
-                    return [
-                        'name' => [
-                            'required',
-                            'min:3',
-                            'max:255',
-                            Rule::unique('categories')->where('user_id', auth()->id())->ignore(optional($this->category)->id),
-                        ]
-                    ];
-                }
-
+            case 'POST': {
+                return [
+                    'name' => [
+                        'required',
+                        'min:3',
+                        'max:255',
+                        Rule::unique('categories')->where('user_id', auth()->id()),
+                    ]
+                ];
+            }
+            case 'PATCH': {
+                return [
+                    'name' => [
+                        'required',
+                        'min:3',
+                        'max:255',
+                        Rule::unique('categories')->where('user_id', auth()->id())->ignore(optional($this->category)->id),
+                    ]
+                ];
+            }
             case 'DELETE':
             default: return [];
         }

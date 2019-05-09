@@ -43,8 +43,6 @@ class CategoriesCreateTest extends TestCase
 
         $category = make(Category::class, ['name' => null]);
 
-        $this->post(route('api.categories.store'), $category->toArray());
-
         $this->post(route('api.categories.store'), $category->toArray())
             ->assertSessionHasErrors(['name' => 'Category name is required!']);
 

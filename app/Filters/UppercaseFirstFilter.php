@@ -14,6 +14,10 @@ class UppercaseFirstFilter implements Filter
      */
     public function apply($value, $options = [])
     {
-        return is_string($value) ? ucfirst(strtolower($value)) : $value;
+        if (! in_array('noLower', $options)) {
+            $value = strtolower($value);
+        }
+
+        return is_string($value) ? ucfirst($value) : $value;
     }
 }

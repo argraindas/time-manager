@@ -3,18 +3,15 @@
 namespace App\Http\Requests;
 
 use App\Filters\UppercaseFirstFilter;
-use App\Rules\ValidCategory;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
 use Waavi\Sanitizer\Laravel\SanitizesInput;
 
-
 /**
- * Class RecordRequest
+ * Class CardRequest
  *
  * @package App\Http\Requests
  */
-class RecordRequest extends FormRequest
+class CardRequest extends FormRequest
 {
     use SanitizesInput;
 
@@ -30,9 +27,7 @@ class RecordRequest extends FormRequest
                 return auth()->check();
             }
             case 'PATCH':
-            case 'DELETE': {
-                return Gate::allows('update', $this->record);
-            }
+            case 'DELETE':
             default: return false;
         }
     }
@@ -48,10 +43,8 @@ class RecordRequest extends FormRequest
             case 'POST':
             case 'PATCH': {
                 return [
-                    'time_start' => 'required|date',
-                    'time_end' => 'nullable|date',
-                    'description' => 'required|min:3|max:255',
-                    'category_id' => ['required', new ValidCategory()],
+                    'name' => 'required|min:3|max:255',
+                    'description' => 'nullable|present|min:3|max:255'
                 ];
             }
             case 'DELETE':
@@ -66,7 +59,7 @@ class RecordRequest extends FormRequest
     {
         $validData = parent::validated();
 
-        return $validData + ['user_id' => auth()->id()];
+        return $validData + ['creator_id' => auth()->id()];
     }
 
     /**
@@ -76,7 +69,9 @@ class RecordRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'name.required' => 'Card name is required!',
+        ];
     }
 
     /**
@@ -87,7 +82,8 @@ class RecordRequest extends FormRequest
     public function filters()
     {
         return [
-            'name' => 'escape|ucfirst'
+            'name' => 'escape|ucfirst',
+            'description' => 'escape|ucfirst:noLower|trim',
         ];
     }
 

@@ -34,6 +34,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
  * @property string|null $api_token
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereApiToken($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Card[] $cards
+ * @property-read bool $is_admin
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -82,6 +84,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'isAdmin'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cards()
+    {
+        return $this->hasMany(Card::class, 'creator_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
