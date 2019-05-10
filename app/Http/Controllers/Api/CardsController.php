@@ -21,4 +21,32 @@ class CardsController extends Controller
         return $this->response('Card was successfully created!', 'success', Response::HTTP_CREATED);
     }
 
+    /**
+     * @param CardRequest $request
+     * @param Card        $card
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     */
+    public function update(CardRequest $request, Card $card)
+    {
+        $card->update($request->validated());
+
+        return $this->response('Card was successfully updated!');
+    }
+    
+    /**
+     * @param CardRequest $request
+     * @param Card        $card
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     * @throws \Exception
+     */
+    public function destroy(CardRequest $request, Card $card)
+    {
+        $request->validated();
+        $card->delete();
+
+        return $this->response('Card was successfully deleted!');
+    }
+
 }

@@ -92,4 +92,115 @@ class CardsCreateTest extends TestCase
         $this->assertEquals($sanitizedName, Card::latest('id')->first()->description);
     }
 
+    /** @test */
+    public function guest_and_unauthorized_user_can_not_delete_card()
+    {
+        $card = factory(Card::class)->state('withUser')->create();
+
+        $this->delete(route('api.cards.destroy', $card->id))
+            ->assertRedirect(route('login'));
+
+        $this->signIn();
+
+        $this->delete(route('api.cards.destroy', $card->id))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->deleteJson(route('api.cards.destroy', $card->id))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertDatabaseHas('cards', ['id' => $card->id]);
+    }
+
+    /** @test */
+    public function user_can_delete_card()
+    {
+        $this->signIn();
+
+        $card = create(Card::class);
+
+        $this->assertEquals(1,  auth()->user()->cards()->count());
+
+        $request = $this->delete(route('api.cards.destroy',  $card->id));
+
+        $request->assertStatus(Response::HTTP_OK);
+        $request->assertJsonFragment([
+            'status' => 'success',
+            'message' => 'Card was successfully deleted!',
+        ]);
+
+        $this->assertDatabaseMissing('cards', ['id' => $card->id]);
+        $this->assertEquals(0, auth()->user()->cards()->count());
+    }
+
+    /** @test */
+    public function user_can_update_card()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $newData = [
+            'name' => 'New name',
+            'description' => 'New description',
+        ];
+
+        $this->patch(route('api.cards.update', $card->id), $newData)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonFragment([
+                'status' => 'success',
+                'message' => 'Card was successfully updated!',
+            ]);
+
+        tap($card->fresh(), function ($card) use ($newData){
+            $this->assertEquals($newData['name'], $card->name);
+            $this->assertEquals($newData['description'], $card->description);
+        });
+    }
+
+    /** @test */
+    public function guest_and_unauthorized_user_can_not_update_card()
+    {
+        /** @var Card $card */
+        $card = factory(Card::class)->state('withUser')->create();
+
+        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
+            ->assertRedirect(route('login'));
+
+        $this->signIn();
+
+        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /** @test */
+    public function authorized_user_passes_validation_on_card_update()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $this->patch(route('api.cards.update', $card->id), [
+            'name' => null
+        ])->assertSessionHasErrors('name');
+
+        $this->patch(route('api.cards.update', $card->id), [
+            'name' => 'aa'
+        ])->assertSessionHasErrors('name');
+
+        $this->patch(route('api.cards.update', $card->id), [
+            'description' => null
+        ])->assertSessionHasErrors('name');
+
+        $this->patch(route('api.cards.update', $card->id), [
+            'description' => 'aa'
+        ])->assertSessionHasErrors('name');
+
+        $this->patch(route('api.cards.update', $card->id), [
+            'name' => 'New name',
+            'description' => 'New description',
+        ])->assertStatus(Response::HTTP_OK);
+    }
+
 }

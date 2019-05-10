@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Filters\UppercaseFirstFilter;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 /**
@@ -27,7 +28,9 @@ class CardRequest extends FormRequest
                 return auth()->check();
             }
             case 'PATCH':
-            case 'DELETE':
+            case 'DELETE': {
+                return Gate::allows('update', $this->card);
+            }
             default: return false;
         }
     }

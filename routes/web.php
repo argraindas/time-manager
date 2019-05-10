@@ -36,6 +36,8 @@ Route::group([
 
     // Cards
     Route::post('cards', 'CardsController@store')->name('api.cards.store');
+    Route::delete('cards/{card}', 'CardsController@destroy')->name('api.cards.destroy');
+    Route::patch('cards/{card}', 'CardsController@update')->name('api.cards.update');
 
     // Records
     Route::get('records', 'RecordsController@index')->name('api.records');

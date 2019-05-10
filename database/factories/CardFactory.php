@@ -2,6 +2,7 @@
 
 use Faker\Generator as Faker;
 use App\Card;
+use App\User;
 
 $factory->define(Card::class, function (Faker $faker) {
     $params = [
@@ -14,4 +15,12 @@ $factory->define(Card::class, function (Faker $faker) {
     }
 
     return $params;
+});
+
+$factory->state(Card::class, 'withUser', function () {
+    $user = create(User::class);
+
+    return [
+        'creator_id' => $user->id,
+    ];
 });
