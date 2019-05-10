@@ -42,17 +42,14 @@ composer self-update
 composer update
 npm update
 ```
-## Import Ziggy routes from backend
 
+## Custom (if needed)
+### Laravel 5 IDE Helper Generator for laravel autocompletion and Ziggy routes
 ```bash 
+php artisan ide-helper:generate
+php artisan ide-helper:models --write
+php artisan ide-helper:meta
 php artisan ziggy:generate "resources/js/ziggy.js"
-```
-
-### Laravel 5 IDE Helper Generator for laravel autocompletion
-```bash 
-php artisan ide-helper:generate - phpDoc generation for Laravel Facades
-php artisan ide-helper:models - phpDocs for models
-php artisan ide-helper:meta - PhpStorm Meta file
 ```
 ## PRODUCTION
 

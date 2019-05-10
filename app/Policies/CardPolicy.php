@@ -23,4 +23,16 @@ class CardPolicy
         return $card->creator_id == $user->id;
     }
 
+    /**
+     * Determine whether the user can assign participants to the card.
+     *
+     * @param User $user
+     * @param Card $card
+     *
+     * @return bool
+     */
+    public function assign(User $user, Card $card)
+    {
+        return $card->creator_id == $user->id;
+    }
 }

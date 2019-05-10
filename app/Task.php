@@ -24,6 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Task whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Task whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $card_id
+ * @property-read \App\Card $card
+ * @property-read \App\User $creator
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Task whereCardId($value)
  */
 class Task extends Model
 {

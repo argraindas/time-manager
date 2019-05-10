@@ -25,6 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Card whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Card whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\User $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CardParticipant[] $participants
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Task[] $tasks
  */
 class Card extends Model
 {
@@ -54,6 +57,39 @@ class Card extends Model
         return $this->hasMany(Task::class, 'card_id');
     }
 
+    /**
+     * Card has many participants
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function participants()
+    {
+        return $this->hasMany(CardParticipant::class);
+    }
 
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function assignParticipant(User $user)
+    {
+        $this->participants()->create(['user_id' => $user->id]);
 
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function removeParticipant(User $user)
+    {
+        $this->participants()
+            ->where('user_id', $user->id)
+            ->delete();
+
+        return $this;
+    }
 }
