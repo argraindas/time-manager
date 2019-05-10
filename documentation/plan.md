@@ -2,11 +2,13 @@
 - Create Card
     statuses: open, finished, closed
     It has tasks
+    Different users can by assigned to card
     Category can by assigned 
 
 - Create Task
     statuses: new, in progress, done, rejected
-    Record can by assigned
+    
+- TODO: only authorized user (that is assigned or is creator) can create tasks    
     
 - User can be assign to task
 

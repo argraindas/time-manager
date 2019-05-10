@@ -28,7 +28,32 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Card extends Model
 {
+    /** @var array  */
     protected $guarded = [];
+
+    /** @var array  */
+    protected $casts = [
+        'creator_id' => 'int'
+    ];
+
+    /**
+     * A task belongs to a creator.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'card_id');
+    }
+
 
 
 }
