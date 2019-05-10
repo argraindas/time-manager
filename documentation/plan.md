@@ -1,7 +1,7 @@
 
 - Create Card
     statuses: open, finished, closed
-    It has tasks
+    + It has tasks
     Different users can by assigned to card
     Category can by assigned 
 

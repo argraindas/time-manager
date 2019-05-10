@@ -12,7 +12,7 @@ class CardsCreateTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function guest_can_not_create_a_card()
+    public function guest_can_not_create_card()
     {
         $card = make(Card::class);
 
@@ -21,7 +21,7 @@ class CardsCreateTest extends TestCase
     }
 
     /** @test */
-    public function user_can_create_a_card()
+    public function user_can_create_card()
     {
         $this->signIn();
 
@@ -36,66 +36,55 @@ class CardsCreateTest extends TestCase
     }
 
     /** @test */
-    public function card_name_must_be_valid_and_sanitized()
+    public function card_validation_on_create()
     {
         $this->signIn();
 
-        $card = make(Card::class, ['name' => null]);
+        $card = make(Card::class)->toArray();
 
-        $this->post(route('api.cards.store'), $card->toArray())
-            ->assertSessionHasErrors(['name' => 'Card name is required!']);
+        // NAME
 
-        // sanitizing input
         $unsanitizedName = ' <div>my test Card</div> ';
         $sanitizedName = 'My test card';
 
-        $card = make(Card::class, ['name' => $unsanitizedName]);
+        $this->post(route('api.cards.store'), array_merge($card, [
+            'name' => null
+        ]))->assertSessionHasErrors(['name' => 'Card name is required!']);
 
-        $this->post(route('api.cards.store'), $card->toArray())
-            ->assertStatus(Response::HTTP_CREATED);
+        $this->post(route('api.cards.store'), array_merge($card, [
+            'name' => $unsanitizedName
+        ]))->assertStatus(Response::HTTP_CREATED);
 
         $this->assertEquals($sanitizedName, Card::first()->name);
-    }
 
-    /** @test */
-    public function card_description_must_be_valid_and_sanitized()
-    {
-        $this->signIn();
+        // DESCRIPTION
 
-        // when description is null
-        $card = make(Card::class, ['description' => null]);
+        $unsanitizedDescription = " <div>my test Description. I've done it RIGHT. </div> ";
+        $sanitizedDescription = "My test Description. I&#39;ve done it RIGHT.";
 
-        $this->post(route('api.cards.store'), $card->toArray())
-            ->assertStatus(Response::HTTP_CREATED);
+        $this->post(route('api.cards.store'), array_merge($card, [
+            'description' => null
+        ]))->assertStatus(Response::HTTP_CREATED);
 
-        // when description is empty
-        $card = make(Card::class, ['description' => '']);
+        $this->post(route('api.cards.store'), array_merge($card, [
+            'description' => ''
+        ]))->assertStatus(Response::HTTP_CREATED);
 
-        $this->post(route('api.cards.store'), $card->toArray())
-            ->assertStatus(Response::HTTP_CREATED);
+        $this->post(route('api.cards.store'), array_merge($card, [
+            'description' => 'aa'
+        ]))->assertSessionHasErrors('description');
 
-        // when description is to short
-        $card = make(Card::class, ['description' => 'aa']);
+        $this->post(route('api.cards.store'), array_merge($card, [
+            'description' => $unsanitizedDescription
+        ]))->assertStatus(Response::HTTP_CREATED);
 
-        $this->post(route('api.cards.store'), $card->toArray())
-            ->assertSessionHasErrors('description');
-
-        // sanitizing input
-        $unsanitizedName = " <div>my test Description. I've done it RIGHT. </div> ";
-        $sanitizedName = "My test Description. I&#39;ve done it RIGHT.";
-
-        $card = make(Card::class, ['description' => $unsanitizedName]);
-        
-        $this->post(route('api.cards.store'), $card->toArray())
-            ->assertStatus(Response::HTTP_CREATED);
-
-        $this->assertEquals($sanitizedName, Card::latest('id')->first()->description);
+        $this->assertEquals($sanitizedDescription, Card::latest('id')->first()->description);
     }
 
     /** @test */
     public function guest_and_unauthorized_user_can_not_delete_card()
     {
-        $card = factory(Card::class)->state('withUser')->create();
+        $card = create(Card::class);
 
         $this->delete(route('api.cards.destroy', $card->id))
             ->assertRedirect(route('login'));
@@ -120,16 +109,30 @@ class CardsCreateTest extends TestCase
 
         $this->assertEquals(1,  auth()->user()->cards()->count());
 
-        $request = $this->delete(route('api.cards.destroy',  $card->id));
-
-        $request->assertStatus(Response::HTTP_OK);
-        $request->assertJsonFragment([
-            'status' => 'success',
-            'message' => 'Card was successfully deleted!',
-        ]);
+        $this->delete(route('api.cards.destroy',  $card->id))
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonFragment([
+                'status' => 'success',
+                'message' => 'Card was successfully deleted!',
+            ]);
 
         $this->assertDatabaseMissing('cards', ['id' => $card->id]);
         $this->assertEquals(0, auth()->user()->cards()->count());
+    }
+
+    /** @test */
+    public function guest_and_unauthorized_user_can_not_update_card()
+    {
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
+            ->assertRedirect(route('login'));
+
+        $this->signIn();
+
+        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -159,48 +162,53 @@ class CardsCreateTest extends TestCase
     }
 
     /** @test */
-    public function guest_and_unauthorized_user_can_not_update_card()
-    {
-        /** @var Card $card */
-        $card = factory(Card::class)->state('withUser')->create();
-
-        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
-            ->assertRedirect(route('login'));
-
-        $this->signIn();
-
-        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
-            ->assertStatus(Response::HTTP_FORBIDDEN);
-    }
-
-    /** @test */
-    public function authorized_user_passes_validation_on_card_update()
+    public function card_validation_on_update()
     {
         $this->signIn();
 
-        /** @var Card $card */
-        $card = create(Card::class);
+        $card = create(Card::class)->toArray();
 
-        $this->patch(route('api.cards.update', $card->id), [
+        // NAME
+
+        $unsanitizedName = ' <div>my test Card</div> ';
+        $sanitizedName = 'My test card';
+
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
             'name' => null
-        ])->assertSessionHasErrors('name');
+        ]))->assertSessionHasErrors('name');
 
-        $this->patch(route('api.cards.update', $card->id), [
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
             'name' => 'aa'
-        ])->assertSessionHasErrors('name');
+        ]))->assertSessionHasErrors('name');
 
-        $this->patch(route('api.cards.update', $card->id), [
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+            'name' => $unsanitizedName
+        ]))->assertStatus(Response::HTTP_OK);
+
+        $this->assertEquals($sanitizedName, Card::first()->name);
+
+        // DESCRIPTION
+
+        $unsanitizedDescription = " <div>my test Description. I've done it RIGHT. </div> ";
+        $sanitizedDescription = "My test Description. I&#39;ve done it RIGHT.";
+
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
             'description' => null
-        ])->assertSessionHasErrors('name');
+        ]))->assertStatus(Response::HTTP_OK);
 
-        $this->patch(route('api.cards.update', $card->id), [
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+            'description' => ''
+        ]))->assertStatus(Response::HTTP_OK);
+
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
             'description' => 'aa'
-        ])->assertSessionHasErrors('name');
+        ]))->assertSessionHasErrors('description');
 
-        $this->patch(route('api.cards.update', $card->id), [
-            'name' => 'New name',
-            'description' => 'New description',
-        ])->assertStatus(Response::HTTP_OK);
+        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+            'description' => $unsanitizedDescription,
+        ]))->assertStatus(Response::HTTP_OK);
+
+        $this->assertEquals($sanitizedDescription, Card::latest('id')->first()->description);
     }
 
 }
