@@ -27,10 +27,12 @@ class BasicsTest extends TestCase
 
         $card = make(Card::class);
 
+        $this->assertCount(0, Card::all());
+
         $this->post(route('api.cards.store'), $card->toArray())
             ->assertStatus(Response::HTTP_CREATED);
 
-        $this->assertDatabaseHas('cards',  ['name' => $card->name]);
+        $this->assertCount(1, Card::all());
 
         $this->assertEquals(1, auth()->user()->cards()->count());
     }

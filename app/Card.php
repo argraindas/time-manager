@@ -58,7 +58,7 @@ class Card extends Model
      */
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'card_id');
+        return $this->hasMany(Task::class);
     }
 
     /**
@@ -73,28 +73,38 @@ class Card extends Model
 
     /**
      * @param User $user
-     *
-     * @return $this
      */
     public function assignParticipant(User $user)
     {
         $this->participants()->create(['user_id' => $user->id]);
-
-        return $this;
     }
 
     /**
      * @param User $user
-     *
-     * @return $this
      */
     public function removeParticipant(User $user)
     {
         $this->participants()
             ->where('user_id', $user->id)
             ->delete();
+    }
 
-        return $this;
+    /**
+     * @param Task $task
+     */
+    public function addTask(Task $task)
+    {
+        $this->tasks()->save($task);
+    }
+
+    /**
+     * @param Task $task
+     */
+    public function removeTask(Task $task)
+    {
+        $this->tasks()
+            ->where('id', $task->id)
+            ->delete();
     }
 
     /**

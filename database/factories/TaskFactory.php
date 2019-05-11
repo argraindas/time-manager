@@ -7,7 +7,7 @@ use App\User;
 
 $factory->define(Task::class, function (Faker $faker) {
     $params = [
-        'name' => $faker->unique()->sentence(rand(2, 5), false),
+        'name' => 'Task: ' . $faker->unique()->sentence(rand(2, 5), false),
     ];
 
     if (auth()->check()) {

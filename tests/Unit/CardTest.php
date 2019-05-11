@@ -75,4 +75,25 @@ class CardTest extends TestCase
         $this->assertEquals(Card::STATUS_OPEN, $card->status);
         $this->assertTrue($card->isOpen());
     }
+
+    /** @test */
+    public function it_can_add_and_remove_tasks()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $task_1 = make(Task::class, ['card_id' => $card->id]);
+        $task_2 = make(Task::class, ['card_id' => $card->id]);
+
+        $this->assertCount(0, $card->tasks);
+        $card->addTask($task_1);
+        $card->addTask($task_2);
+        $this->assertCount(2, $card->fresh()->tasks);
+
+        $card->removeTask($task_2);
+        $this->assertCount(1, $card->fresh()->tasks);
+    }
+
 }

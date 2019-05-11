@@ -20,6 +20,11 @@ class CreateTasksTable extends Migration
             $table->string('name');
             $table->enum('status', ['new', 'in_progress', 'done', 'rejected'])->default('new');
             $table->timestamps();
+
+            $table->foreign('card_id')
+                ->references('id')
+                ->on('cards')
+                ->onDelete('cascade');
         });
     }
 
