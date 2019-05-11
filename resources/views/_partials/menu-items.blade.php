@@ -6,8 +6,14 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ Route::is('cards') ? 'active' : '' }}" href="{{ route('cards') }}">
+            <i class="material-icons">view_carousel</i>
+            Cards
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link {{ Route::is('categories') ? 'active' : '' }}" href="{{ route('categories') }}">
-            <i class="material-icons">storage</i>
+            <i class="material-icons">widgets</i>
             Categories
         </a>
     </li>

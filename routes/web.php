@@ -13,7 +13,10 @@ Route::group([
     
     // Dashboard
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
-    
+
+    // Cards
+    Route::get('cards', 'CardsController@index')->name('cards');
+
     // Categories
     Route::get('categories', 'CategoriesController@index')->name('categories');
     

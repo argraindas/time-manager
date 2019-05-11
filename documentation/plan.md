@@ -1,8 +1,9 @@
 
 - Create Card
-    statuses: open, finished, closed
+    + statuses: open, finished, closed
     + It has tasks
-    Different users can by assigned to card
+    + Different users can by assigned to card
+    You can add and remove tasks
     Category can by assigned 
 
 - Create Task
