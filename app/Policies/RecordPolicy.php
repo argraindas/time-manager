@@ -20,7 +20,7 @@ class RecordPolicy
      */
     public function update(User $user, Record $record)
     {
-        return $record->user_id == $user->id;
+        return $record->user_id === $user->id;
     }
 
 }

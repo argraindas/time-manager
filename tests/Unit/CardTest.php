@@ -33,24 +33,7 @@ class CardTest extends TestCase
     }
 
     /** @test */
-    public function it_can_assign_participants()
-    {
-        $this->signIn();
-
-        /** @var Card $card */
-        $card = create(Card::class);
-
-        $participant_1 = create(User::class);
-        $participant_2 = create(User::class);
-
-        $card->assignParticipant($participant_1);
-        $card->assignParticipant($participant_2);
-
-        $this->assertCount(2, $card->participants);
-    }
-
-    /** @test */
-    public function it_can_remove_participants()
+    public function it_can_assign_and_remove_participants()
     {
         $this->signIn();
 
@@ -68,5 +51,28 @@ class CardTest extends TestCase
         $card->removeParticipant($participant_1);
 
         $this->assertCount(1, $card->fresh()->participants);
+    }
+
+    /** @test */
+    public function it_can_change_status()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $this->assertEquals(Card::STATUS_OPEN, $card->status);
+
+        $card->finish();
+        $this->assertEquals(Card::STATUS_FINISHED, $card->status);
+        $this->assertTrue($card->isFinished());
+
+        $card->close();
+        $this->assertEquals(Card::STATUS_CLOSED, $card->status);
+        $this->assertTrue($card->isClosed());
+
+        $card->open();
+        $this->assertEquals(Card::STATUS_OPEN, $card->status);
+        $this->assertTrue($card->isOpen());
     }
 }

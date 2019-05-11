@@ -43,6 +43,9 @@ Route::group([
     Route::post('cards/{card}/participant', 'CardParticipantsController@store')->name('api.cardParticipants.store');
     Route::delete('cards/{card}/participant', 'CardParticipantsController@destroy')->name('api.cardParticipants.destroy');
 
+    // Card Status
+    Route::post('cards/{card}/status', 'CardStatusController@store')->name('api.cardStatus.store');
+
     // Tasks
     Route::post('tasks', 'TasksController@store')->name('api.tasks.store');
     Route::delete('tasks/{task}', 'TasksController@destroy')->name('api.tasks.destroy');

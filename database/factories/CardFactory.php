@@ -9,5 +9,6 @@ $factory->define(Card::class, function (Faker $faker) {
         'name' => rtrim($faker->unique()->sentence(rand(4, 5), false), '.'),
         'description' => $faker->unique()->sentence(),
         'creator_id' => auth()->check() ? auth()->id() : create(User::class)->id,
+        'status' => Card::STATUS_OPEN,
     ];
 });

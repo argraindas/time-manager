@@ -26,7 +26,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
+    /** @var array  */
     protected $guarded = [];
+
+    /** @var array  */
+    protected $casts = [
+        'user_id' => 'int'
+    ];
 
     protected static function boot()
     {

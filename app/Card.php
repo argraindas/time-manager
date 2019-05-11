@@ -31,6 +31,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Card extends Model
 {
+    const STATUS_OPEN = 'open';
+    const STATUS_FINISHED = 'finished';
+    const STATUS_CLOSED = 'closed';
+
     /** @var array  */
     protected $guarded = [];
 
@@ -91,5 +95,61 @@ class Card extends Model
             ->delete();
 
         return $this;
+    }
+
+    /**
+     * @param $status
+     */
+    protected function setStatus($status)
+    {
+        $this->update(['status' => $status]);
+    }
+
+    /**
+     * Sets card status to finished
+     */
+    public function finish()
+    {
+        $this->setStatus(self::STATUS_FINISHED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return $this->status === self::STATUS_FINISHED;
+    }
+
+    /**
+     * Sets card status to closed
+     */
+    public function close()
+    {
+        $this->setStatus(self::STATUS_CLOSED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed()
+    {
+        return $this->status === self::STATUS_CLOSED;
+    }
+
+    /**
+     * Sets card status to open
+     */
+    public function open()
+    {
+        $this->setStatus(self::STATUS_OPEN);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen()
+    {
+        return $this->status === self::STATUS_OPEN;
     }
 }

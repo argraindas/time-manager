@@ -42,7 +42,8 @@ class Record extends Model
      * @var array
      */
     protected $casts = [
-        'category_id' => 'int'
+        'category_id' => 'int',
+        'user_id' => 'int',
     ];
 
     /**

@@ -20,7 +20,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-        return $task->creator_id == $user->id;
+        return $task->creator_id === $user->id;
     }
 
 }
