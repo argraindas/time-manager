@@ -7,7 +7,7 @@ use Tests\TestCase;
 use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BasicsTest extends TestCase
+class CardBasicsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -30,7 +30,11 @@ class BasicsTest extends TestCase
         $this->assertCount(0, Card::all());
 
         $this->post(route('api.cards.store'), $card->toArray())
-            ->assertStatus(Response::HTTP_CREATED);
+            ->assertStatus(Response::HTTP_CREATED)
+            ->assertJsonFragment([
+                'status' => 'success',
+                'message' => 'Card was successfully created!',
+            ]);
 
         $this->assertCount(1, Card::all());
 
@@ -109,9 +113,9 @@ class BasicsTest extends TestCase
 
         $card = create(Card::class);
 
-        $this->assertEquals(1,  auth()->user()->cards()->count());
+        $this->assertCount(1,  auth()->user()->cards);
 
-        $this->delete(route('api.cards.destroy',  $card->id))
+        $this->delete(route('api.cards.destroy', $card->id))
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment([
                 'status' => 'success',

@@ -90,11 +90,13 @@ class Card extends Model
     }
 
     /**
-     * @param Task $task
+     * @param array $task
+     *
+     * @return Model
      */
-    public function addTask(Task $task)
+    public function addTask(array $task)
     {
-        $this->tasks()->save($task);
+        return $this->tasks()->create($task);
     }
 
     /**

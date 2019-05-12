@@ -27,9 +27,12 @@ class CardTest extends TestCase
     {
         $this->signIn();
 
-        factory(Task::class, 2)->state('withCardAndUser')->create();
+        /** @var Card $card */
+        $card = create(Card::class);
+        create(Task::class, ['card_id' => $card->id], 2);
 
-        $this->assertCount(2, auth()->user()->cards->each->count());
+        $this->assertCount(2, $card->tasks);
+        $this->assertInstanceOf(Task::class, $card->tasks->first());
     }
 
     /** @test */
@@ -84,15 +87,18 @@ class CardTest extends TestCase
         /** @var Card $card */
         $card = create(Card::class);
 
-        $task_1 = make(Task::class, ['card_id' => $card->id]);
-        $task_2 = make(Task::class, ['card_id' => $card->id]);
+        $task_1 = make(Task::class);
+        $task_2 = make(Task::class);
 
         $this->assertCount(0, $card->tasks);
-        $card->addTask($task_1);
-        $card->addTask($task_2);
+
+        $card->addTask($task_1->toArray());
+        $card->addTask($task_2->toArray());
+
         $this->assertCount(2, $card->fresh()->tasks);
 
-        $card->removeTask($task_2);
+        $card->removeTask($card->fresh()->tasks->first());
+
         $this->assertCount(1, $card->fresh()->tasks);
     }
 

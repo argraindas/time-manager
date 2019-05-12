@@ -16,13 +16,3 @@ $factory->define(Task::class, function (Faker $faker) {
 
     return $params;
 });
-
-$factory->state(Task::class, 'withCardAndUser', function () {
-    $user = auth()->check() ? auth()->user() : create(User::class);
-    $card = create(Card::class, ['creator_id' => $user->id]);
-
-    return [
-        'card_id' => $card->id,
-        'creator_id' => $user->id,
-    ];
-});

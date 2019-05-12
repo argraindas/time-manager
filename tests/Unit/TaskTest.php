@@ -17,7 +17,9 @@ class TaskTest extends TestCase
     {
         $this->signIn();
 
-        $task = factory(Task::class)->state('withCardAndUser')->create();
+        /** @var Card $card */
+        $card = create(Card::class);
+        $task = create(Task::class, ['card_id' => $card->id]);
 
         $this->assertInstanceOf(User::class, $task->creator);
     }
@@ -27,7 +29,9 @@ class TaskTest extends TestCase
     {
         $this->signIn();
 
-        $task = factory(Task::class)->state('withCardAndUser')->create();
+        /** @var Card $card */
+        $card = create(Card::class);
+        $task = create(Task::class, ['card_id' => $card->id]);
 
         $this->assertInstanceOf(Card::class, $task->card);
     }

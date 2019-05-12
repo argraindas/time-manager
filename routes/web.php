@@ -50,9 +50,9 @@ Route::group([
     Route::post('cards/{card}/status', 'CardStatusController@store')->name('api.cardStatus.store');
 
     // Tasks
-    Route::post('tasks', 'TasksController@store')->name('api.tasks.store');
-    Route::delete('tasks/{task}', 'TasksController@destroy')->name('api.tasks.destroy');
-    Route::patch('tasks/{task}', 'TasksController@update')->name('api.tasks.update');
+    Route::post('cards/{card}/tasks', 'TasksController@store')->name('api.tasks.store');
+    Route::delete('cards/{card}/tasks/{task}', 'TasksController@destroy')->name('api.tasks.destroy');
+    Route::patch('cards/{card}/tasks/{task}', 'TasksController@update')->name('api.tasks.update');
     
     // Records
     Route::get('records', 'RecordsController@index')->name('api.records');

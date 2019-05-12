@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Card;
 use App\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -11,40 +12,42 @@ class TasksController extends Controller
 {
     /**
      * @param TaskRequest $request
+     * @param Card        $card
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function store(TaskRequest $request)
+    public function store(TaskRequest $request, Card $card)
     {
-        Task::create($request->validated());
+        $card->addTask($request->validated());
 
         return $this->response('Task was successfully created!', 'success', Response::HTTP_CREATED);
     }
 
     /**
      * @param TaskRequest $request
+     * @param Card        $card
      * @param Task        $task
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function update(TaskRequest $request, Task $task)
+    public function update(TaskRequest $request, Card $card, Task $task)
     {
         $task->update($request->validated());
 
         return $this->response('Task was successfully updated!');
     }
-    
+
     /**
      * @param TaskRequest $request
+     * @param Card        $card
      * @param Task        $task
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
-     * @throws \Exception
      */
-    public function destroy(TaskRequest $request, Task $task)
+    public function destroy(TaskRequest $request, Card $card, Task $task)
     {
         $request->validated();
-        $task->delete();
+        $card->removeTask($task);
 
         return $this->response('Task was successfully deleted!');
     }

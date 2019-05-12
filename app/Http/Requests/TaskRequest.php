@@ -25,11 +25,11 @@ class TaskRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'POST': {
-                return auth()->check();
+                return Gate::allows('taskCreate', $this->card);
             }
             case 'PATCH':
             case 'DELETE': {
-                return Gate::allows('update', $this->task);
+                return Gate::allows('taskUpdate', [$this->card, $this->task]);
             }
             default: return false;
         }
@@ -46,8 +46,7 @@ class TaskRequest extends FormRequest
             case 'POST':
             case 'PATCH': {
                 return [
-                    'name' => 'required|min:3|max:255',
-                    'card_id' => 'required|exists:cards,id',
+                    'name' => 'required|min:3|max:255'
                 ];
             }
             case 'DELETE':
