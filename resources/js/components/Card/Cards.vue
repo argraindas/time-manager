@@ -9,8 +9,10 @@
             <card :card="card" @deleted="fetch"></card>
         </div>
 
-        <div v-if="items.length === 0 && ! loading">
-            There are no cards created. Please create one!
+        <div v-if="items.length === 0 && ! loading" class="col-md-12 d-flex justify-content-center">
+            <div class="alert alert-info">
+                There are no cards created. Please create one!
+            </div>
         </div>
 
     </div>
@@ -27,24 +29,24 @@
             return {
                 dataSet: [],
                 items: [],
-                loading: true
+                loading: false
             }
         },
 
         created() {
-            this.dataSet = this.cards;
-            this.items = this.cards.data;
-            this.loading = false;
+            this.setData(this.cards);
         },
 
         methods: {
             fetch() {
                 this.loading = true;
-                axios.get(this.route('api.cards')).then(({data}) => {
-                    this.dataSet = data;
-                    this.items = data.data;
-                    this.loading = false;
-                });
+                axios.get(this.route('api.cards')).then(({data}) => this.setData(data));
+            },
+
+            setData(data) {
+                this.dataSet = data;
+                this.items = data.data;
+                this.loading = false;
             }
         }
     };

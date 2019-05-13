@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Card;
+use App\Http\Resources\CardResource;
 use App\Task;
 use App\User;
 use Tests\TestCase;
@@ -33,6 +34,29 @@ class CardTest extends TestCase
 
         $this->assertCount(2, $card->tasks);
         $this->assertInstanceOf(Task::class, $card->tasks->first());
+    }
+
+    /** @test */
+    public function it_can_add_and_remove_tasks()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $task_1 = make(Task::class);
+        $task_2 = make(Task::class);
+
+        $this->assertCount(0, $card->tasks);
+
+        $card->addTask($task_1->toArray());
+        $card->addTask($task_2->toArray());
+
+        $this->assertCount(2, $card->fresh()->tasks);
+
+        $card->removeTask($card->fresh()->tasks->first());
+
+        $this->assertCount(1, $card->fresh()->tasks);
     }
 
     /** @test */
@@ -80,65 +104,46 @@ class CardTest extends TestCase
     }
 
     /** @test */
-    public function it_can_add_and_remove_tasks()
+    public function it_has_correct_resource_structure()
     {
         $this->signIn();
 
         /** @var Card $card */
         $card = create(Card::class);
+        $card->addTask(make(Task::class)->toArray());
 
-        $task_1 = make(Task::class);
-        $task_2 = make(Task::class);
+        $user = auth()->user();
+        $cards = $user->cards()->orParticipant($user)->with('participants')->get();
+        $jsonResource = CardResource::collection($cards)->response()->getContent();
+        
+        $this->assertJson($jsonResource);
 
-        $this->assertCount(0, $card->tasks);
+        $cardsArr = json_decode($jsonResource, true);
 
-        $card->addTask($task_1->toArray());
-        $card->addTask($task_2->toArray());
-
-        $this->assertCount(2, $card->fresh()->tasks);
-
-        $card->removeTask($card->fresh()->tasks->first());
-
-        $this->assertCount(1, $card->fresh()->tasks);
-    }
-
-    /** @test */
-    public function it_emits_sensitive_data()
-    {
-        $this->signIn();
-
-        /** @var Card $card */
-        $card = create(Card::class);
-
-        $this->getJson(route('api.cards'))
-            ->assertJsonStructure([
-                'data' => [
-                    [
-                        'id',
-                        'name',
-                        'description',
-                        'creator' => [
-                            'name',
+        $this->assertEquals([
+            'data' => [
+                [
+                    'id' => $card->id,
+                    'name' => $card->name,
+                    'description' => $card->description,
+                    'creator' => [
+                        'name' => $card->creator->name,
+                    ],
+                    'status' => $card->status,
+                    'created_at' => $card->created_at->toISOString(),
+                    'tasks' => [
+                        [
+                            'id' => $card->tasks->first()->id,
+                            'name' => $card->tasks->first()->name,
+                            'creator' => [
+                                'name' => $card->tasks->first()->creator->name,
+                            ],
+                            'status' => $card->tasks->first()->status,
                         ],
-                        'status',
-                        'created_at',
-                    ]
+                    ],
                 ],
-            ])
-            ->assertJsonFragment([
-                'data' => [
-                    [
-                        'id' => $card->id,
-                        'name' => $card->name,
-                        'description' => $card->description,
-                        'creator' => [
-                            'name' => $card->creator->name,
-                        ],
-                        'status' => $card->status,
-                        'created_at' => $card->created_at,
-                    ]
-                ]
-            ]);
+            ],
+        ], $cardsArr);
     }
 
 }

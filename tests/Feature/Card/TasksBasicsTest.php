@@ -14,6 +14,21 @@ class TasksBasicsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function user_can_get_cards_with_tasks_he_created_or_was_assigned()
+    {
+        $this->signIn();
+        
+        /** @var Card $card */
+        $card = create(Card::class);
+        $card->addTask(make(Task::class)->toArray());
+        $card->addTask(make(Task::class)->toArray());
+
+        $response = $this->getJson(route('api.cards'))->json();
+        
+        $this->assertCount(2, $response['data'][0]['tasks']);
+    }
+    
+    /** @test */
     public function guest_and_unauthorized_user_can_not_create_a_task()
     {
         $card = create(Card::class);
