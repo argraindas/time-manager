@@ -21,15 +21,21 @@ class CardBasicsTest extends TestCase
     }
 
     /** @test */
-    public function user_can_get_cards_he_created()
+    public function user_can_get_cards_he_created_or_was_assigned()
     {
+        /** @var Card $card */
+        create(Card::class, [], 2);
+        $card = create(Card::class);
+
         $this->signIn();
 
         create(Card::class, [], 2);
 
+        $card->assignParticipant(auth()->user());
+
         $response = $this->getJson(route('api.cards'))->json();
 
-        $this->assertCount(2, $response['data']);
+        $this->assertCount(3, $response['data']);
     }
 
     /** @test */

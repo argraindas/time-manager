@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Card;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CardResource;
+use App\User;
 use Illuminate\Http\Response;
 use App\Http\Requests\CardRequest;
 
@@ -15,8 +16,11 @@ class CardsController extends Controller
      */
     public function index()
     {
+        /** @var User $user */
+        $user = auth()->user();
+
         return CardResource::collection(
-            auth()->user()->cards
+            $user->cards()->orParticipant($user)->with('participants')->get()
         );
     }
 

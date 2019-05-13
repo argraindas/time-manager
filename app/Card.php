@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -46,6 +47,20 @@ class Card extends Model
     /** @var array  */
     protected $with = ['creator'];
 
+    /**
+     * @param Builder $query
+     * @param User    $user
+     *
+     * @return Builder|\Illuminate\Database\Query\Builder
+     */
+    public function scopeOrParticipant(Builder $query, User $user)
+    {
+        return $query
+            ->select('cards.*')
+            ->leftJoin('card_participants AS cp', 'cards.id', '=', 'cp.card_id')
+            ->orWhere('cp.user_id', '=', $user->id);
+    }
+    
     /**
      * A task belongs to a creator.
      *
