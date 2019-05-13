@@ -12,6 +12,27 @@ class CardBasicsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function guest_can_not_get_cards()
+    {
+        create(Card::class);
+
+        $this->get(route('api.cards'))
+            ->assertRedirect('login');
+    }
+
+    /** @test */
+    public function user_can_get_cards_he_created()
+    {
+        $this->signIn();
+
+        create(Card::class, [], 2);
+
+        $response = $this->getJson(route('api.cards'))->json();
+
+        $this->assertCount(2, $response['data']);
+    }
+
+    /** @test */
     public function guest_can_not_create_card()
     {
         $card = make(Card::class);

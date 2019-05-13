@@ -6,6 +6,9 @@
 
     <div class="row">
 
+
+        <cards></cards>
+
         <div class="col-md-3">
             <div class="card mb-4 shadow-sm">
                 <div class="card-header">

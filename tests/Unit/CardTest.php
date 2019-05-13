@@ -102,4 +102,45 @@ class CardTest extends TestCase
         $this->assertCount(1, $card->fresh()->tasks);
     }
 
+    /** @test */
+    public function it_emits_sensitive_data()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $this->getJson(route('api.cards'))
+            ->assertJsonStructure([
+                'data' => [
+                    [
+                        'id',
+                        'name',
+                        'description',
+                        'creator' => [
+                            'id',
+                            'name',
+                        ],
+                        'status',
+                        'created_at',
+                    ]
+                ],
+            ])
+            ->assertJsonFragment([
+                'data' => [
+                    [
+                        'id' => $card->id,
+                        'name' => $card->name,
+                        'description' => $card->description,
+                        'creator' => [
+                            'id' => $card->creator->id,
+                            'name' => $card->creator->name,
+                        ],
+                        'status' => $card->status,
+                        'created_at' => $card->created_at,
+                    ]
+                ]
+            ]);
+    }
+
 }

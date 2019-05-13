@@ -4,11 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Card;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CardResource;
 use Illuminate\Http\Response;
 use App\Http\Requests\CardRequest;
 
 class CardsController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index()
+    {
+        return CardResource::collection(
+            auth()->user()->cards
+        );
+    }
+
     /**
      * @param CardRequest $request
      *

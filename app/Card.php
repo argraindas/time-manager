@@ -43,6 +43,9 @@ class Card extends Model
         'creator_id' => 'int'
     ];
 
+    /** @var array  */
+    protected $with = ['creator'];
+
     /**
      * A task belongs to a creator.
      *
