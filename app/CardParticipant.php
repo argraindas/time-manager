@@ -33,6 +33,7 @@ class CardParticipant extends Model
      */
     protected $guarded = [];
 
+    protected $with = ['user'];
     /**
      * Get the participant user.
      *

@@ -110,10 +110,16 @@ class CardTest extends TestCase
 
         /** @var Card $card */
         $card = create(Card::class);
-        $card->addTask(make(Task::class)->toArray());
-
+        /** @var Task $task */
+        $task = $card->addTask(make(Task::class)->toArray())->fresh();
+        /** @var User $particiant */
+        $particiant = create(User::class);
+        /** @var User $user */
         $user = auth()->user();
-        $cards = $user->cards()->orParticipant($user)->with('participants')->get();
+
+        $card->assignParticipant($particiant);
+
+        $cards = $user->cards()->orParticipant($user)->get();
         $jsonResource = CardResource::collection($cards)->response()->getContent();
         
         $this->assertJson($jsonResource);
@@ -133,14 +139,16 @@ class CardTest extends TestCase
                     'created_at' => $card->created_at->toISOString(),
                     'tasks' => [
                         [
-                            'id' => $card->tasks->first()->id,
-                            'name' => $card->tasks->first()->name,
-                            'creator' => [
-                                'name' => $card->tasks->first()->creator->name,
-                            ],
-                            'status' => $card->tasks->first()->status,
+                            'id' => $task->id,
+                            'name' => $task->name,
+                            'status' => $task->status,
                         ],
                     ],
+                    'participants' => [
+                        [
+                            'name' => $particiant->name,
+                        ],
+                    ]
                 ],
             ],
         ], $cardsArr);

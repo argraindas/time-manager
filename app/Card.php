@@ -46,7 +46,7 @@ class Card extends Model
     ];
 
     /** @var array  */
-    protected $with = ['creator'];
+    protected $with = ['creator', 'participants', 'tasks'];
 
     /**
      * @param Builder $query

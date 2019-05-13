@@ -20,7 +20,7 @@ class CardsController extends Controller
         $user = auth()->user();
 
         return CardResource::collection(
-            $user->cards()->orParticipant($user)->with('participants')->get()
+            $user->cards()->orParticipant($user)->get()
         );
     }
 

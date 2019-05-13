@@ -3,7 +3,7 @@
         <div class="card-header d-flex align-items-center">
             <div class="flex-fill">
                 <h4 class="mb-1" v-text="card.name"></h4>
-                <div class="created-by">
+                <div class="small-text">
                     <span class="text-muted text-red">Created by: </span>
                     <a class="text-blue" href="#" v-text="card.creator.name"></a>
                 </div>
@@ -13,6 +13,14 @@
         <div class="card-body">
             <div class="text-muted" v-text="card.description"></div>
             <tasks :items="card.tasks"></tasks>
+        </div>
+        <div class="card-footer">
+            <div class="small-text">
+                <span class="text-muted text-red">Participants: </span>
+                <div v-for="user in card.participants">
+                    <a class="text-blue" href="#" v-text="user.name"></a>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -34,7 +42,7 @@
 </script>
 
 <style scoped lang="scss">
-    .created-by{
-        font-size: smaller;
+    .small-text{
+        font-size: .75rem;
     }
 </style>
