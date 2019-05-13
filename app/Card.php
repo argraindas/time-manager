@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\User $creator
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\CardParticipant[] $participants
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Task[] $tasks
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Card orParticipant(\App\User $user)
  */
 class Card extends Model
 {

@@ -118,7 +118,6 @@ class CardTest extends TestCase
                         'name',
                         'description',
                         'creator' => [
-                            'id',
                             'name',
                         ],
                         'status',
@@ -133,7 +132,6 @@ class CardTest extends TestCase
                         'name' => $card->name,
                         'description' => $card->description,
                         'creator' => [
-                            'id' => $card->creator->id,
                             'name' => $card->creator->name,
                         ],
                         'status' => $card->status,

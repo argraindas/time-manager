@@ -1,70 +1,38 @@
 <template>
-    <div class="d-flex align-items-center">
-        <div class="color mr-2"></div>
-
-        <h6 v-if="! editing" v-text="form.name" class="flex-fill mb-0"></h6>
-        <div class="input-group input-group-sm">
-            <input v-if="editing" v-model="form.name" class="form-control flex-fill mr-2">
-            <div class="help is-danger flex-fill mr-2" v-if="editing && form.errors.has('name')" v-text="form.errors.get('name')"></div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="mb-0">{{ card.name }}</h4>
         </div>
-
-        <button type="submit" class="btn btn-sm btn-primary mr-2" v-if="! editing" @click="editing = true">Edit</button>
-        <button type="submit" class="btn btn-sm btn-danger" v-if="! editing" @click="destroy">Delete</button>
-        <button type="submit" class="btn btn-sm btn-success mr-2" v-if="editing" @click="update">Save</button>
-        <button type="submit" class="btn btn-sm btn-secondary" v-if="editing" @click="cancel">Cancel</button>
+        <div class="card-body">
+            <div class="text-muted">{{ card.description }}</div>
+            <ul class="list-unstyled mt-3">
+                <li class="my-1">
+                    <div class="custom-control custom-checkbox mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="1">
+                        <label class="custom-control-label" for="1">Item 1</label>
+                    </div>
+                </li>
+                <li class="my-1">
+                    <div class="custom-control custom-checkbox mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="2">
+                        <label class="custom-control-label" for="2">Item 2</label>
+                    </div>
+                </li>
+                <li class="my-1">
+                    <div class="custom-control custom-checkbox mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="3">
+                        <label class="custom-control-label" for="3">Item 3</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script>
 
     export default {
-        props: ['category'],
+        props: ['card'],
 
-        data() {
-            return {
-                form: new Form({
-                    name: this.category.name,
-                }, false),
-                id: this.category.id,
-                editing: false
-            }
-        },
-
-        methods: {
-            update() {
-                this.form.patch(this.route('api.categories.update', {id: this.id}))
-                    .then(data => {
-                        this.$emit('updated', data);
-                        this.editing = false;
-                        flash(data);
-                    })
-                    .catch(() => flash());
-            },
-
-            destroy() {
-                this.form.delete(this.route('api.categories.destroy', {id: this.id}))
-                    .then(data => {
-                        this.$emit('deleted', data);
-                        flash(data);
-                    })
-                    .catch(() => flash());
-            },
-
-            cancel() {
-                this.editing = false;
-                this.form.name = this.category.name;
-            }
-        }
     }
 </script>
-
-<style scoped>
-    .color{
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
-        margin-left: -10px;
-
-        background-color: yellow;
-    }
-</style>

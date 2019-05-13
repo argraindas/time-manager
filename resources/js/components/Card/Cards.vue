@@ -1,15 +1,13 @@
 <template>
-    <div>
+    <div class="row">
 
         <div class="spinner-border text-primary" role="status" v-if="loading">
             <span class="sr-only">Loading...</span>
         </div>
 
-        <ul class="list-group">
-            <li class="list-group-item" v-for="card in items" :key="card.id" v-if="! loading">
-                <card :card="card" @deleted="fetch"></card>
-            </li>
-        </ul>
+        <div class="col-md-3" v-for="card in items" :key="card.id" v-if="! loading">
+            <card :card="card" @deleted="fetch"></card>
+        </div>
 
         <div v-if="items.length === 0 && ! loading">
             There are no cards created. Please create one!
@@ -22,6 +20,7 @@
     import Card from './Card.vue';
 
     export default {
+        props: ['cards'],
         components: {Card},
 
         data() {
@@ -33,13 +32,15 @@
         },
 
         created() {
-            this.fetch();
+            this.dataSet = this.cards;
+            this.items = this.cards.data;
+            this.loading = false;
         },
 
         methods: {
-            fetch(page) {
+            fetch() {
                 this.loading = true;
-                axios.get(this.route('api.categories', {page: page})).then(({data}) => {
+                axios.get(this.route('api.cards')).then(({data}) => {
                     this.dataSet = data;
                     this.items = data.data;
                     this.loading = false;

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CardResource;
+
 class CardsController extends Controller
 {
     /**
@@ -11,7 +13,13 @@ class CardsController extends Controller
      */
     public function index()
     {
-        return view('cards.index');
+        $user = auth()->user();
+
+        $cards = $user->cards()->orParticipant($user)->with('participants')->get();
+
+        return view('cards.index', [
+            'cardsResource' => CardResource::collection($cards)->response()->getContent()
+        ]);
     }
 
 }

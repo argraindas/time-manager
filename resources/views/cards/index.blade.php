@@ -4,10 +4,9 @@
 
 @section('content')
 
+    <cards :cards="{{ $cardsResource }}"></cards>
+
     <div class="row">
-
-
-        <cards></cards>
 
         <div class="col-md-3">
             <div class="card mb-4 shadow-sm">
