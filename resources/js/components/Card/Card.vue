@@ -1,6 +1,6 @@
 <template>
     <div class="card mb-4 shadow-sm">
-        <div class="card-header d-flex align-items-center">
+        <div class="card-header d-flex align-items-top">
             <div class="flex-fill">
                 <h4 class="mb-1" v-text="card.name"></h4>
                 <div class="small-text">
