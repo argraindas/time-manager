@@ -31,6 +31,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Task extends Model
 {
+    const STATUS_NEW = 'new';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_DONE = 'done';
+    const STATUS_REJECTED = 'rejected';
+
     /** @var array  */
     protected $guarded = [];
 
@@ -57,5 +62,77 @@ class Task extends Model
     public function card()
     {
         return $this->belongsTo(Card::class);
+    }
+
+    /**
+     * @param $status
+     */
+    protected function setStatus($status)
+    {
+        $this->update(['status' => $status]);
+    }
+
+    /**
+     * Sets task status to new
+     */
+    public function new()
+    {
+        $this->setStatus(self::STATUS_NEW);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        return $this->status === self::STATUS_NEW;
+    }
+
+    /**
+     * Sets task status to in progress
+     */
+    public function inProgress()
+    {
+        $this->setStatus(self::STATUS_IN_PROGRESS);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInProgress()
+    {
+        return $this->status === self::STATUS_IN_PROGRESS;
+    }
+
+    /**
+     * Sets task status to done
+     */
+    public function done()
+    {
+        $this->setStatus(self::STATUS_DONE);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDone()
+    {
+        return $this->status === self::STATUS_DONE;
+    }
+
+    /**
+     * Sets task status to rejected
+     */
+    public function rejected()
+    {
+        $this->setStatus(self::STATUS_REJECTED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRejected()
+    {
+        return $this->status === self::STATUS_REJECTED;
     }
 }
