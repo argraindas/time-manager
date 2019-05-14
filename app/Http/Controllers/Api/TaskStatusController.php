@@ -25,22 +25,22 @@ class TaskStatusController extends Controller
         switch ($validData['status']) {
             case Task::STATUS_DONE: {
                 $task->done();
-                $message = 'Marked as done!';
+                $message = 'Task was finished!';
                 break;
             }
             case Task::STATUS_IN_PROGRESS: {
                 $task->inProgress();
-                $message = 'Marked as in progress!';
+                $message = 'Task is in progress!';
                 break;
             }
             case Task::STATUS_REJECTED: {
                 $task->rejected();
-                $message = 'Marked as rejected!';
+                $message = 'Task was rejected!';
                 break;
             }
             case Task::STATUS_NEW: {
                 $task->new();
-                $message = 'Marked as uncompleted!';
+                $message = 'Task was unfinished!';
                 break;
             }
         }

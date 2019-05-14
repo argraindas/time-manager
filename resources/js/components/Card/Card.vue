@@ -11,8 +11,8 @@
             <small class="text-muted text-right text-nowrap">{{ card.created_at | ago }}</small>
         </div>
         <div class="card-body">
-            <div class="text-muted" v-text="card.description"></div>
-            <tasks :items="card.tasks"></tasks>
+            <div class="text-muted mb-2" v-text="card.description"></div>
+            <tasks :items="card.tasks" :cardId="card.id"></tasks>
         </div>
         <div class="card-footer">
             <div class="small-text">
@@ -40,9 +40,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-    .small-text{
-        font-size: .75rem;
-    }
-</style>

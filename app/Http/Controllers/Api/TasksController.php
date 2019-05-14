@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Card;
+use App\Http\Resources\TaskResource;
 use App\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -18,9 +19,13 @@ class TasksController extends Controller
      */
     public function store(TaskRequest $request, Card $card)
     {
-        $card->addTask($request->validated());
+        $task = $card->addTask($request->validated())->fresh();
 
-        return $this->response('Task was successfully created!', 'success', Response::HTTP_CREATED);
+        return response([
+            'status' => 'success',
+            'message' => 'Task was successfully added!',
+            'item' => new TaskResource($task),
+        ], Response::HTTP_CREATED);
     }
 
     /**
