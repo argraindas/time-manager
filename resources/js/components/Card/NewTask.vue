@@ -4,15 +4,14 @@
         <form @submit.prevent="add" @keydown="form.errors.clear($event.target.name)">
             <div class="input-group input-group-sm">
                 <input v-model="form.name" class="form-control" placeholder="Add task...">
-                <div class="help is-danger small-text mt-2" v-if="form.errors.has('name')" v-text="form.errors.get('name')"></div>
             </div>
         </form>
+        <div class="help is-danger small-text mt-2" v-if="form.errors.has('name')" v-text="form.errors.get('name')"></div>
     </div>
 
 </template>
 
 <script>
-
 
     export default {
         props: ['cardId'],
