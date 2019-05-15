@@ -23,7 +23,7 @@ class TasksController extends Controller
 
         return response([
             'status' => 'success',
-            'message' => 'Task was successfully added!',
+            'message' => 'Task was added!',
             'item' => new TaskResource($task),
         ], Response::HTTP_CREATED);
     }
@@ -39,7 +39,7 @@ class TasksController extends Controller
     {
         $task->update($request->validated());
 
-        return $this->response('Task was successfully updated!');
+        return $this->response('Task was updated!');
     }
 
     /**
@@ -54,7 +54,7 @@ class TasksController extends Controller
         $request->validated();
         $card->removeTask($task);
 
-        return $this->response('Task was successfully deleted!');
+        return $this->response('Task was deleted!');
     }
 
 }

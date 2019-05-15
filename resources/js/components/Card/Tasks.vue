@@ -4,8 +4,8 @@
         <new-task :cardId="cardId" @added="add"></new-task>
 
         <ul class="list-unstyled mt-3">
-            <li class="my-1" v-for="task in tasks" :key="task.id">
-                <task :task="task"></task>
+            <li class="my-1" v-for="(task, index) in tasks" :key="task.id">
+                <task :task="task" :cardId="cardId" @removed="remove(index)"></task>
             </li>
         </ul>
 
@@ -29,6 +29,10 @@
         methods: {
             add(item) {
                 this.tasks.unshift(item);
+            },
+
+            remove(index) {
+                this.tasks.splice(index, 1);
             }
         }
     }
