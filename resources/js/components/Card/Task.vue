@@ -36,7 +36,7 @@
         created() {
             setTimeout(() => {
                 this.isNew = false;
-            }, 3000);
+            }, 2000);
         },
 
         methods: {
@@ -84,9 +84,11 @@
     .new-item-bg{
         background-color: #1bed254d;
         position: absolute;
-        width: 100%;
+        width: calc(100% + 40px);
         height: 100%;
         left: 0;
+        margin-left: -20px;
+        margin-right: -20px;
     }
 
     .task-status-done{
