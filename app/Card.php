@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Card
@@ -58,8 +59,21 @@ class Card extends Model
     {
         return $query
             ->select('cards.*')
-            ->leftJoin('card_participants AS cp', 'cards.id', '=', 'cp.card_id')
-            ->orWhere('cp.user_id', '=', $user->id);
+            ->leftJoin('card_participants AS cp', function($join) use ($user) {
+                /** @var \Illuminate\Database\Query\JoinClause $join */
+                $join->on('cards.id', '=', 'cp.card_id');
+                $join->on('cp.user_id', '=', DB::raw("'".$user->id."'"));
+            })
+            ->orWhere('cp.user_id', '=', $user->id)
+            ->groupBy(['cards.id']);
+    }
+
+    /**
+     * @return User[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function availableUsers()
+    {
+        return User::all();
     }
     
     /**
@@ -92,10 +106,14 @@ class Card extends Model
 
     /**
      * @param User $user
+     *
+     * @return User
      */
     public function assignParticipant(User $user)
     {
         $this->participants()->create(['user_id' => $user->id]);
+
+        return $user;
     }
 
     /**

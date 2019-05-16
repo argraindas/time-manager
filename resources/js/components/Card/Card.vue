@@ -15,7 +15,7 @@
             <tasks :items="card.tasks" :cardId="card.id"></tasks>
         </div>
         <div class="card-footer">
-            <participants :items="card.participants"></participants>
+            <participants :items="card.participants" :cardId="card.id"></participants>
         </div>
     </div>
 </template>

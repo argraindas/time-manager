@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class TasksBasicsTest extends TestCase
+class TaskBasicsTest extends TestCase
 {
     use RefreshDatabase;
 

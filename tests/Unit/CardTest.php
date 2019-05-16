@@ -154,4 +154,24 @@ class CardTest extends TestCase
         ], $cardsArr);
     }
 
+    /** @test */
+    public function it_knows_users_that_are_not_assigned()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+
+        $this->assertCount(0, $card->availableUsers()->count());
+
+        create(User::class, [], 2);
+
+        $this->assertCount(2, $card->availableUsers()->count());
+
+        $particiant = $card->availableUsers()->first();
+        $card->assignParticipant($particiant);
+
+        $this->assertCount(1, $card->availableUsers()->count());
+    }
+
 }
