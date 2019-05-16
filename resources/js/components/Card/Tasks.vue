@@ -1,15 +1,15 @@
 <template>
-    <div>
 
+    <div class="tasks">
         <new-task :cardId="cardId" @added="add"></new-task>
 
-        <ul class="list-unstyled mt-3">
+        <ul class="list-unstyled">
             <li class="my-1" v-for="(task, index) in tasks" :key="task.id">
                 <task :task="task" :cardId="cardId" @removed="remove(index)"></task>
             </li>
         </ul>
-
     </div>
+
 </template>
 
 <script>
@@ -39,3 +39,15 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .tasks {
+        input[type="text"]{
+            height: 24px;
+        }
+
+        ul{
+            margin: .75rem 0 0;
+        }
+    }
+</style>

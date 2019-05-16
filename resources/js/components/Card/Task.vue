@@ -137,10 +137,6 @@
                 display: block;
             }
         }
-
-        input[type="text"]{
-            height: 24px;
-        }
     }
 
     .task-name{

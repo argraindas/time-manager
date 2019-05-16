@@ -1,37 +1,33 @@
 <template>
     <div class="card mb-4 shadow-sm">
-        <div class="card-header d-flex align-items-top">
-            <div class="flex-fill">
-                <h4 class="mb-1" v-text="card.name"></h4>
-                <div class="small-text">
-                    <span class="text-muted text-red">Created by: </span>
-                    <a class="text-blue" href="#" v-text="card.creator.name"></a>
-                </div>
+        <div class="card-header">
+            <div class="d-flex">
+                <h4 class="flex-fill" v-text="card.name"></h4>
+                <small class="text-muted text-right text-nowrap">{{ card.created_at | ago }}</small>
             </div>
-            <small class="text-muted text-right text-nowrap">{{ card.created_at | ago }}</small>
+            <div class="small-text">
+                <span class="text-muted text-red">Created by: </span>
+                <a class="text-blue" href="#" v-text="card.creator.name"></a>
+            </div>
         </div>
         <div class="card-body">
-            <div class="text-muted mb-2" v-text="card.description"></div>
+            <div class="card-text text-muted" v-text="card.description"></div>
             <tasks :items="card.tasks" :cardId="card.id"></tasks>
         </div>
         <div class="card-footer">
-            <div class="small-text">
-                <span class="text-muted text-red">Participants: </span>
-                <div v-for="user in card.participants">
-                    <a class="text-blue" href="#" v-text="user.name"></a>
-                </div>
-            </div>
+            <participants :items="card.participants"></participants>
         </div>
     </div>
 </template>
 
 <script>
     import Tasks from './Tasks.vue';
+    import Participants from './Participants.vue';
     import moment from 'moment';
 
     export default {
         props: ['card'],
-        components: {Tasks},
+        components: {Tasks, Participants},
 
         filters: {
             ago(date) {
@@ -40,3 +36,17 @@
         }
     }
 </script>
+
+<style>
+    .card-body{
+        padding-top: .75rem;
+        padding-bottom: .75rem;
+    }
+
+    .card-text{
+        font-style: italic;
+        font-size: .75rem;
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+    }
+</style>
