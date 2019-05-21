@@ -100,12 +100,12 @@ class ParticipantBasicsTest extends TestCase
 
         $this->assertCount(1, $card->participants);
 
-        $this->delete(route('api.cardParticipants.destroy', $card), ['user_id' => $participant->id])
+        $this->delete(route('api.cardParticipants.destroy', [$card, $participant]))
             ->assertRedirect(route('login'));
 
         $this->signIn();
 
-        $this->delete(route('api.cardParticipants.destroy', $card), ['user_id' => $participant->id])
+        $this->delete(route('api.cardParticipants.destroy', [$card, $participant]))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
         $this->assertCount(1, $card->fresh()->participants);
@@ -123,7 +123,7 @@ class ParticipantBasicsTest extends TestCase
 
         $this->assertCount(1, $card->participants);
 
-        $this->delete(route('api.cardParticipants.destroy', $card), ['user_id' => $participant->id])
+        $this->delete(route('api.cardParticipants.destroy', [$card, $participant]))
             ->assertStatus(Response::HTTP_OK);
 
         $this->assertCount(0, $card->fresh()->participants);

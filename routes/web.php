@@ -46,7 +46,7 @@ Route::group([
     // Card Participants
     Route::get('cards/{card}/participants', 'CardParticipantsController@index')->name('api.cardParticipants');
     Route::post('cards/{card}/participants', 'CardParticipantsController@store')->name('api.cardParticipants.store');
-    Route::delete('cards/{card}/participants', 'CardParticipantsController@destroy')->name('api.cardParticipants.destroy');
+    Route::delete('cards/{card}/participants/{user}', 'CardParticipantsController@destroy')->name('api.cardParticipants.destroy');
 
     // Card Status
     Route::post('cards/{card}/status', 'CardStatusController@store')->name('api.cardStatus.store');

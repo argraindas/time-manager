@@ -57,18 +57,17 @@ class CardParticipantsController extends Controller
 
     /**
      * @param Card $card
+     * @param User $user
      *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Card $card)
+    public function destroy(Card $card, User $user)
     {
         $this->authorize('assign', $card);
 
-        $validData = request()->validate([
-            'user_id' => 'required|integer|exists:users,id'
-        ]);
+        $card->removeParticipant($user);
 
-        $card->removeParticipant(User::findOrFail($validData['user_id']));
+        return $this->response('Participant was successfully removed!');
     }
-
 }

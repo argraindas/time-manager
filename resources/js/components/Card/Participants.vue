@@ -9,8 +9,11 @@
             <option v-for="user in availableUsers" v-text="user.name" :value="user.id"></option>
         </select>
 
-        <div v-for="user in this.participants">
+        <div v-for="(user, index) in this.participants" :key="user.id" class="participant-name">
             <a class="text-blue" href="#" v-text="user.name"></a>
+            <div v-if="isCreator" class="participant-actions">
+                <a href="#" class="icon-red" @click.prevent="remove(index, user)"><i class="material-icons">delete_forever</i></a>
+            </div>
         </div>
     </div>
 
@@ -61,7 +64,11 @@
                     .catch(() => flash());
             },
 
-            remove(index) {
+            remove(index, user) {
+                axios.delete(this.route('api.cardParticipants.destroy', {card: this.cardId, user: user.id}))
+                    .then(({data}) => flash(data))
+                    .catch(() => flash());
+
                 this.participants.splice(index, 1);
             }
         }
@@ -75,6 +82,37 @@
 
         i{
             font-size: 20px;
+        }
+    }
+
+    .participant-name{
+        position: relative;
+
+        &:hover{
+            .participant-actions{
+                display: block;
+            }
+        }
+    }
+
+    .participant-actions{
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: none;
+
+        a{
+            opacity: .8;
+            width: 17px;
+            display: inline-block;
+
+            &:hover{
+                opacity: 1;
+            }
+
+            i{
+                font-size: 19px;
+            }
         }
     }
 
