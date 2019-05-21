@@ -69,11 +69,18 @@ class Card extends Model
     }
 
     /**
-     * @return User[]|\Illuminate\Database\Eloquent\Collection
+     * Users that are available to be assigned to the card
+     *
+     * @return User[]|\Illuminate\Support\Collection
      */
     public function availableUsers()
     {
-        return User::all();
+        return User::query()->whereNotIn('id', function ($query) {
+            /** @var Builder $query */
+            return $query->select('cp.user_id')
+                ->from('card_participants AS cp')
+                ->where('cp.card_id', '=', $this->id);
+        })->get();
     }
     
     /**

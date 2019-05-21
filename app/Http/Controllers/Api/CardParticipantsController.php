@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class CardParticipantsController extends Controller
 {
@@ -36,10 +37,14 @@ class CardParticipantsController extends Controller
         $this->authorize('assign', $card);
 
         $validData = request()->validate([
-            'user_id' => 'required|integer|exists:users,id'
+            'user_id' => [
+                'required',
+                'integer',
+                'exists:users,id',
+                Rule::unique('card_participants')
+                    ->where('user_id', request()->get('user_id'))
+                    ->where('card_id', $card->id)]
         ]);
-
-        // TODO: protect against unexpected users
 
         $user = $card->assignParticipant(User::findOrFail($validData['user_id']));
 

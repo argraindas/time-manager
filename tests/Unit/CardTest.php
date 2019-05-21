@@ -161,17 +161,17 @@ class CardTest extends TestCase
 
         /** @var Card $card */
         $card = create(Card::class);
-
-        $this->assertCount(0, $card->availableUsers()->count());
-
         create(User::class, [], 2);
 
-        $this->assertCount(2, $card->availableUsers()->count());
+        $this->assertCount(3, User::all());
+        $this->assertCount(3, $card->availableUsers());
 
-        $particiant = $card->availableUsers()->first();
+        $particiant = $card->availableUsers()->last();
         $card->assignParticipant($particiant);
 
-        $this->assertCount(1, $card->availableUsers()->count());
+        $this->assertCount(2, $card->availableUsers());
+        
+        $this->assertCount(1, $card->availableUsers()->except(auth()->id()));
     }
 
 }

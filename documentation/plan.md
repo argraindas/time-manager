@@ -9,7 +9,9 @@
 - Create Task
     statuses: new, in progress, done, rejected
     
-- TODO: only authorized user (that is assigned or is creator) can create tasks    
+- TODO: only authorized user (that is assigned or is creator) can create tasks 
+
+- user id change to uuid   
     
 - User can be assign to task
 

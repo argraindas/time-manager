@@ -29,22 +29,26 @@ class ParticipantBasicsTest extends TestCase
     /** @test */
     public function creator_can_get_only_not_assigned_users()
     {
-        self::markTestSkipped();
-
         $this->signIn();
 
         create(User::class, [], 3);
 
-        $participant = create(User::class);
         /** @var Card $card */
         $card = create(Card::class);
+        $participant = create(User::class);
+
+        $this->assertCount(5, User::all());
+
         $card->assignParticipant($participant);
 
-        $this->assertEquals(4, User::all()->count());
-
-        $response = $this->getJson(route('api.cardParticipants'))->json();
+        $response = $this->getJson(route('api.cardParticipants', $card))->json();
 
         $this->assertCount(3, $response['data']);
+
+        $usersIds = collect($response['data'])->pluck('id');
+
+        $this->assertFalse($usersIds->contains(auth()->id()));
+        $this->assertFalse($usersIds->contains($participant->id));
     }
 
     /** @test */
@@ -65,15 +69,23 @@ class ParticipantBasicsTest extends TestCase
     }
 
     /** @test */
-    public function creator_can_assign_participants()
+    public function creator_can_assign_only_users_that_are_not_assigned_yet()
     {
         $this->signIn();
 
+        /** @var Card $card */
         $card = create(Card::class);
+        $card_2 = create(Card::class);
         $participant = create(User::class);
 
         $this->post(route('api.cardParticipants.store', $card), ['user_id' => $participant->id])
-            ->assertStatus(Response::HTTP_OK);
+            ->assertStatus(Response::HTTP_CREATED);
+
+        $this->post(route('api.cardParticipants.store', $card_2), ['user_id' => $participant->id])
+            ->assertStatus(Response::HTTP_CREATED);
+
+        $this->post(route('api.cardParticipants.store', $card_2), ['user_id' => $participant->id])
+            ->assertSessionHasErrors('user_id');
 
         $this->assertCount(1, $card->fresh()->participants);
     }

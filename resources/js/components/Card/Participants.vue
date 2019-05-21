@@ -4,8 +4,8 @@
         <span class="text-muted text-red">Participants:</span>
         <a href="#" class="add-participant" v-if="! selecting" @click.prevent="toggle"><i class="material-icons">person_add</i></a>
 
-        <select ref="participants" v-if="selecting" class="custom-select custom-select-sm" v-model="newParticipant" @change="add" @focusout="selecting = !selecting">
-            <option disabled value="">Please select...</option>
+        <select v-if="selecting" class="form-control form-control-sm" v-model="newParticipant" @change="add" @focusout="selecting = !selecting">
+            <option disabled value="" v-text="selectText"></option>
             <option v-for="user in availableUsers" v-text="user.name" :value="user.id"></option>
         </select>
 
@@ -23,10 +23,11 @@
         data() {
             return {
                 participants: this.items,
-                newParticipant: null,
+                newParticipant: '',
                 selecting: false,
                 availableUsers: [],
                 fetched: false,
+                selectText: 'Please select...',
             };
         },
 
@@ -42,14 +43,17 @@
 
             fetch() {
                 axios.get(this.route('api.cardParticipants', {id: this.cardId}))
-                    .then(({data}) => this.availableUsers = data.data);
+                    .then(({data}) => {
+                        this.availableUsers = data.data;
+                        this.selectText = this.availableUsers.length > 0 ? 'Please select...' : 'No users found.';
+                    });
             },
 
             add() {
                 axios.post(this.route('api.cardParticipants.store', {id: this.cardId}), {user_id: this.newParticipant})
                     .then(({data}) => {
                         this.participants.push(data.user);
-                        this.newParticipant = null;
+                        this.newParticipant = '';
                         this.selecting = false;
                         this.fetched = false;
                         flash(data);
