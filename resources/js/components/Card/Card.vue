@@ -15,7 +15,7 @@
             <tasks :items="card.tasks" :cardId="card.id"></tasks>
         </div>
         <div class="card-footer">
-            <participants :items="card.participants" :cardId="card.id"></participants>
+            <participants :items="card.participants" :cardId="card.id" :isCreator="authorize('isCreator', card.creator)"></participants>
         </div>
     </div>
 </template>

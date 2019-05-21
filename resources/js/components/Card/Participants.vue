@@ -2,9 +2,9 @@
 
     <div class="participants small-text">
         <span class="text-muted text-red">Participants:</span>
-        <a href="#" class="add-participant" v-if="! selecting" @click.prevent="toggle"><i class="material-icons">person_add</i></a>
+        <a href="#" class="add-participant" v-if="isCreator && ! selecting" @click.prevent="toggle"><i class="material-icons">person_add</i></a>
 
-        <select v-if="selecting" class="form-control form-control-sm" v-model="newParticipant" @change="add" @focusout="selecting = !selecting">
+        <select v-if="isCreator && selecting" class="form-control form-control-sm" v-model="newParticipant" @change="add" @focusout="selecting = !selecting">
             <option disabled value="" v-text="selectText"></option>
             <option v-for="user in availableUsers" v-text="user.name" :value="user.id"></option>
         </select>
@@ -18,7 +18,7 @@
 
 <script>
     export default {
-        props: ['items', 'cardId'],
+        props: ['items', 'cardId', 'isCreator'],
 
         data() {
             return {
