@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Card;
+use App\Http\Resources\CardResource;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,7 +61,8 @@ class CardBasicsTest extends TestCase
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonFragment([
                 'status' => 'success',
-                'message' => 'Card was successfully created!',
+                'message' => 'Card was successfully added!',
+                'item' => (new CardResource(Card::first()))->response()->getData(true)['data'],
             ]);
 
         $this->assertCount(1, Card::all());

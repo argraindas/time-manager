@@ -3,6 +3,7 @@
 namespace Tests\Feature\Card;
 
 use App\Card;
+use App\Http\Resources\TaskResource;
 use App\Task;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -57,7 +58,8 @@ class TaskBasicsTest extends TestCase
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonFragment([
                 'status' => 'success',
-                'message' => 'Task was successfully created!',
+                'message' => 'Task was added!',
+                'item' => (new TaskResource(Task::first()))->response()->getData(true)['data'],
             ]);
 
         $this->assertDatabaseHas('Tasks',  ['name' => $task->name]);
@@ -164,7 +166,7 @@ class TaskBasicsTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment([
                 'status' => 'success',
-                'message' => 'Task was successfully deleted!',
+                'message' => 'Task was deleted!',
             ]);
 
         $this->assertCount(1,  $card->fresh()->tasks);
@@ -255,7 +257,7 @@ class TaskBasicsTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment([
                 'status' => 'success',
-                'message' => 'Task was successfully updated!',
+                'message' => 'Task was updated!',
             ]);
         
         tap($card->fresh()->tasks->first(), function ($task) use ($newData){
