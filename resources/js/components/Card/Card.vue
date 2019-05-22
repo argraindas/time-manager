@@ -7,7 +7,7 @@
 
                     <form class="mb-2" v-if="editingName" @submit.prevent="update" @keydown="form.errors.clear('name')">
                         <div class="input-group input-group-sm">
-                            <input type="text" v-model="form.name" class="form-control">
+                            <input type="text" v-model="form.name" class="form-control" placeholder="Name">
                         </div>
                         <div class="help is-danger small-text mt-2" v-if="form.errors.has('name')" v-text="form.errors.get('name')"></div>
                     </form>
@@ -33,7 +33,7 @@
 
                 <form class="mb-2" v-if="editingDescription" @submit.prevent="update" @keydown="form.errors.clear('description')">
                     <div class="input-group input-group-sm">
-                        <input type="text" v-model="form.description" class="form-control">
+                        <input type="text" v-model="form.description" class="form-control" placeholder="Description">
                     </div>
                     <div class="help is-danger small-text mt-2" v-if="form.errors.has('description')" v-text="form.errors.get('description')"></div>
                 </form>
@@ -180,8 +180,8 @@
         top: 0;
         right: 0;
         line-height: 13px;
-        margin-right: 3px;
-        margin-top: 3px;
+        margin-right: 5px;
+        margin-top: 5px;
 
         i{
             font-size: 13px;
