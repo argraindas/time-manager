@@ -16,15 +16,6 @@ class CardResource extends JsonResource
      */
     public function toArray($request)
     {
-        $participants = [];
-
-        /** @var CardParticipant $participant */
-        foreach($this->participants as $participant) {
-            $participants[] = $participant->user;
-        }
-
-        // TODO: $this->participants->each->user doesn't work
-
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -33,7 +24,7 @@ class CardResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'tasks' => TaskResource::collection($this->tasks),
-            'participants' => UserResource::collection(collect($participants)),
+            'participants' => UserResource::collection($this->participants->map->user),
         ];
     }
 }

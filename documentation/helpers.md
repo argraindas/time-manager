@@ -342,3 +342,27 @@ Miscellaneous
     with
 
 
+# Higher Order Messages
+E.g. $this->participants->map->user
+   
+
+    average
+    avg
+    contains
+    each
+    every
+    filter
+    first
+    flatMap
+    groupBy
+    keyBy
+    map
+    max
+    min
+    partition
+    reject
+    some
+    sortBy
+    sortByDesc
+    sum
+    unique
