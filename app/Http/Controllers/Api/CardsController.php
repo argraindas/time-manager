@@ -31,7 +31,13 @@ class CardsController extends Controller
      */
     public function store(CardRequest $request)
     {
-        Card::create($request->validated());
+        $card = Card::create($request->validated());
+
+        return response([
+            'status' => 'success',
+            'message' => 'Card was successfully added!',
+            'item' => new CardResource($card->fresh()),
+        ], Response::HTTP_CREATED);
 
         return $this->response('Card was successfully created!', 'success', Response::HTTP_CREATED);
     }

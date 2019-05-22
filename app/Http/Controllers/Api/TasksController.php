@@ -19,12 +19,12 @@ class TasksController extends Controller
      */
     public function store(TaskRequest $request, Card $card)
     {
-        $task = $card->addTask($request->validated())->fresh();
+        $task = $card->addTask($request->validated());
 
         return response([
             'status' => 'success',
             'message' => 'Task was added!',
-            'item' => new TaskResource($task),
+            'item' => new TaskResource($task->fresh()),
         ], Response::HTTP_CREATED);
     }
 

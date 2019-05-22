@@ -30,7 +30,6 @@
             add(item) {
                 item.isNew = true;
                 this.tasks.unshift(item);
-                window.events.$emit("new-task-added", item.id);
             },
 
             remove(index) {

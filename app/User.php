@@ -90,7 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function cards()
     {
-        return $this->hasMany(Card::class, 'creator_id');
+        return $this->hasMany(Card::class, 'creator_id')->latest();
     }
 
     /**
