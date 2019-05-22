@@ -1,27 +1,20 @@
 
-- Create Card
-    + statuses: open, finished, closed
-    + It has tasks
-    + Different users can by assigned to card
-    You can add and remove tasks
-    Category can by assigned 
+- Make pusher broadcast notification for active user (like fb online friends right sidebar. use Participate event)
 
-- Create Task
-    statuses: new, in progress, done, rejected
+- Make pusher broadcast when someone is typing (whisper)    
+
+- When user adds/removes task other users should see that dynamically
+    Make pusher broadcast when someone dynamically added something (private channel)
     
-- TODO: only authorized user (that is assigned or is creator) can create tasks 
-
-- user id change to uuid   
-    
-- User can be assign to task
-
-- User will get notification when task is assigned
+- User will get notification when he is assigned to card
 
 - All related users will get notifications when task is completed
 
-- Admin can manage tasks
+- Creator can change card status (only creator)
+    
+- User id changed to uuid   
 
-- In Admin area you can manage categories and records 
+- In Admin area you can manage all cards and categories
 
 - Go to Admin area must be stored in session and display accordingly
 
@@ -34,11 +27,5 @@
 - Create your own Composer packagist library and include it  
 
 - Create Russian doll (matryoshka) caching
-
-- Make pusher broadcast notification for active user (like fb online friends right sidebar. use Participate event)
-
-- Make pusher broadcast when someone is typing (whisper) 
-
-- Make pusher broadcast when someone dynamically added something (private channel)
 
 - Registration and login should be made with modal window

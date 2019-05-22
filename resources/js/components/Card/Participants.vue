@@ -4,7 +4,7 @@
         <span class="text-muted text-red">Participants:</span>
         <a href="#" class="add-participant" v-if="isCreator && ! selecting" @click.prevent="toggle"><i class="material-icons">person_add</i></a>
 
-        <select v-if="isCreator && selecting" class="form-control form-control-sm" v-model="newParticipant" @change="add" @focusout="selecting = !selecting">
+        <select v-if="isCreator && selecting" class="form-control form-control-sm" v-model="newParticipant" @change="add" @focusout="selecting = false">
             <option disabled value="" v-text="selectText"></option>
             <option v-for="user in availableUsers" v-text="user.name" :value="user.id"></option>
         </select>
@@ -56,12 +56,13 @@
                 axios.post(this.route('api.cardParticipants.store', {id: this.cardId}), {user_id: this.newParticipant})
                     .then(({data}) => {
                         this.participants.push(data.user);
-                        this.newParticipant = '';
-                        this.selecting = false;
-                        this.fetched = false;
                         flash(data);
                     })
                     .catch(() => flash());
+
+                this.newParticipant = '';
+                this.selecting = false;
+                this.fetched = false;
             },
 
             remove(index, user) {
@@ -70,6 +71,7 @@
                     .catch(() => flash());
 
                 this.participants.splice(index, 1);
+                this.fetched = false;
             }
         }
     }
