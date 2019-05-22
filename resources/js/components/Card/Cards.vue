@@ -6,15 +6,11 @@
 
         <div class="row">
 
-            <div class="spinner-border text-primary" role="status" v-if="loading">
-                <span class="sr-only">Loading...</span>
+            <div class="col-md-3" v-for="(card, index) in items" :key="card.id">
+                <card :card="card" @removed="remove(index)"></card>
             </div>
 
-            <div class="col-md-3" v-for="card in items" :key="card.id" v-if="! loading">
-                <card :card="card" @deleted="remove"></card>
-            </div>
-
-            <div v-if="items.length === 0 && ! loading" class="col-md-12 d-flex justify-content-center">
+            <div v-if="items.length === 0" class="col-md-12 d-flex justify-content-center">
                 <div class="alert alert-info">
                     There are no cards created. Please create one!
                 </div>
