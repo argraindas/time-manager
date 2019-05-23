@@ -1,7 +1,7 @@
 <template>
 
     <div class="participants small-text">
-        <span class="text-muted text-red">Participants:</span>
+        <span class="text-muted">Participants:</span>
         <a href="#" class="add-participant" v-if="isCreator && ! selecting" @click.prevent="toggle"><i class="material-icons">person_add</i></a>
 
         <select v-if="isCreator && selecting" class="form-control form-control-sm" v-model="newParticipant" @change="add" @focusout="selecting = false">
