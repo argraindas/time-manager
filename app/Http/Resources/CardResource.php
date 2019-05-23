@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\CardParticipant;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CardResource extends JsonResource
@@ -24,7 +23,7 @@ class CardResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'tasks' => TaskResource::collection($this->tasks),
-            'participants' => UserResource::collection($this->participants->map->user),
+            'participants' => UserResource::collection($this->participants),
         ];
     }
 }

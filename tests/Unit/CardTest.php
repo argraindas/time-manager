@@ -37,6 +37,22 @@ class CardTest extends TestCase
     }
 
     /** @test */
+    public function in_has_participants()
+    {
+        $this->signIn();
+
+        /** @var Card $card */
+        $card = create(Card::class);
+        $participant_1 = create(User::class);
+        $participant_2 = create(User::class);
+
+        $card->assignParticipant($participant_1);
+        $card->assignParticipant($participant_2);
+
+        $this->assertCount(2, $card->participants);
+    }
+
+    /** @test */
     public function it_can_add_and_remove_tasks()
     {
         $this->signIn();

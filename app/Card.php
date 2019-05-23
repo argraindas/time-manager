@@ -104,23 +104,21 @@ class Card extends Model
     /**
      * Card has many participants
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function participants()
     {
-        return $this->hasMany(CardParticipant::class);
+        return $this->belongsToMany(User::class, 'card_participants')
+            ->as('assignment')
+            ->withTimestamps();
     }
 
     /**
      * @param User $user
-     *
-     * @return User
      */
     public function assignParticipant(User $user)
     {
-        $this->participants()->create(['user_id' => $user->id]);
-
-        return $user;
+        $this->participants()->attach($user);
     }
 
     /**

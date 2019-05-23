@@ -83,6 +83,6 @@ class CardPolicy
     protected function isUserCreatorOrParticipant(User $user, Card $card)
     {
         return $card->creator_id === $user->id
-            || $card->participants->pluck('user_id')->contains($user->id);
+            || $card->participants->contains($user);
     }
 }

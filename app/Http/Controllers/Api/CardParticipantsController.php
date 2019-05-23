@@ -46,7 +46,9 @@ class CardParticipantsController extends Controller
                     ->where('card_id', $card->id)]
         ]);
 
-        $user = $card->assignParticipant(User::findOrFail($validData['user_id']));
+        $user = User::findOrFail($validData['user_id']);
+
+        $card->assignParticipant($user);
 
         return response([
             'status' => 'success',
