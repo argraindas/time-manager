@@ -80,6 +80,17 @@ class CardPolicy
      *
      * @return bool
      */
+    public function taskBroadcast(User $user, Card $card)
+    {
+        return $this->isUserCreatorOrParticipant($user, $card);
+    }
+
+    /**
+     * @param User $user
+     * @param Card $card
+     *
+     * @return bool
+     */
     protected function isUserCreatorOrParticipant(User $user, Card $card)
     {
         return $card->creator_id === $user->id

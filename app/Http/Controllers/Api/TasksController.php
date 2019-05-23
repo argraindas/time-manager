@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Card;
+use App\Events\TaskCreated;
 use App\Http\Resources\TaskResource;
 use App\Task;
 use App\Http\Controllers\Controller;
@@ -21,10 +22,14 @@ class TasksController extends Controller
     {
         $task = $card->addTask($request->validated());
 
+        $taskResource = new TaskResource($task->fresh());
+
+        broadcast(new TaskCreated($taskResource, $card))->toOthers();
+
         return response([
             'status' => 'success',
             'message' => 'Task was added!',
-            'item' => new TaskResource($task->fresh()),
+            'item' => $taskResource,
         ], Response::HTTP_CREATED);
     }
 

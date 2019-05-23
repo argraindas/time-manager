@@ -157,6 +157,7 @@ class CardTest extends TestCase
                     'tasks' => [
                         [
                             'id' => $task->id,
+                            'card_id' => $task->card_id,
                             'name' => $task->name,
                             'status' => $task->status,
                         ],

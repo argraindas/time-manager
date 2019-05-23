@@ -26,6 +26,11 @@
             };
         },
 
+        created() {
+            window.Echo.private('tasks.' + this.cardId)
+                .listen('TaskCreated', ({task}) => this.add(task));
+        },
+
         methods: {
             add(item) {
                 item.isNew = true;
