@@ -23,5 +23,11 @@
 
         @include('_partials.menu-items')
 
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Active users</span>
+        </h6>
+
+        <active-users></active-users>
+
     </div>
 </nav>
