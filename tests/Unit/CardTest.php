@@ -193,4 +193,55 @@ class CardTest extends TestCase
         $this->assertCount(1, $card->availableUsers()->except(auth()->id()));
     }
 
+    /** @test */
+    public function it_knows_adjustments()
+    {
+        $this->signIn();
+
+        $before = [
+            'name' => 'My name',
+            'description' => 'My description',
+        ];
+
+        $after = [
+            'name' => 'My new name',
+            'description' => 'My new description',
+        ];
+
+        /** @var Card $card */
+        $card = create(Card::class, $before);
+
+        $card->name = $after['name'];
+        $card->description = $after['description'];
+        $card->save();
+
+        $this->assertCount(1, $card->fresh()->adjustments);
+
+        $adjustment = $card->adjustments->first();
+        
+        $this->assertEquals(json_encode($before), $adjustment->changes->before);
+        $this->assertEquals(json_encode($after), $adjustment->changes->after);
+        $this->assertEquals(auth()->id(), $adjustment->changes->user_id);
+        
+        // Another user makes changes
+        $anotherUser = create(User::class);
+        
+        $after_2 = [
+            'name' => 'Another new name',
+            'description' => 'Another new description',
+        ];
+
+        $card->adjust($anotherUser->id, $after_2);
+
+        $adjustments = $card->fresh()->adjustments;
+
+        $this->assertCount(2, $adjustments);
+
+        $latestAdjustment = $adjustments[0];
+        
+        $this->assertEquals(json_encode($after), $latestAdjustment->changes->before);
+        $this->assertEquals(json_encode($after_2), $latestAdjustment->changes->after);
+        $this->assertEquals($anotherUser->id, $latestAdjustment->changes->user_id);
+    }
+
 }

@@ -50,6 +50,18 @@ class Card extends Model
     protected $with = ['creator', 'participants', 'tasks'];
 
     /**
+     * @inheritDoc
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function(Card $card) {
+            $card->adjust();
+        });
+    }
+
+    /**
      * @param Builder $query
      * @param User    $user
      *
@@ -99,6 +111,51 @@ class Card extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class)->latest('id');
+    }
+
+    /**
+     * Card knows all its changes
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function adjustments()
+    {
+        return $this->belongsToMany(User::class, 'adjustments')
+            ->as('changes')
+            ->withPivot(['before', 'after'])
+            ->withTimestamps()
+            ->latest('id');
+    }
+
+    /**
+     * Save card changes
+     *
+     * @param null $userId
+     * @param null $newValues
+     */
+    public function adjust($userId = null, $newValues = null)
+    {
+        $userId = $userId ?: auth()->id();
+        $diff = $this->getDiff($newValues);
+
+        $this->adjustments()->attach($userId, $diff);
+    }
+
+    /**
+     * Gets before and after changes array
+     *
+     * @param $newValues
+     *
+     * @return array
+     */
+    protected function getDiff($newValues = null)
+    {
+        $changed = $newValues ?: $this->getDirty();
+        
+        $before = json_encode(array_intersect_key($this->fresh()->toArray(), $changed));
+        $after = json_encode($changed);
+
+        return compact('before', 'after');
     }
 
     /**

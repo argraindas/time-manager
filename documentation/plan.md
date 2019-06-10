@@ -1,3 +1,5 @@
+
+- Also store Task changes to database
     
 - User will get notification when he is assigned to card
 
