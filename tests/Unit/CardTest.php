@@ -204,8 +204,8 @@ class CardTest extends TestCase
         ];
 
         $after = [
-            'name' => 'My new name',
-            'description' => 'My new description',
+            'name' => 'New name 1',
+            'description' => 'New description 1',
         ];
 
         /** @var Card $card */
@@ -224,24 +224,45 @@ class CardTest extends TestCase
         $this->assertEquals(auth()->id(), $adjustment->changes->user_id);
         
         // Another user makes changes
-        $anotherUser = create(User::class);
-        
+        $this->signIn(create(User::class));
+
         $after_2 = [
-            'name' => 'Another new name',
-            'description' => 'Another new description',
+            'name' => 'New name 2',
+            'description' => 'New description 2',
         ];
 
-        $card->adjust($anotherUser->id, $after_2);
+        $card->name = $after_2['name'];
+        $card->description = $after_2['description'];
+        $card->save();
 
         $adjustments = $card->fresh()->adjustments;
 
         $this->assertCount(2, $adjustments);
 
         $latestAdjustment = $adjustments[0];
-        
+
         $this->assertEquals(json_encode($after), $latestAdjustment->changes->before);
         $this->assertEquals(json_encode($after_2), $latestAdjustment->changes->after);
-        $this->assertEquals($anotherUser->id, $latestAdjustment->changes->user_id);
+        $this->assertEquals(auth()->id(), $latestAdjustment->changes->user_id);
+
+        $after_3 = [
+            'name' => 'New name 3',
+            'description' => 'New description 3',
+        ];
+
+        $card->name = $after_3['name'];
+        $card->description = $after_3['description'];
+        $card->save();
+
+        $adjustments = $card->fresh()->adjustments;
+
+        $this->assertCount(3, $adjustments);
+
+        $latestAdjustment = $adjustments[0];
+
+        $this->assertEquals(json_encode($after_2), $latestAdjustment->changes->before);
+        $this->assertEquals(json_encode($after_3), $latestAdjustment->changes->after);
+        $this->assertEquals(auth()->id(), $latestAdjustment->changes->user_id);
     }
 
 }

@@ -366,3 +366,18 @@ E.g. $this->participants->map->user
     sortByDesc
     sum
     unique
+
+
+# Model events
+
+    retrieved
+    creating
+    created
+    updating
+    updated
+    saving
+    saved
+    deleting
+    deleted
+    restoring
+    restored.

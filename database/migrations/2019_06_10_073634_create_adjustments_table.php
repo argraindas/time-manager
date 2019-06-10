@@ -15,8 +15,8 @@ class CreateAdjustmentsTable extends Migration
     {
         Schema::create('adjustments', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->morphs('adjustment');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('card_id');
             $table->text('before');
             $table->text('after');
             $table->timestamps();

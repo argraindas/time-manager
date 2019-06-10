@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\AdjustmentTracking;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -31,6 +32,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Task extends Model
 {
+    use AdjustmentTracking;
+
     const STATUS_NEW = 'new';
     const STATUS_IN_PROGRESS = 'in_progress';
     const STATUS_DONE = 'done';
