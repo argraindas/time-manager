@@ -38,8 +38,6 @@ class CardsController extends Controller
             'message' => 'Card was successfully added!',
             'item' => new CardResource($card->fresh()),
         ], Response::HTTP_CREATED);
-
-        return $this->response('Card was successfully created!', 'success', Response::HTTP_CREATED);
     }
 
     /**
@@ -54,7 +52,7 @@ class CardsController extends Controller
 
         return $this->response('Card was successfully updated!');
     }
-    
+
     /**
      * @param CardRequest $request
      * @param Card        $card

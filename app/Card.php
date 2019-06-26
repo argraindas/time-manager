@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Traits\AdjustmentTracking;
+use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Card extends Model
 {
-    use AdjustmentTracking;
+    use UsesUuid, AdjustmentTracking;
 
     const STATUS_OPEN = 'open';
     const STATUS_FINISHED = 'finished';
@@ -46,7 +47,8 @@ class Card extends Model
 
     /** @var array  */
     protected $casts = [
-        'creator_id' => 'int'
+        'creator_id' => 'int',
+        'datetime' => 'timestamp'
     ];
 
     /** @var array  */
@@ -85,7 +87,7 @@ class Card extends Model
                 ->where('cp.card_id', '=', $this->id);
         })->get();
     }
-    
+
     /**
      * A task belongs to a creator.
      *
