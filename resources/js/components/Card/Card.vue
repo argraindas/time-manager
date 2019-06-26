@@ -44,10 +44,10 @@
                 </div>
             </div>
 
-            <tasks :items="card.tasks" :cardId="card.id"></tasks>
+            <tasks :items="card.tasks" :cardUuid="card.uuid"></tasks>
         </div>
         <div class="card-footer">
-            <participants :items="card.participants" :cardId="card.id" :isCreator="authorize('isCreator', card.creator)"></participants>
+            <participants :items="card.participants" :cardUuid="card.uuid" :isCreator="authorize('isCreator', card.creator)"></participants>
         </div>
     </div>
 </template>
@@ -98,7 +98,7 @@
             },
 
             update() {
-                this.form.patch(this.route('api.cards.update', {id: this.card.id}))
+                this.form.patch(this.route('api.cards.update', {id: this.card.uuid}))
                     .then((data) => {
                         if (this.editingName) {
                             this.cancelName();
@@ -113,7 +113,7 @@
             },
 
             remove() {
-                axios.delete(this.route('api.cards.destroy', {id: this.card.id}))
+                axios.delete(this.route('api.cards.destroy', {id: this.card.uuid}))
                     .then(({data}) => {
                         this.$emit('removed', data);
                         flash(data);

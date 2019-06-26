@@ -28,7 +28,7 @@
 
 <script>
     export default {
-        props: ['task', 'cardId'],
+        props: ['task', 'cardUuid'],
 
         data() {
             return {
@@ -80,7 +80,7 @@
             },
 
             update() {
-                this.form.patch(this.route('api.tasks.update', {task: this.task.id, card: this.cardId}))
+                this.form.patch(this.route('api.tasks.update', {task: this.task.id, card: this.cardUuid}))
                     .then((data) => {
                         this.toggleEdit();
                         flash(data);
@@ -89,7 +89,7 @@
             },
 
             remove() {
-                axios.delete(this.route('api.tasks.destroy', {task: this.task.id, card: this.cardId}))
+                axios.delete(this.route('api.tasks.destroy', {task: this.task.id, card: this.cardUuid}))
                     .then(({data}) => {
                         this.$emit('removed', data);
                         flash(data);

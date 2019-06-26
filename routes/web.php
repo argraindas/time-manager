@@ -10,7 +10,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::group([
     'middleware' => 'auth'
 ], function () {
-    
+
     // Dashboard
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
 
@@ -19,7 +19,7 @@ Route::group([
 
     // Categories
     Route::get('categories', 'CategoriesController@index')->name('categories');
-    
+
     // Records
     Route::get('records', 'RecordsController@index')->name('records');
 });

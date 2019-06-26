@@ -137,7 +137,7 @@ class CardTest extends TestCase
 
         $cards = $user->cards()->orParticipant($user)->get();
         $jsonResource = CardResource::collection($cards)->response()->getContent();
-        
+
         $this->assertJson($jsonResource);
 
         $cardsArr = json_decode($jsonResource, true);
@@ -145,7 +145,7 @@ class CardTest extends TestCase
         $this->assertEquals([
             'data' => [
                 [
-                    'id' => $card->id,
+                    'uuid' => $card->uuid,
                     'name' => $card->name,
                     'description' => $card->description,
                     'creator' => [
@@ -157,7 +157,7 @@ class CardTest extends TestCase
                     'tasks' => [
                         [
                             'id' => $task->id,
-                            'card_id' => $task->card_id,
+                            'card_uuid' => $card->uuid,
                             'name' => $task->name,
                             'status' => $task->status,
                         ],
@@ -189,7 +189,7 @@ class CardTest extends TestCase
         $card->assignParticipant($particiant);
 
         $this->assertCount(2, $card->availableUsers());
-        
+
         $this->assertCount(1, $card->availableUsers()->except(auth()->id()));
     }
 
@@ -218,11 +218,11 @@ class CardTest extends TestCase
         $this->assertCount(1, $card->fresh()->adjustments);
 
         $adjustment = $card->adjustments->first();
-        
+
         $this->assertEquals(json_encode($before), $adjustment->changes->before);
         $this->assertEquals(json_encode($after), $adjustment->changes->after);
         $this->assertEquals(auth()->id(), $adjustment->changes->user_id);
-        
+
         // Another user makes changes
         $this->signIn(create(User::class));
 

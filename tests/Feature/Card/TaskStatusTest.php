@@ -46,7 +46,7 @@ class TaskStatusTest extends TestCase
 
         $this->patch(route('api.taskStatus.update', [$task]), ['status' => Task::STATUS_IN_PROGRESS])
             ->assertStatus(Response::HTTP_OK);
-        
+
         $this->assertTrue($task->fresh()->isInProgress());
 
         $this->patch(route('api.taskStatus.update', [$task]), ['status' => Task::STATUS_DONE])
@@ -64,7 +64,7 @@ class TaskStatusTest extends TestCase
 
         $this->assertTrue($task->fresh()->isNew());
     }
-    
+
     /** @test */
     public function participant_can_change_status()
     {

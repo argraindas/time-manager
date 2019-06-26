@@ -89,7 +89,7 @@ class TaskTest extends TestCase
         $this->assertCount(1, $task->fresh()->adjustments);
 
         $adjustment = $task->adjustments->first();
-        
+
         $this->assertEquals(json_encode($before), $adjustment->changes->before);
         $this->assertEquals(json_encode($after), $adjustment->changes->after);
         $this->assertEquals(auth()->id(), $adjustment->changes->user_id);

@@ -6,7 +6,7 @@
 
         <div class="row">
 
-            <div class="col-md-3" v-for="(card, index) in items" :key="card.id">
+            <div class="col-md-3" v-for="(card, index) in items" :key="card.uuid">
                 <card :card="card" @removed="remove(index)"></card>
             </div>
 

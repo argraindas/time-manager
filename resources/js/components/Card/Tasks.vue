@@ -1,12 +1,12 @@
 <template>
 
     <div class="tasks">
-        <new-task :cardId="cardId" @added="add"></new-task>
+        <new-task :cardUuid="cardUuid" @added="add"></new-task>
         <span class="someone-is-typing text-red" v-if="typingUser" v-text="typingUser.name + ' is typing...'"></span>
 
         <ul class="list-unstyled">
             <li class="my-1" v-for="(task, index) in tasks" :key="task.id">
-                <task :task="task" :cardId="cardId" @removed="remove(index)"></task>
+                <task :task="task" :cardUuid="cardUuid" @removed="remove(index)"></task>
             </li>
         </ul>
     </div>
@@ -18,7 +18,7 @@
     import NewTask from './NewTask';
 
     export default {
-        props: ['items', 'cardId'],
+        props: ['items', 'cardUuid'],
         components: {Task, NewTask},
 
         data() {
@@ -31,7 +31,7 @@
 
         computed: {
             channel() {
-                return window.Echo.private('tasks.' + this.cardId);
+                return window.Echo.private('tasks.' + this.cardUuid);
             }
         },
 

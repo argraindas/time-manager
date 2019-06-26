@@ -14,7 +14,7 @@
 <script>
 
     export default {
-        props: ['cardId'],
+        props: ['cardUuid'],
 
         data() {
             return {
@@ -26,13 +26,13 @@
 
         computed: {
             channel() {
-                return window.Echo.private('tasks.' + this.cardId);
+                return window.Echo.private('tasks.' + this.cardUuid);
             }
         },
 
         methods: {
             add() {
-                this.form.post(this.route('api.tasks.store', {id: this.cardId}))
+                this.form.post(this.route('api.tasks.store', {id: this.cardUuid}))
                     .then(data => {
                         this.$emit('added', data.item);
                         flash(data);

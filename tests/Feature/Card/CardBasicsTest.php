@@ -121,18 +121,18 @@ class CardBasicsTest extends TestCase
     {
         $card = create(Card::class);
 
-        $this->delete(route('api.cards.destroy', $card->id))
+        $this->delete(route('api.cards.destroy', $card->uuid))
             ->assertRedirect(route('login'));
 
         $this->signIn();
 
-        $this->delete(route('api.cards.destroy', $card->id))
+        $this->delete(route('api.cards.destroy', $card->uuid))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->deleteJson(route('api.cards.destroy', $card->id))
+        $this->deleteJson(route('api.cards.destroy', $card->uuid))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseHas('cards', ['id' => $card->id]);
+        $this->assertDatabaseHas('cards', ['uuid' => $card->uuid]);
     }
 
     /** @test */
@@ -144,14 +144,14 @@ class CardBasicsTest extends TestCase
 
         $this->assertCount(1,  auth()->user()->cards);
 
-        $this->delete(route('api.cards.destroy', $card->id))
+        $this->delete(route('api.cards.destroy', $card->uuid))
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment([
                 'status' => 'success',
                 'message' => 'Card was successfully deleted!',
             ]);
 
-        $this->assertDatabaseMissing('cards', ['id' => $card->id]);
+        $this->assertDatabaseMissing('cards', ['uuid' => $card->uuid]);
         $this->assertEquals(0, auth()->user()->cards()->count());
     }
 
@@ -161,12 +161,12 @@ class CardBasicsTest extends TestCase
         /** @var Card $card */
         $card = create(Card::class);
 
-        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
+        $this->patch(route('api.cards.update', $card->uuid), ['description' => 'New description'])
             ->assertRedirect(route('login'));
 
         $this->signIn();
 
-        $this->patch(route('api.cards.update', $card->id), ['description' => 'New description'])
+        $this->patch(route('api.cards.update', $card->uuid), ['description' => 'New description'])
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
@@ -183,7 +183,7 @@ class CardBasicsTest extends TestCase
             'description' => 'New description',
         ];
 
-        $this->patch(route('api.cards.update', $card->id), $newData)
+        $this->patch(route('api.cards.update', $card->uuid), $newData)
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonFragment([
                 'status' => 'success',
@@ -208,15 +208,15 @@ class CardBasicsTest extends TestCase
         $unsanitizedName = ' <div>my test Card</div> ';
         $sanitizedName = 'My test card';
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'name' => null
         ]))->assertSessionHasErrors('name');
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'name' => 'aa'
         ]))->assertSessionHasErrors('name');
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'name' => $unsanitizedName
         ]))->assertStatus(Response::HTTP_OK);
 
@@ -227,19 +227,19 @@ class CardBasicsTest extends TestCase
         $unsanitizedDescription = " <div>my test Description. I've done it RIGHT. </div> ";
         $sanitizedDescription = "My test Description. I&#39;ve done it RIGHT.";
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'description' => null
         ]))->assertStatus(Response::HTTP_OK);
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'description' => ''
         ]))->assertStatus(Response::HTTP_OK);
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'description' => 'aa'
         ]))->assertSessionHasErrors('description');
 
-        $this->patch(route('api.cards.update', $card['id']), array_merge($card, [
+        $this->patch(route('api.cards.update', $card['uuid']), array_merge($card, [
             'description' => $unsanitizedDescription,
         ]))->assertStatus(Response::HTTP_OK);
 

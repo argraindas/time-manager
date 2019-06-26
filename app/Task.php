@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Card $card
  * @property-read \App\User $creator
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Task whereCardId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $adjustments
  */
 class Task extends Model
 {

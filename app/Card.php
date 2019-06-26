@@ -33,6 +33,9 @@ use Illuminate\Support\Facades\DB;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\CardParticipant[] $participants
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Task[] $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Card orParticipant(\App\User $user)
+ * @property string $uuid
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $adjustments
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Card whereUuid($value)
  */
 class Card extends Model
 {

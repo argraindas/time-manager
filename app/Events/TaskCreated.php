@@ -39,6 +39,6 @@ class TaskCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('tasks.'. $this->card->id);
+        return new PrivateChannel('tasks.'. $this->card->uuid);
     }
 }

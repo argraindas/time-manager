@@ -21,7 +21,7 @@
 
 <script>
     export default {
-        props: ['items', 'cardId', 'isCreator'],
+        props: ['items', 'cardUuid', 'isCreator'],
 
         data() {
             return {
@@ -45,7 +45,7 @@
             },
 
             fetch() {
-                axios.get(this.route('api.cardParticipants', {id: this.cardId}))
+                axios.get(this.route('api.cardParticipants', {id: this.cardUuid}))
                     .then(({data}) => {
                         this.availableUsers = data.data;
                         this.selectText = this.availableUsers.length > 0 ? 'Please select...' : 'No users found.';
@@ -53,7 +53,7 @@
             },
 
             add() {
-                axios.post(this.route('api.cardParticipants.store', {id: this.cardId}), {user_id: this.newParticipant})
+                axios.post(this.route('api.cardParticipants.store', {id: this.cardUuid}), {user_id: this.newParticipant})
                     .then(({data}) => {
                         this.participants.push(data.user);
                         flash(data);
@@ -66,7 +66,7 @@
             },
 
             remove(index, user) {
-                axios.delete(this.route('api.cardParticipants.destroy', {card: this.cardId, user: user.id}))
+                axios.delete(this.route('api.cardParticipants.destroy', {card: this.cardUuid, user: user.id}))
                     .then(({data}) => flash(data))
                     .catch(() => flash());
 
