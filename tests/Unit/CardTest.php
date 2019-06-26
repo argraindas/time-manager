@@ -86,6 +86,8 @@ class CardTest extends TestCase
         $participant_1 = create(User::class);
         $participant_2 = create(User::class);
 
+        $this->assertCount(3, User::all());
+
         $card->assignParticipant($participant_1);
         $card->assignParticipant($participant_2);
 
@@ -94,6 +96,8 @@ class CardTest extends TestCase
         $card->removeParticipant($participant_1);
 
         $this->assertCount(1, $card->fresh()->participants);
+
+        $this->assertCount(3, User::all());
     }
 
     /** @test */

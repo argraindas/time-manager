@@ -50,8 +50,7 @@ class Card extends Model
 
     /** @var array  */
     protected $casts = [
-        'creator_id' => 'int',
-        'datetime' => 'timestamp'
+        'creator_id' => 'int'
     ];
 
     /** @var array  */
@@ -134,9 +133,7 @@ class Card extends Model
      */
     public function removeParticipant(User $user)
     {
-        $this->participants()
-            ->where('user_id', $user->id)
-            ->delete();
+        $this->participants()->detach($user);
     }
 
     /**
